@@ -17,7 +17,7 @@ use zbus::dbus_proxy;
 	interface = "org.freedesktop.NetworkManager.Device.Bluetooth",
 	default_service = "org.freedesktop.NetworkManager"
 )]
-pub trait Bluetooth {
+pub trait BluetoothDevice {
 	/// BtCapabilities property
 	#[dbus_proxy(property)]
 	fn bt_capabilities(&self) -> zbus::Result<u32>;
