@@ -12,3 +12,9 @@ impl<'a> Deref for BluetoothDevice<'a> {
 		&self.0
 	}
 }
+
+impl<'a> From<BluetoothDeviceProxy<'a>> for BluetoothDevice<'a> {
+	fn from(device: BluetoothDeviceProxy<'a>) -> Self {
+		BluetoothDevice(device)
+	}
+}

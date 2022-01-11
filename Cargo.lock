@@ -152,6 +152,7 @@ dependencies = [
 name = "cosmic-dbus-networkmanager"
 version = "0.1.0"
 dependencies = [
+ "bitflags",
  "zbus",
 ]
 

@@ -24,6 +24,7 @@ pub mod access_point;
 pub mod config;
 pub mod connection;
 pub mod device;
+pub mod enums;
 pub mod settings;
 pub mod statistics;
 

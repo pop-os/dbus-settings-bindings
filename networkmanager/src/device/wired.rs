@@ -12,3 +12,9 @@ impl<'a> Deref for WiredDevice<'a> {
 		&self.0
 	}
 }
+
+impl<'a> From<WiredDeviceProxy<'a>> for WiredDevice<'a> {
+	fn from(device: WiredDeviceProxy<'a>) -> Self {
+		WiredDevice(device)
+	}
+}

@@ -29,7 +29,7 @@ use zbus::dbus_proxy;
 pub trait ActiveConnection {
 	/// Connection property
 	#[dbus_proxy(property)]
-	fn connection(&self) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
+	fn connection_(&self) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
 
 	/// Default property
 	#[dbus_proxy(property)]
