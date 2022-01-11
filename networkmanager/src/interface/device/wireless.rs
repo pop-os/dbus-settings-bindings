@@ -22,7 +22,10 @@
 
 use zbus::dbus_proxy;
 
-#[dbus_proxy(interface = "org.freedesktop.NetworkManager.Device.Wireless")]
+#[dbus_proxy(
+	interface = "org.freedesktop.NetworkManager.Device.Wireless",
+	default_service = "org.freedesktop.NetworkManager"
+)]
 pub trait WirelessDevice {
 	/// GetAccessPoints method
 	fn get_access_points(&self) -> zbus::Result<Vec<zbus::zvariant::OwnedObjectPath>>;

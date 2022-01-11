@@ -20,12 +20,16 @@
 //!
 //! …consequently `zbus-xmlgen` did not generate code for the above interfaces.
 
+pub mod bluetooth;
 pub mod wired;
 pub mod wireless;
 
 use zbus::dbus_proxy;
 
-#[dbus_proxy(interface = "org.freedesktop.NetworkManager.Device.Generic")]
+#[dbus_proxy(
+	interface = "org.freedesktop.NetworkManager.Device.Generic",
+	default_service = "org.freedesktop.NetworkManager"
+)]
 pub trait GenericDevice {
 	/// HwAddress property
 	#[dbus_proxy(property)]
@@ -36,7 +40,10 @@ pub trait GenericDevice {
 	fn type_description(&self) -> zbus::Result<String>;
 }
 
-#[dbus_proxy(interface = "org.freedesktop.NetworkManager.Device")]
+#[dbus_proxy(
+	interface = "org.freedesktop.NetworkManager.Device",
+	default_service = "org.freedesktop.NetworkManager"
+)]
 pub trait Device {
 	/// Delete method
 	fn delete(&self) -> zbus::Result<()>;

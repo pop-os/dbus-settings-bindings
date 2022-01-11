@@ -22,7 +22,10 @@
 
 use zbus::dbus_proxy;
 
-#[dbus_proxy(interface = "org.freedesktop.NetworkManager.Device.Wired")]
+#[dbus_proxy(
+	interface = "org.freedesktop.NetworkManager.Device.Wired",
+	default_service = "org.freedesktop.NetworkManager"
+)]
 trait WiredDevice {
 	/// Carrier property
 	#[dbus_proxy(property)]

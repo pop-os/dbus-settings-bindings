@@ -22,13 +22,18 @@
 
 pub mod access_point;
 pub mod config;
+pub mod connection;
 pub mod device;
 pub mod settings;
 pub mod statistics;
 
 use zbus::dbus_proxy;
 
-#[dbus_proxy(interface = "org.freedesktop.NetworkManager")]
+#[dbus_proxy(
+	interface = "org.freedesktop.NetworkManager",
+	default_service = "org.freedesktop.NetworkManager",
+	default_path = "/org/freedesktop/NetworkManager"
+)]
 pub trait NetworkManager {
 	/// ActivateConnection method
 	fn activate_connection(

@@ -22,7 +22,10 @@
 
 use zbus::dbus_proxy;
 
-#[dbus_proxy(interface = "org.freedesktop.NetworkManager.IP6Config")]
+#[dbus_proxy(
+	interface = "org.freedesktop.NetworkManager.IP6Config",
+	default_service = "org.freedesktop.NetworkManager"
+)]
 pub trait Ipv6Config {
 	/// AddressData property
 	#[dbus_proxy(property)]

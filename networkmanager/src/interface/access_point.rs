@@ -22,7 +22,10 @@
 
 use zbus::dbus_proxy;
 
-#[dbus_proxy(interface = "org.freedesktop.NetworkManager.AccessPoint")]
+#[dbus_proxy(
+	interface = "org.freedesktop.NetworkManager.AccessPoint",
+	default_service = "org.freedesktop.NetworkManager"
+)]
 trait AccessPoint {
 	/// Flags property
 	#[dbus_proxy(property)]
