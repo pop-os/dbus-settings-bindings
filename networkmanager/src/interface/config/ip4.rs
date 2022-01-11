@@ -23,7 +23,7 @@
 use zbus::dbus_proxy;
 
 #[dbus_proxy(interface = "org.freedesktop.NetworkManager.IP4Config")]
-pub trait IP4Config {
+pub trait Ipv4Config {
 	/// AddressData property
 	#[dbus_proxy(property)]
 	fn address_data(
