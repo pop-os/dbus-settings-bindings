@@ -20,8 +20,11 @@
 //!
 //! …consequently `zbus-xmlgen` did not generate code for the above interfaces.
 
+pub mod access_point;
+pub mod config;
 pub mod device;
 pub mod settings;
+pub mod statistics;
 
 use zbus::dbus_proxy;
 
