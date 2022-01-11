@@ -19,6 +19,7 @@
 //! * [`zbus::fdo::PeerProxy`]
 //!
 //! …consequently `zbus-xmlgen` did not generate code for the above interfaces.
+#![allow(clippy::type_complexity)]
 
 pub mod access_point;
 pub mod config;

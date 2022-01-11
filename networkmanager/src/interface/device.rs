@@ -182,7 +182,7 @@ pub trait Device {
 
 	/// Path property
 	#[dbus_proxy(property)]
-	fn path(&self) -> zbus::Result<String>;
+	fn path_(&self) -> zbus::Result<String>;
 
 	/// PhysicalPortId property
 	#[dbus_proxy(property)]

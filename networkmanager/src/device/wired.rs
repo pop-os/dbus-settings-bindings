@@ -1,9 +1,21 @@
 // SPDX-License-Identifier: MPL-2.0
 
-use crate::interface::device::wired::WiredDeviceProxy;
+use super::Device;
+use crate::interface::device::{wired::WiredDeviceProxy, DeviceProxy};
 use std::ops::Deref;
+use zbus::Result;
 
 pub struct WiredDevice<'a>(WiredDeviceProxy<'a>);
+
+impl<'a> WiredDevice<'a> {
+	pub async fn upcast(&'a self) -> Result<Device<'a>> {
+		DeviceProxy::builder(self.0.connection())
+			.path(self.0.path())?
+			.build()
+			.await
+			.map(Device::from)
+	}
+}
 
 impl<'a> Deref for WiredDevice<'a> {
 	type Target = WiredDeviceProxy<'a>;

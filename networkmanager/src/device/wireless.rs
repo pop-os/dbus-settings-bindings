@@ -1,10 +1,24 @@
 // SPDX-License-Identifier: MPL-2.0
 
-use crate::interface::{device::wireless::WirelessDeviceProxy, enums::WifiCapabilities};
+use super::Device;
+use crate::interface::{
+	device::{wireless::WirelessDeviceProxy, DeviceProxy},
+	enums::WifiCapabilities,
+};
 use std::ops::Deref;
 use zbus::Result;
 
 pub struct WirelessDevice<'a>(WirelessDeviceProxy<'a>);
+
+impl<'a> WirelessDevice<'a> {
+	pub async fn upcast(&'a self) -> Result<Device<'a>> {
+		DeviceProxy::builder(self.0.connection())
+			.path(self.0.path())?
+			.build()
+			.await
+			.map(Device::from)
+	}
+}
 
 impl<'a> WirelessDevice<'a> {
 	pub async fn wireless_capabilities(&self) -> Result<WifiCapabilities> {

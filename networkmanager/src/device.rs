@@ -10,7 +10,10 @@ use crate::{
 	interface::{
 		config::{ip4::Ipv4ConfigProxy, ip6::Ipv6ConfigProxy},
 		connection::ActiveConnectionProxy,
-		device::DeviceProxy,
+		device::{
+			bluetooth::BluetoothDeviceProxy, wired::WiredDeviceProxy,
+			wireless::WirelessDeviceProxy, DeviceProxy,
+		},
 		enums::{DeviceCapabilities, DeviceState, DeviceType},
 	},
 };
@@ -53,6 +56,33 @@ impl<'a> Device<'a> {
 		self.0.device_type().await.map(DeviceType::from)
 	}
 
+	pub async fn downcast_to_device(&'a self) -> Result<SpecificDevice<'a>> {
+		match self.device_type().await? {
+			DeviceType::Bluetooth => Ok(SpecificDevice::Bluetooth(
+				BluetoothDeviceProxy::builder(self.0.connection())
+					.path(self.0.path())?
+					.build()
+					.await?
+					.into(),
+			)),
+			DeviceType::Ethernet => Ok(SpecificDevice::Wired(
+				WiredDeviceProxy::builder(self.0.connection())
+					.path(self.0.path())?
+					.build()
+					.await?
+					.into(),
+			)),
+			DeviceType::Wifi => Ok(SpecificDevice::Wireless(
+				WirelessDeviceProxy::builder(self.0.connection())
+					.path(self.0.path())?
+					.build()
+					.await?
+					.into(),
+			)),
+			_ => unimplemented!(),
+		}
+	}
+
 	pub async fn ip4_address(&self) -> Result<Ipv4Addr> {
 		self.0.ip4_address().await.map(Ipv4Addr::from)
 	}
@@ -89,5 +119,34 @@ impl<'a> Deref for Device<'a> {
 impl<'a> From<DeviceProxy<'a>> for Device<'a> {
 	fn from(device: DeviceProxy<'a>) -> Self {
 		Device(device)
+	}
+}
+
+pub enum SpecificDevice<'a> {
+	Bluetooth(bluetooth::BluetoothDevice<'a>),
+	Wired(wired::WiredDevice<'a>),
+	Wireless(wireless::WirelessDevice<'a>),
+}
+
+impl<'a> SpecificDevice<'a> {
+	pub fn into_bluetooth(self) -> Option<bluetooth::BluetoothDevice<'a>> {
+		match self {
+			SpecificDevice::Bluetooth(device) => Some(device),
+			_ => None,
+		}
+	}
+
+	pub fn into_wired(self) -> Option<wired::WiredDevice<'a>> {
+		match self {
+			SpecificDevice::Wired(device) => Some(device),
+			_ => None,
+		}
+	}
+
+	pub fn into_wireless(self) -> Option<wireless::WirelessDevice<'a>> {
+		match self {
+			SpecificDevice::Wireless(device) => Some(device),
+			_ => None,
+		}
 	}
 }
