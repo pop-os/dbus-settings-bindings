@@ -25,4 +25,17 @@ impl<'a> NetworkManager<'a> {
 		}
 		Ok(out)
 	}
+
+	pub async fn all_devices(&self) -> Result<Vec<Device<'a>>> {
+		let devices = self.0.get_all_devices().await?;
+		let mut out = Vec::with_capacity(devices.len());
+		for device in devices {
+			let device = DeviceProxy::builder(self.0.connection())
+				.path(device)?
+				.build()
+				.await?;
+			out.push(device.into());
+		}
+		Ok(out)
+	}
 }
