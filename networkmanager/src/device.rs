@@ -6,7 +6,7 @@ pub mod wireless;
 
 use crate::{
 	config::{ip4::Ipv4Config, ip6::Ipv6Config},
-	connection::Connection,
+	connection::ActiveConnection,
 	interface::{
 		config::{ip4::Ipv4ConfigProxy, ip6::Ipv6ConfigProxy},
 		connection::ActiveConnectionProxy,
@@ -23,7 +23,7 @@ use zbus::Result;
 pub struct Device<'a>(DeviceProxy<'a>);
 
 impl<'a> Device<'a> {
-	pub async fn active_connection(&self) -> Result<Connection<'a>> {
+	pub async fn active_connection(&self) -> Result<ActiveConnection<'a>> {
 		let active_connection = self.0.active_connection().await?;
 		Ok(ActiveConnectionProxy::builder(self.0.connection())
 			.path(active_connection)?
@@ -32,7 +32,7 @@ impl<'a> Device<'a> {
 			.into())
 	}
 
-	pub async fn available_connections(&self) -> Result<Vec<Connection<'a>>> {
+	pub async fn available_connections(&self) -> Result<Vec<ActiveConnection<'a>>> {
 		let available_connections = self.0.available_connections().await?;
 		let mut out = Vec::with_capacity(available_connections.len());
 		for connection in available_connections {

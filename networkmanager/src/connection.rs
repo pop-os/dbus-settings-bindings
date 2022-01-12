@@ -13,9 +13,9 @@ use crate::{
 use std::ops::Deref;
 use zbus::Result;
 
-pub struct Connection<'a>(ActiveConnectionProxy<'a>);
+pub struct ActiveConnection<'a>(ActiveConnectionProxy<'a>);
 
-impl<'a> Connection<'a> {
+impl<'a> ActiveConnection<'a> {
 	pub async fn devices(&self) -> Result<Vec<Device<'a>>> {
 		let devices = self.0.devices().await?;
 		let mut out = Vec::with_capacity(devices.len());
@@ -57,7 +57,7 @@ impl<'a> Connection<'a> {
 	}
 }
 
-impl<'a> Deref for Connection<'a> {
+impl<'a> Deref for ActiveConnection<'a> {
 	type Target = ActiveConnectionProxy<'a>;
 
 	fn deref(&self) -> &Self::Target {
@@ -65,8 +65,8 @@ impl<'a> Deref for Connection<'a> {
 	}
 }
 
-impl<'a> From<ActiveConnectionProxy<'a>> for Connection<'a> {
+impl<'a> From<ActiveConnectionProxy<'a>> for ActiveConnection<'a> {
 	fn from(connection: ActiveConnectionProxy<'a>) -> Self {
-		Connection(connection)
+		ActiveConnection(connection)
 	}
 }
