@@ -1,16 +1,57 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use crate::{
+	active_connection::ActiveConnection,
 	device::Device,
-	interface::{device::DeviceProxy, NetworkManagerProxy},
+	interface::{
+		active_connection::ActiveConnectionProxy,
+		device::DeviceProxy,
+		enums::{ConnectivityState, State},
+		NetworkManagerProxy,
+	},
+	settings::connection::Connection,
 };
-use zbus::{Connection, Result};
+use zbus::{zvariant::ObjectPath, Result};
 
 pub struct NetworkManager<'a>(NetworkManagerProxy<'a>);
 
 impl<'a> NetworkManager<'a> {
-	pub async fn new(connection: &'a Connection) -> Result<NetworkManager<'a>> {
+	pub async fn new(connection: &'a zbus::Connection) -> Result<NetworkManager<'a>> {
 		NetworkManagerProxy::new(connection).await.map(Self)
+	}
+
+	pub async fn activate_connection(
+		&self,
+		connection: &'a Connection<'a>,
+		device: &'a Device<'a>,
+	) -> Result<ActiveConnection<'a>> {
+		let connection = connection.path();
+		let device = device.path();
+		let specific_object = ObjectPath::from_static_str("/").unwrap();
+		let active_connection_path = self
+			.0
+			.activate_connection(connection, device, &specific_object)
+			.await?;
+		ActiveConnectionProxy::builder(self.0.connection())
+			.path(active_connection_path)?
+			.build()
+			.await
+			.map(ActiveConnection::from)
+	}
+
+	pub async fn connectivity(&self) -> Result<ConnectivityState> {
+		self.0.connectivity().await.map(ConnectivityState::from)
+	}
+
+	pub async fn check_connectivity(&self) -> Result<ConnectivityState> {
+		self.0
+			.check_connectivity()
+			.await
+			.map(ConnectivityState::from)
+	}
+
+	pub async fn deactivate_connection(&self, connection: &'a ActiveConnection<'a>) -> Result<()> {
+		self.0.deactivate_connection(connection.path()).await
 	}
 
 	pub async fn devices(&self) -> Result<Vec<Device<'a>>> {
@@ -37,5 +78,9 @@ impl<'a> NetworkManager<'a> {
 			out.push(device.into());
 		}
 		Ok(out)
+	}
+
+	pub async fn state(&self) -> State {
+		self.0.state().await.map(State::from).unwrap()
 	}
 }

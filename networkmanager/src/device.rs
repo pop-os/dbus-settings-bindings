@@ -5,11 +5,11 @@ pub mod wired;
 pub mod wireless;
 
 use crate::{
+	active_connection::ActiveConnection,
 	config::{ip4::Ipv4Config, ip6::Ipv6Config},
-	connection::ActiveConnection,
 	interface::{
+		active_connection::ActiveConnectionProxy,
 		config::{ip4::Ipv4ConfigProxy, ip6::Ipv6ConfigProxy},
-		connection::ActiveConnectionProxy,
 		device::{
 			bluetooth::BluetoothDeviceProxy, wired::WiredDeviceProxy,
 			wireless::WirelessDeviceProxy, DeviceProxy,
