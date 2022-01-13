@@ -56,30 +56,30 @@ impl<'a> Device<'a> {
 		self.0.device_type().await.map(DeviceType::from)
 	}
 
-	pub async fn downcast_to_device(&'a self) -> Result<SpecificDevice<'a>> {
+	pub async fn downcast_to_device(&'a self) -> Result<Option<SpecificDevice<'a>>> {
 		match self.device_type().await? {
-			DeviceType::Bluetooth => Ok(SpecificDevice::Bluetooth(
+			DeviceType::Bluetooth => Ok(Some(SpecificDevice::Bluetooth(
 				BluetoothDeviceProxy::builder(self.0.connection())
 					.path(self.0.path())?
 					.build()
 					.await?
 					.into(),
-			)),
-			DeviceType::Ethernet => Ok(SpecificDevice::Wired(
+			))),
+			DeviceType::Ethernet => Ok(Some(SpecificDevice::Wired(
 				WiredDeviceProxy::builder(self.0.connection())
 					.path(self.0.path())?
 					.build()
 					.await?
 					.into(),
-			)),
-			DeviceType::Wifi => Ok(SpecificDevice::Wireless(
+			))),
+			DeviceType::Wifi => Ok(Some(SpecificDevice::Wireless(
 				WirelessDeviceProxy::builder(self.0.connection())
 					.path(self.0.path())?
 					.build()
 					.await?
 					.into(),
-			)),
-			_ => unimplemented!(),
+			))),
+			_ => Ok(None),
 		}
 	}
 
