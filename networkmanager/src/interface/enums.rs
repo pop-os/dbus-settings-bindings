@@ -105,6 +105,26 @@ impl From<u32> for DeviceState {
 	}
 }
 
+pub enum WifiMode {
+	AdHoc,
+	Infra,
+	Ap,
+	Mesh,
+	Unknown,
+}
+
+impl From<u32> for WifiMode {
+	fn from(mode: u32) -> Self {
+		match mode {
+			1 => WifiMode::AdHoc,
+			2 => WifiMode::Infra,
+			3 => WifiMode::Ap,
+			4 => WifiMode::Mesh,
+			_ => WifiMode::Unknown,
+		}
+	}
+}
+
 bitflags! {
 	pub struct DeviceCapabilities: u32 {
 		const SUPPORTED = 0x00000001;
@@ -142,5 +162,33 @@ bitflags! {
 		const MASTER_HAS_SLAVES = 0x20;
 		const LIFETIME_BOUND_TO_PROFILE_VISIBILITY = 0x40;
 		const EXTERNAL = 0x80;
+	}
+}
+
+bitflags! {
+	pub struct ApFlags: u32 {
+		const PRIVACY = 0x1;
+		const WPS = 0x2;
+		const WPS_PBC = 0x4;
+		const WPS_PIN = 0x8;
+	}
+}
+
+bitflags! {
+	pub struct ApSecurityFlags: u32 {
+		const WEP40 = 0x1;
+		const WEP104 = 0x2;
+		const TKIP = 0x4;
+		const CCMP = 0x8;
+		const GROUP_WEP40 = 0x10;
+		const GROUP_WEP104 = 0x20;
+		const GROUP_TKIP = 0x40;
+		const GROUP_CCMP = 0x80;
+		const KEY_MGMTPSK = 0x100;
+		const KEY_MGMT_802_1X = 0x200;
+		const KEY_MGMT_SAE = 0x400;
+		const KEY_MGMT_OWE = 0x800;
+		const KEY_MGMT_OWE_TM = 0x1000;
+		const KEY_MGMT_EAP_SUITE_B_192 = 0x2000;
 	}
 }

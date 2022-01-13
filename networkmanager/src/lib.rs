@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MPL-2.0
 
+pub mod access_point;
 pub mod active_connection;
 pub mod config;
 pub mod device;
