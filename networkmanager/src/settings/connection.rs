@@ -22,9 +22,9 @@ impl<'a> From<ConnectionSettingsProxy<'a>> for Connection<'a> {
 }
 
 macro_rules! derive_value_build {
-	($name:ident, $(($arg:ident($rename:expr): $arg_ty:ty)),*) => {
+	($name:ident($signature:expr), $(($arg:ident($rename:expr): $arg_ty:ty)),*) => {
 		#[derive(Debug, Builder, Clone, zbus::zvariant::DeserializeDict, zbus::zvariant::SerializeDict, zbus::zvariant::Type)]
-		#[zvariant(signature = "dict")]
+		#[zvariant(signature = $signature)]
 		pub struct $name {
 			$(
 				#[zvariant(rename = $rename)]
@@ -36,7 +36,7 @@ macro_rules! derive_value_build {
 }
 
 derive_value_build!(
-	Settings,
+	Settings("a{sa{sv}}"),
 	(connection("connection"): ConnectionSettings),
 	(ethernet("802-3-ethernet"): EthernetSettings),
 	(wifi("802-11-wireless"): WifiSettings),
@@ -44,7 +44,7 @@ derive_value_build!(
 );
 
 derive_value_build!(
-	ConnectionSettings,
+	ConnectionSettings("dict"),
 	(auth_retries("auth-retries"): i32),
 	(autoconnect("autoconnect"): bool),
 	(autoconnect_priority("autoconnect-priority"): i32),
@@ -69,7 +69,7 @@ derive_value_build!(
 );
 
 derive_value_build!(
-	EthernetSettings,
+	EthernetSettings("dict"),
 	(assigned_mac_address("assigned-mac-address"): String),
 	(auto_negotiate("auto-negotiate"): bool),
 	(duplex("duplex"): String),
@@ -82,7 +82,7 @@ derive_value_build!(
 );
 
 derive_value_build!(
-	WifiSettings,
+	WifiSettings("dict"),
 	(assigned_mac_address("assigned-mac-address"): String),
 	(band("band"): String),
 	(bssid("bssid"): Vec<u8>),
@@ -104,7 +104,7 @@ derive_value_build!(
 );
 
 derive_value_build!(
-	BluetoothSettings,
+	BluetoothSettings("dict"),
 	(bdaddr("bdaddr"): Vec<u8>),
 	(type_("type"): String)
 );
