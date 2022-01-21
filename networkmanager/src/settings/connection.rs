@@ -2,7 +2,7 @@
 
 use crate::interface::settings::connection::ConnectionSettingsProxy;
 use derive_builder::Builder;
-use std::ops::Deref;
+use std::{collections::HashMap, ops::Deref};
 
 #[derive(Debug)]
 pub struct Connection<'a>(ConnectionSettingsProxy<'a>);
@@ -62,6 +62,7 @@ derive_value_build!(
 	(mud_url("mud_url"): String),
 	(multi_connect("multi-connect"): String),
 	(permissions("permissions"): Vec<String>),
+	(timestamp("timestamp"): u64),
 	(read_only("read-only"): bool),
 	(secondaries("secondaries"): Vec<String>),
 	(stable_id("stable-id"): String),
@@ -73,12 +74,19 @@ derive_value_build!(
 
 derive_value_build!(
 	EthernetSettings("dict"),
+	(accept_all_mac_addresses("accept-all-mac-addresses"): i32),
 	(assigned_mac_address("assigned-mac-address"): String),
 	(auto_negotiate("auto-negotiate"): bool),
+	(cloned_mac_address("cloned-mac-address"): Vec<u8>),
 	(duplex("duplex"): String),
 	(generate_mac_address_mask("generate-mac-address-mask"): String),
+	(mac_address("mac-address"): Vec<u8>),
+	(mac_address_blacklist("mac-address-blacklist"): Vec<String>),
 	(mtu("mtu"): u32),
 	(port("port"): String),
+	(s390_nettype("s390-nettype"): String),
+	(s390_options("s390-options"): HashMap<String, String>),
+	(s390_subchannels("s390-subchannels"): Vec<String>),
 	(speed("speed"): u32),
 	(wake_on_lan("wake-on-lan"): u32),
 	(wake_on_lan_password("wake-on-lan-password"): String)
