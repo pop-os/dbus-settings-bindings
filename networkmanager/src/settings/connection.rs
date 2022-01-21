@@ -4,6 +4,7 @@ use crate::interface::settings::connection::ConnectionSettingsProxy;
 use derive_builder::Builder;
 use std::ops::Deref;
 
+#[derive(Debug)]
 pub struct Connection<'a>(ConnectionSettingsProxy<'a>);
 
 impl<'a> Deref for Connection<'a> {
@@ -22,7 +23,7 @@ impl<'a> From<ConnectionSettingsProxy<'a>> for Connection<'a> {
 
 macro_rules! derive_value_build {
 	($name:ident, $(($arg:ident($rename:expr): $arg_ty:ty)),*) => {
-		#[derive(Builder, Clone, zbus::zvariant::DeserializeDict, zbus::zvariant::SerializeDict, zbus::zvariant::Type)]
+		#[derive(Debug, Builder, Clone, zbus::zvariant::DeserializeDict, zbus::zvariant::SerializeDict, zbus::zvariant::Type)]
 		pub struct $name {
 			$(
 				#[zvariant(rename = $rename)]

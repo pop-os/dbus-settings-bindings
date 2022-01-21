@@ -6,6 +6,7 @@ use self::connection::Connection;
 use crate::interface::settings::{connection::ConnectionSettingsProxy, SettingsProxy};
 use zbus::Result;
 
+#[derive(Debug)]
 pub struct NetworkManagerSettings<'a>(SettingsProxy<'a>);
 
 impl<'a> NetworkManagerSettings<'a> {

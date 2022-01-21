@@ -7,6 +7,7 @@ use crate::interface::{
 use std::ops::Deref;
 use zbus::Result;
 
+#[derive(Debug)]
 pub struct AccessPoint<'a>(AccessPointProxy<'a>);
 
 impl<'a> AccessPoint<'a> {

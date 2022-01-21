@@ -5,6 +5,7 @@ use crate::interface::device::{bluetooth::BluetoothDeviceProxy, DeviceProxy};
 use std::ops::Deref;
 use zbus::Result;
 
+#[derive(Debug)]
 pub struct BluetoothDevice<'a>(BluetoothDeviceProxy<'a>);
 
 impl<'a> BluetoothDevice<'a> {

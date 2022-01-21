@@ -13,6 +13,7 @@ use crate::{
 use std::ops::Deref;
 use zbus::Result;
 
+#[derive(Debug)]
 pub struct ActiveConnection<'a>(ActiveConnectionProxy<'a>);
 
 impl<'a> ActiveConnection<'a> {

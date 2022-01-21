@@ -13,6 +13,7 @@ use crate::{
 };
 use zbus::{zvariant::ObjectPath, Result};
 
+#[derive(Debug)]
 pub struct NetworkManager<'a>(NetworkManagerProxy<'a>);
 
 impl<'a> NetworkManager<'a> {

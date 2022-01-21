@@ -5,6 +5,7 @@ use crate::interface::device::{wired::WiredDeviceProxy, DeviceProxy};
 use std::ops::Deref;
 use zbus::Result;
 
+#[derive(Debug)]
 pub struct WiredDevice<'a>(WiredDeviceProxy<'a>);
 
 impl<'a> WiredDevice<'a> {

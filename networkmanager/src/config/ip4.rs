@@ -3,6 +3,7 @@ use crate::interface::config::ip4::Ipv4ConfigProxy;
 use std::{net::Ipv4Addr, ops::Deref};
 use zbus::Result;
 
+#[derive(Debug)]
 pub struct Ipv4Config<'a>(Ipv4ConfigProxy<'a>);
 
 impl<'a> Ipv4Config<'a> {

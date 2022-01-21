@@ -12,6 +12,7 @@ use crate::{
 use std::ops::Deref;
 use zbus::Result;
 
+#[derive(Debug)]
 pub struct WirelessDevice<'a>(WirelessDeviceProxy<'a>);
 
 impl<'a> WirelessDevice<'a> {

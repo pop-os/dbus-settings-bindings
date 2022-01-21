@@ -3,6 +3,7 @@ use crate::interface::config::ip6::Ipv6ConfigProxy;
 use std::{net::Ipv6Addr, ops::Deref};
 use zbus::Result;
 
+#[derive(Debug)]
 pub struct Ipv6Config<'a>(Ipv6ConfigProxy<'a>);
 
 impl<'a> Ipv6Config<'a> {

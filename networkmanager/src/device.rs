@@ -20,6 +20,7 @@ use crate::{
 use std::{net::Ipv4Addr, ops::Deref};
 use zbus::Result;
 
+#[derive(Debug)]
 pub struct Device<'a>(DeviceProxy<'a>);
 
 impl<'a> Device<'a> {
