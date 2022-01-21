@@ -40,7 +40,10 @@ derive_value_build!(
 	(connection("connection"): ConnectionSettings),
 	(ethernet("802-3-ethernet"): EthernetSettings),
 	(wifi("802-11-wireless"): WifiSettings),
-	(bluetooth("bluetooth"): BluetoothSettings)
+	(bluetooth("bluetooth"): BluetoothSettings),
+	(ipv4("ipv4"): Ipv4Settings),
+	(ipv6("ipv6"): Ipv6Settings),
+	(proxy("proxy"): WwwProxySettings)
 );
 
 derive_value_build!(
@@ -107,4 +110,74 @@ derive_value_build!(
 	BluetoothSettings("dict"),
 	(bdaddr("bdaddr"): Vec<u8>),
 	(type_("type"): String)
+);
+
+derive_value_build!(
+	Ipv4Settings("dict"),
+	(address_data("address-data"): Vec<()>),
+	(addresses("addresses"): Vec<Vec<u32>>),
+	(dad_timeout("dad-timeout"): i32),
+	(dhcp_client_id("dhcp-client-id"): String),
+	(dhcp_fqdn("dhcp-fqdn"): String),
+	(dhcp_hostname("dhcp-hostname"): String),
+	(dhcp_hostname_flags("dhcp-hostname-flags"): u32),
+	(dhcp_iaid("dhcp-iaid"): String),
+	(dhcp_reject_servers("dhcp-reject-servers"): Vec<String>),
+	(dhcp_send_hostname("dhcp-send-hostname"): bool),
+	(dhcp_timeout("dhcp-timeout"): i32),
+	(dhcp_vendor_class_identifier("dhcp-vendor-class-identifier"): String),
+	(dns("dns"): Vec<u32>),
+	(dns_options("dns-options"): Vec<String>),
+	(dns_priority("dns-priority"): u32),
+	(dns_search("dns-search"): Vec<String>),
+	(ignore_auto_dns("ignore-auto-dns"): bool),
+	(ignore_auto_routes("ignore-auto-routes"): bool),
+	(may_fail("may-fail"): bool),
+	(method("method"): String),
+	(never_default("never-default"): bool),
+	(ra_timeout("ra-timeout"): i32),
+	(route_data("route-data"): Vec<()>),
+	(route_metric("route-metric"): i32),
+	(route_table("route-table"): u32),
+	(routes("routes"): Vec<Vec<u32>>)
+);
+
+derive_value_build!(
+	Ipv6Settings("dict"),
+	(addr_gen_mode("addr-gen-mode"): i32),
+	(address_data("address-data"): Vec<()>),
+	(addresses("addresses"): Vec<String>),
+	(dad_timeout("dad-timeout"): i32),
+	(dhcp_duid("dhcp-duid"): Vec<u8>),
+	(dhcp_hostname("dhcp-hostname"): String),
+	(dhcp_hostname_flags("dhcp-hostname-flags"): u32),
+	(dhcp_iaid("dhcp-iaid"): String),
+	(dhcp_reject_servers("dhcp-reject-servers"): Vec<String>),
+	(dhcp_send_hostname("dhcp-send-hostname"): bool),
+	(dhcp_timeout("dhcp-timeout"): i32),
+	(dns("dns"): Vec<Vec<u8>>),
+	(dns_options("dns-options"): Vec<String>),
+	(dns_priority("dns-priority"): i32),
+	(dns_search("dns-search"): Vec<String>),
+	(gateway("gateway"): String),
+	(ignore_auto_dns("ignore-auto-dns"): bool),
+	(ignore_auto_routes("ignore-auto-routes"): bool),
+	(ip6_privacy("ip6-privacy"): i32),
+	(may_fail("may-fail"): bool),
+	(method("method"): String),
+	(never_default("never-default"): bool),
+	(ra_timeout("ra-timeout"): i32),
+	(route_data("route-data"): Vec<()>),
+	(route_metric("route-metric"): i32),
+	(route_table("route-table"): u32),
+	(routes("routes"): Vec<String>),
+	(token("token"): String)
+);
+
+derive_value_build!(
+	WwwProxySettings("dict"),
+	(browser_only("browser-only"): bool),
+	(method("method"): i32),
+	(pac_script("pac-script"): String),
+	(pac_url("pac-url"): String)
 );
