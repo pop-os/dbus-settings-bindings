@@ -21,87 +21,88 @@ impl<'a> From<ConnectionSettingsProxy<'a>> for Connection<'a> {
 }
 
 macro_rules! derive_value_build {
-	($name:ident, $(($arg:ident: $arg_ty:ty)),*) => {
-		#[derive(Builder, serde::Deserialize, serde::Serialize)]
+	($name:ident, $(($arg:ident($rename:expr): $arg_ty:ty)),*) => {
+		#[derive(Builder, Clone, zbus::zvariant::DeserializeDict, zbus::zvariant::SerializeDict, zbus::zvariant::Type)]
 		pub struct $name {
 			$(
+				#[zvariant(rename = $rename)]
 				#[builder(setter(into, strip_option))]
-				#[serde(skip_serializing_if = "Option::is_none")]
-				$arg: Option<$arg_ty>,
+				pub $arg: Option<$arg_ty>,
 			)*
-		}
-		impl $name {
-			pub fn build<'a>(&'a self) -> std::collections::HashMap<String, zbus::zvariant::Value<'a>> {
-				let mut out = std::collections::HashMap::new();
-				$(
-					if let Some(val) = &self.$arg {
-						out.insert(stringify!($arg).trim_end_matches("_").replace("_", "-"), zbus::zvariant::Value::from(val));
-					}
-				)*
-				out
-			}
 		}
 	};
 }
 
 derive_value_build!(
+	Settings,
+	(connection("connection"): ConnectionSettings),
+	(ethernet("802-3-ethernet"): EthernetSettings),
+	(wifi("802-11-wireless"): WifiSettings),
+	(bluetooth("bluetooth"): BluetoothSettings)
+);
+
+derive_value_build!(
 	ConnectionSettings,
-	(auth_retries: i32),
-	(autoconnect: bool),
-	(autoconnect_priority: i32),
-	(autoconnect_retries: i32),
-	(gateway_ping_timeout: u32),
-	(id: String),
-	(interface_name: String),
-	(lldp: i32),
-	(llmnr: i32),
-	(master: String),
-	(mdns: i32),
-	(mud_url: String),
-	(multi_connect: String),
-	(permissions: Vec<String>),
-	(read_only: bool),
-	(secondaries: Vec<String>),
-	(stable_id: String),
-	(type_: String),
-	(uuid: String),
-	(wait_device_timeout: i32),
-	(zone: String)
+	(auth_retries("auth-retries"): i32),
+	(autoconnect("autoconnect"): bool),
+	(autoconnect_priority("autoconnect-priority"): i32),
+	(autoconnect_retries("autoconnect-retries"): i32),
+	(gateway_ping_timeout("gateway-ping-timeout"): u32),
+	(id("id"): String),
+	(interface_name("interface-name"): String),
+	(lldp("lldp"): i32),
+	(llmnr("llmnr"): i32),
+	(master("master"): String),
+	(mdns("mdns"): i32),
+	(mud_url("mud_url"): String),
+	(multi_connect("multi-connect"): String),
+	(permissions("permissions"): Vec<String>),
+	(read_only("read-only"): bool),
+	(secondaries("secondaries"): Vec<String>),
+	(stable_id("stable-id"): String),
+	(type_("type"): String),
+	(uuid("uuid"): String),
+	(wait_device_timeout("wait-device-timeout"): i32),
+	(zone("zone"): String)
 );
 
 derive_value_build!(
 	EthernetSettings,
-	(assigned_mac_address: String),
-	(auto_negotiate: bool),
-	(duplex: String),
-	(generate_mac_address_mask: String),
-	(mtu: u32),
-	(port: String),
-	(speed: u32),
-	(wake_on_lan: u32),
-	(wake_on_lan_password: String)
+	(assigned_mac_address("assigned-mac-address"): String),
+	(auto_negotiate("auto-negotiate"): bool),
+	(duplex("duplex"): String),
+	(generate_mac_address_mask("generate-mac-address-mask"): String),
+	(mtu("mtu"): u32),
+	(port("port"): String),
+	(speed("speed"): u32),
+	(wake_on_lan("wake-on-lan"): u32),
+	(wake_on_lan_password("wake-on-lan-password"): String)
 );
 
 derive_value_build!(
 	WifiSettings,
-	(assigned_mac_address: String),
-	(band: String),
-	(bssid: Vec<u8>),
-	(channel: u32),
-	(cloned_mac_address: Vec<u8>),
-	(generate_mac_address_mask: String),
-	(hidden: bool),
-	(mac_address: Vec<u8>),
-	(mac_address_blacklist: Vec<String>),
-	(mac_address_randomization: u32),
-	(mode: String),
-	(mtu: u32),
-	(powersave: u32),
-	(rate: u32),
-	(seen_bssids: Vec<String>),
-	(ssid: Vec<u8>),
-	(tx_power: u32),
-	(wake_on_wlan: u32)
+	(assigned_mac_address("assigned-mac-address"): String),
+	(band("band"): String),
+	(bssid("bssid"): Vec<u8>),
+	(channel("channel"): u32),
+	(cloned_mac_address("cloned-mac-address"): Vec<u8>),
+	(generate_mac_address_mask("generate-mac-address-mask"): String),
+	(hidden("hidden"): bool),
+	(mac_address("mac-address"): Vec<u8>),
+	(mac_address_blacklist("mac-address-blacklist"): Vec<String>),
+	(mac_address_randomization("mac-address-randomization"): u32),
+	(mode("mode"): String),
+	(mtu("mtu"): u32),
+	(powersave("powersave"): u32),
+	(rate("rate"): u32),
+	(seen_bssids("seen-bssids"): Vec<String>),
+	(ssid("ssid"): Vec<u8>),
+	(tx_power("tx-power"): u32),
+	(wake_on_wlan("wake-on-wlan"): u32)
 );
 
-derive_value_build!(BluetoothSettings, (bdaddr: Vec<u8>), (type_: String));
+derive_value_build!(
+	BluetoothSettings,
+	(bdaddr("bdaddr"): Vec<u8>),
+	(type_("type"): String)
+);
