@@ -9,7 +9,7 @@ use crate::{
 		enums::{ConnectivityState, State},
 		NetworkManagerProxy,
 	},
-	settings::connection::Connection,
+	settings::{connection::Connection, NetworkManagerSettings},
 };
 use zbus::{zvariant::ObjectPath, Result};
 
@@ -80,7 +80,11 @@ impl<'a> NetworkManager<'a> {
 		Ok(out)
 	}
 
-	pub async fn state(&self) -> State {
-		self.0.state().await.map(State::from).unwrap()
+	pub async fn state(&self) -> Result<State> {
+		self.0.state().await.map(State::from)
+	}
+
+	pub async fn settings(&'a self) -> Result<NetworkManagerSettings<'a>> {
+		NetworkManagerSettings::new(self.0.connection()).await
 	}
 }
