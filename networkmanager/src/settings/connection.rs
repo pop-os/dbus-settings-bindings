@@ -22,10 +22,11 @@ impl<'a> From<ConnectionSettingsProxy<'a>> for Connection<'a> {
 
 macro_rules! derive_value_build {
 	($name:ident, $(($arg:ident: $arg_ty:ty)),*) => {
-		#[derive(Builder)]
+		#[derive(Builder, serde::Deserialize, serde::Serialize)]
 		pub struct $name {
 			$(
 				#[builder(setter(into, strip_option))]
+				#[serde(skip_serializing_if = "Option::is_none")]
 				$arg: Option<$arg_ty>,
 			)*
 		}
