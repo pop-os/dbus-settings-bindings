@@ -24,6 +24,7 @@ impl<'a> From<ConnectionSettingsProxy<'a>> for Connection<'a> {
 macro_rules! derive_value_build {
 	($name:ident, $(($arg:ident($rename:expr): $arg_ty:ty)),*) => {
 		#[derive(Debug, Builder, Clone, zbus::zvariant::DeserializeDict, zbus::zvariant::SerializeDict, zbus::zvariant::Type)]
+		#[zvariant(signature = "dict")]
 		pub struct $name {
 			$(
 				#[zvariant(rename = $rename)]
