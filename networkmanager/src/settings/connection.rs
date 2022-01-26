@@ -22,32 +22,31 @@ impl<'a> From<ConnectionSettingsProxy<'a>> for Connection<'a> {
 }
 
 macro_rules! derive_value_build {
-	($name:ident($signature:expr), $(($arg:ident($rename:expr): $arg_ty:ty)),*) => {
-		#[derive(Debug, Builder, Clone, zbus::zvariant::DeserializeDict, zbus::zvariant::SerializeDict, zbus::zvariant::Type)]
-		#[zvariant(signature = $signature)]
+	($name:ident, $(($arg:ident($rename:expr): $arg_ty:ty)),*) => {
+		#[derive(Debug, Builder, Clone)]
 		pub struct $name {
 			$(
-				#[zvariant(rename = $rename)]
 				#[builder(setter(into, strip_option))]
 				pub $arg: Option<$arg_ty>,
 			)*
+		}
+
+		impl $name {
+			pub fn build<'a>(&'a self) -> std::collections::HashMap<String, zbus::zvariant::Value<'a>> {
+				let mut out = std::collections::HashMap::new();
+				$(
+					if let Some(val) = &self.$arg {
+						out.insert($rename.to_string(), val.to_owned().into());
+					}
+				)*
+				out
+			}
 		}
 	};
 }
 
 derive_value_build!(
-	Settings("a{sa{sv}}"),
-	(connection("connection"): ConnectionSettings),
-	(ethernet("802-3-ethernet"): EthernetSettings),
-	(wifi("802-11-wireless"): WifiSettings),
-	(bluetooth("bluetooth"): BluetoothSettings),
-	(ipv4("ipv4"): Ipv4Settings),
-	(ipv6("ipv6"): Ipv6Settings),
-	(proxy("proxy"): WwwProxySettings)
-);
-
-derive_value_build!(
-	ConnectionSettings("dict"),
+	ConnectionSettings,
 	(auth_retries("auth-retries"): i32),
 	(autoconnect("autoconnect"): bool),
 	(autoconnect_priority("autoconnect-priority"): i32),
@@ -73,7 +72,7 @@ derive_value_build!(
 );
 
 derive_value_build!(
-	EthernetSettings("dict"),
+	EthernetSettings,
 	(accept_all_mac_addresses("accept-all-mac-addresses"): i32),
 	(assigned_mac_address("assigned-mac-address"): String),
 	(auto_negotiate("auto-negotiate"): bool),
@@ -93,7 +92,8 @@ derive_value_build!(
 );
 
 derive_value_build!(
-	WifiSettings("dict"),
+	WifiSettings,
+	(ap_isolation("ap-isolation"): i32),
 	(assigned_mac_address("assigned-mac-address"): String),
 	(band("band"): String),
 	(bssid("bssid"): Vec<u8>),
@@ -115,14 +115,13 @@ derive_value_build!(
 );
 
 derive_value_build!(
-	BluetoothSettings("dict"),
+	BluetoothSettings,
 	(bdaddr("bdaddr"): Vec<u8>),
 	(type_("type"): String)
 );
 
 derive_value_build!(
-	Ipv4Settings("dict"),
-	(address_data("address-data"): Vec<()>),
+	Ipv4Settings,
 	(addresses("addresses"): Vec<Vec<u32>>),
 	(dad_timeout("dad-timeout"): i32),
 	(dhcp_client_id("dhcp-client-id"): String),
@@ -144,16 +143,14 @@ derive_value_build!(
 	(method("method"): String),
 	(never_default("never-default"): bool),
 	(ra_timeout("ra-timeout"): i32),
-	(route_data("route-data"): Vec<()>),
 	(route_metric("route-metric"): i32),
 	(route_table("route-table"): u32),
 	(routes("routes"): Vec<Vec<u32>>)
 );
 
 derive_value_build!(
-	Ipv6Settings("dict"),
+	Ipv6Settings,
 	(addr_gen_mode("addr-gen-mode"): i32),
-	(address_data("address-data"): Vec<()>),
 	(addresses("addresses"): Vec<String>),
 	(dad_timeout("dad-timeout"): i32),
 	(dhcp_duid("dhcp-duid"): Vec<u8>),
@@ -175,7 +172,6 @@ derive_value_build!(
 	(method("method"): String),
 	(never_default("never-default"): bool),
 	(ra_timeout("ra-timeout"): i32),
-	(route_data("route-data"): Vec<()>),
 	(route_metric("route-metric"): i32),
 	(route_table("route-table"): u32),
 	(routes("routes"): Vec<String>),
@@ -183,7 +179,7 @@ derive_value_build!(
 );
 
 derive_value_build!(
-	WwwProxySettings("dict"),
+	WwwProxySettings,
 	(browser_only("browser-only"): bool),
 	(method("method"): i32),
 	(pac_script("pac-script"): String),

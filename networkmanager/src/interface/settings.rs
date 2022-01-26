@@ -22,7 +22,6 @@
 
 pub mod connection;
 
-use crate::settings::connection::Settings;
 use zbus::dbus_proxy;
 
 #[dbus_proxy(
@@ -34,13 +33,19 @@ pub trait Settings {
 	/// AddConnection method
 	fn add_connection(
 		&self,
-		connection: &Settings,
+		connection: std::collections::HashMap<
+			&str,
+			std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
+		>,
 	) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
 
 	/// AddConnection2 method
 	fn add_connection2(
 		&self,
-		settings: &Settings,
+		settings: std::collections::HashMap<
+			&str,
+			std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
+		>,
 		flags: u32,
 		args: std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
 	) -> zbus::Result<(
@@ -51,7 +56,10 @@ pub trait Settings {
 	/// AddConnectionUnsaved method
 	fn add_connection_unsaved(
 		&self,
-		connection: &Settings,
+		connection: std::collections::HashMap<
+			&str,
+			std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
+		>,
 	) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
 
 	/// GetConnectionByUuid method

@@ -20,7 +20,6 @@
 //!
 //! …consequently `zbus-xmlgen` did not generate code for the above interfaces.
 
-use crate::settings::connection::Settings;
 use zbus::dbus_proxy;
 
 #[dbus_proxy(
@@ -46,24 +45,46 @@ pub trait ConnectionSettings {
 	>;
 
 	/// GetSettings method
-	fn get_settings(&self) -> zbus::Result<Settings>;
+	fn get_settings(
+		&self,
+	) -> zbus::Result<
+		std::collections::HashMap<
+			String,
+			std::collections::HashMap<String, zbus::zvariant::OwnedValue>,
+		>,
+	>;
 
 	/// Save method
 	fn save(&self) -> zbus::Result<()>;
 
 	/// Update method
-	fn update(&self, properties: &Settings) -> zbus::Result<()>;
+	fn update(
+		&self,
+		properties: std::collections::HashMap<
+			&str,
+			std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
+		>,
+	) -> zbus::Result<()>;
 
 	/// Update2 method
 	fn update2(
 		&self,
-		settings: &Settings,
+		settings: std::collections::HashMap<
+			&str,
+			std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
+		>,
 		flags: u32,
 		args: std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
 	) -> zbus::Result<std::collections::HashMap<String, zbus::zvariant::OwnedValue>>;
 
 	/// UpdateUnsaved method
-	fn update_unsaved(&self, properties: &Settings) -> zbus::Result<()>;
+	fn update_unsaved(
+		&self,
+		properties: std::collections::HashMap<
+			&str,
+			std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
+		>,
+	) -> zbus::Result<()>;
 
 	/// Removed signal
 	#[dbus_proxy(signal)]
