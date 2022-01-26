@@ -23,7 +23,7 @@ impl<'a> From<ConnectionSettingsProxy<'a>> for Connection<'a> {
 
 macro_rules! derive_value_build {
 	($name:ident, $(($arg:ident($rename:expr): $arg_ty:ty)),*) => {
-		#[derive(Debug, Builder, Clone)]
+		#[derive(Debug, Default, Builder, Clone)]
 		pub struct $name {
 			$(
 				#[builder(setter(into, strip_option))]
@@ -32,6 +32,16 @@ macro_rules! derive_value_build {
 		}
 
 		impl $name {
+			pub fn new(mut src: std::collections::HashMap<String, zbus::zvariant::OwnedValue>) -> Self {
+				let mut ret = Self::default();
+				$(
+					if let Some(val) = src.remove($rename).and_then(|val| val.try_into().ok()) {
+						ret.$arg = Some(val);
+					}
+				)*
+				ret
+			}
+
 			pub fn build<'a>(&'a self) -> std::collections::HashMap<String, zbus::zvariant::Value<'a>> {
 				let mut out = std::collections::HashMap::new();
 				$(
