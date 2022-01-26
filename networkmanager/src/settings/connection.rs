@@ -55,6 +55,57 @@ macro_rules! derive_value_build {
 	};
 }
 
+#[derive(Debug, Default, Builder, Clone)]
+pub struct Settings {
+	#[builder(setter(strip_option))]
+	pub connection: Option<ConnectionSettings>,
+	#[builder(setter(strip_option))]
+	pub ethernet: Option<EthernetSettings>,
+	#[builder(setter(strip_option))]
+	pub wifi: Option<WifiSettings>,
+	#[builder(setter(strip_option))]
+	pub bluetooth: Option<BluetoothSettings>,
+	#[builder(setter(strip_option))]
+	pub ipv4: Option<Ipv4Settings>,
+	#[builder(setter(strip_option))]
+	pub ipv6: Option<Ipv6Settings>,
+	#[builder(setter(strip_option))]
+	pub proxy: Option<WwwProxySettings>,
+}
+
+impl Settings {
+	pub fn build(
+		&self,
+	) -> std::collections::HashMap<
+		String,
+		std::collections::HashMap<String, zbus::zvariant::Value<'_>>,
+	> {
+		let mut out = std::collections::HashMap::new();
+		if let Some(val) = &self.connection {
+			out.insert("connection".into(), val.build());
+		}
+		if let Some(val) = &self.ethernet {
+			out.insert("802-3-ethernet".into(), val.build());
+		}
+		if let Some(val) = &self.wifi {
+			out.insert("802-11-wireless".into(), val.build());
+		}
+		if let Some(val) = &self.bluetooth {
+			out.insert("bluetooth".into(), val.build());
+		}
+		if let Some(val) = &self.ipv4 {
+			out.insert("ipv4".into(), val.build());
+		}
+		if let Some(val) = &self.ipv6 {
+			out.insert("ipv6".into(), val.build());
+		}
+		if let Some(val) = &self.proxy {
+			out.insert("proxy".into(), val.build());
+		}
+		out
+	}
+}
+
 derive_value_build!(
 	ConnectionSettings,
 	(auth_retries("auth-retries"): i32),
