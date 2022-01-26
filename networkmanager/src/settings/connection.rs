@@ -74,6 +74,23 @@ pub struct Settings {
 }
 
 impl Settings {
+	pub fn new(
+		mut src: std::collections::HashMap<
+			String,
+			std::collections::HashMap<String, zbus::zvariant::OwnedValue>,
+		>,
+	) -> Self {
+		Self {
+			connection: src.remove("connection").map(ConnectionSettings::new),
+			ethernet: src.remove("802-3-ethernet").map(EthernetSettings::new),
+			wifi: src.remove("802-11-wireless").map(WifiSettings::new),
+			bluetooth: src.remove("bluetooth").map(BluetoothSettings::new),
+			ipv4: src.remove("ipv4").map(Ipv4Settings::new),
+			ipv6: src.remove("ipv6").map(Ipv6Settings::new),
+			proxy: src.remove("proxy").map(WwwProxySettings::new),
+		}
+	}
+
 	pub fn build(
 		&self,
 	) -> std::collections::HashMap<
