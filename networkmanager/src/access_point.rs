@@ -1,23 +1,23 @@
 // SPDX-License-Identifier: MPL-2.0
 
-use crate::interface::{
-	access_point::AccessPointProxy,
-	enums::{ApFlags, ApSecurityFlags},
+use crate::{
+	interface::{
+		access_point::AccessPointProxy,
+		enums::{ApFlags, ApSecurityFlags},
+	},
+	util::clock_boottime_to_time,
 };
 use std::ops::Deref;
+use time::OffsetDateTime;
 use zbus::Result;
 
 #[derive(Debug)]
 pub struct AccessPoint<'a>(AccessPointProxy<'a>);
 
 impl<'a> AccessPoint<'a> {
-	/* TODO: figure out how to convert CLOCK_BOOTTIME to SystemTime, as CLOCK_BOOTTIME's starting point is arbritary and not guaranteed to match up with the UNIX Epoch
-	pub async fn last_seen(&self) -> Result<Option<SystemTime>> {
-		let last_seen = self.0.last_seen().await?;
-		if !last_seen.is_positive() {
-			return Ok(None);
-		}
-	}*/
+	pub async fn last_seen(&self) -> Result<Option<OffsetDateTime>> {
+		Ok(clock_boottime_to_time(self.0.last_seen().await?))
+	}
 
 	pub async fn flags(&self) -> Result<ApFlags> {
 		self.0.flags().await.map(ApFlags::from_bits_truncate)

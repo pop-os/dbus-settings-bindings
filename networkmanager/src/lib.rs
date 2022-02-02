@@ -7,3 +7,4 @@ pub mod device;
 pub mod interface;
 pub mod nm;
 pub mod settings;
+pub(crate) mod util;
