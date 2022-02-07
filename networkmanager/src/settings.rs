@@ -4,10 +4,19 @@ pub mod connection;
 
 use self::connection::Connection;
 use crate::interface::settings::{connection::ConnectionSettingsProxy, SettingsProxy};
+use std::ops::Deref;
 use zbus::Result;
 
 #[derive(Debug)]
 pub struct NetworkManagerSettings<'a>(SettingsProxy<'a>);
+
+impl<'a> Deref for NetworkManagerSettings<'a> {
+	type Target = SettingsProxy<'a>;
+
+	fn deref(&self) -> &Self::Target {
+		&self.0
+	}
+}
 
 impl<'a> NetworkManagerSettings<'a> {
 	pub async fn new(connection: &'a zbus::Connection) -> Result<NetworkManagerSettings<'a>> {

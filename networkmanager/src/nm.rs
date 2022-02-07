@@ -11,10 +11,19 @@ use crate::{
 	},
 	settings::{connection::Connection, NetworkManagerSettings},
 };
+use std::ops::Deref;
 use zbus::{zvariant::ObjectPath, Result};
 
 #[derive(Debug)]
 pub struct NetworkManager<'a>(NetworkManagerProxy<'a>);
+
+impl<'a> Deref for NetworkManager<'a> {
+	type Target = NetworkManagerProxy<'a>;
+
+	fn deref(&self) -> &Self::Target {
+		&self.0
+	}
+}
 
 impl<'a> NetworkManager<'a> {
 	pub async fn new(connection: &'a zbus::Connection) -> Result<NetworkManager<'a>> {
