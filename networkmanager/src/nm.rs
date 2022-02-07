@@ -40,6 +40,19 @@ impl<'a> NetworkManager<'a> {
 			.map(ActiveConnection::from)
 	}
 
+	pub async fn active_connections(&self) -> Result<Vec<ActiveConnection<'a>>> {
+		let active_connections = self.0.active_connections().await?;
+		let mut out = Vec::with_capacity(active_connections.len());
+		for active_connection in active_connections {
+			let active_connection = ActiveConnectionProxy::builder(self.0.connection())
+				.path(active_connection)?
+				.build()
+				.await?;
+			out.push(active_connection.into());
+		}
+		Ok(out)
+	}
+
 	pub async fn connectivity(&self) -> Result<ConnectivityState> {
 		self.0.connectivity().await.map(ConnectivityState::from)
 	}
