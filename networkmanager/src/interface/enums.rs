@@ -51,6 +51,8 @@ pub enum DeviceType {
 	Ethernet,
 	Wifi,
 	Bluetooth,
+	TunTap,
+	WireGuard,
 	Generic,
 	Other,
 	Unknown,
@@ -63,6 +65,8 @@ impl From<u32> for DeviceType {
 			2 => DeviceType::Wifi,
 			5 => DeviceType::Bluetooth,
 			14 => DeviceType::Generic,
+			16 => DeviceType::TunTap,
+			29 => DeviceType::WireGuard,
 			3..=32 => DeviceType::Other,
 			_ => DeviceType::Unknown,
 		}

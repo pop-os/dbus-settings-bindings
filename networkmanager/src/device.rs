@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MPL-2.0
 
 pub mod bluetooth;
+pub mod tun;
 pub mod wired;
+pub mod wireguard;
 pub mod wireless;
 
 use crate::{
@@ -11,8 +13,8 @@ use crate::{
 		active_connection::ActiveConnectionProxy,
 		config::{ip4::Ipv4ConfigProxy, ip6::Ipv6ConfigProxy},
 		device::{
-			bluetooth::BluetoothDeviceProxy, wired::WiredDeviceProxy,
-			wireless::WirelessDeviceProxy, DeviceProxy,
+			bluetooth::BluetoothDeviceProxy, tun::TunDeviceProxy, wired::WiredDeviceProxy,
+			wireguard::WireGuardDeviceProxy, wireless::WirelessDeviceProxy, DeviceProxy,
 		},
 		enums::{DeviceCapabilities, DeviceState, DeviceType},
 	},
@@ -80,6 +82,20 @@ impl<'a> Device<'a> {
 					.await?
 					.into(),
 			))),
+			DeviceType::TunTap => Ok(Some(SpecificDevice::TunTap(
+				TunDeviceProxy::builder(self.0.connection())
+					.path(self.0.path())?
+					.build()
+					.await?
+					.into(),
+			))),
+			DeviceType::WireGuard => Ok(Some(SpecificDevice::WireGuard(
+				WireGuardDeviceProxy::builder(self.0.connection())
+					.path(self.0.path())?
+					.build()
+					.await?
+					.into(),
+			))),
 			_ => Ok(None),
 		}
 	}
@@ -127,6 +143,8 @@ pub enum SpecificDevice<'a> {
 	Bluetooth(bluetooth::BluetoothDevice<'a>),
 	Wired(wired::WiredDevice<'a>),
 	Wireless(wireless::WirelessDevice<'a>),
+	TunTap(tun::TunDevice<'a>),
+	WireGuard(wireguard::WireGuardDevice<'a>),
 }
 
 impl<'a> SpecificDevice<'a> {
@@ -147,6 +165,20 @@ impl<'a> SpecificDevice<'a> {
 	pub fn into_wireless(self) -> Option<wireless::WirelessDevice<'a>> {
 		match self {
 			SpecificDevice::Wireless(device) => Some(device),
+			_ => None,
+		}
+	}
+
+	pub fn into_tun(self) -> Option<tun::TunDevice<'a>> {
+		match self {
+			SpecificDevice::TunTap(device) => Some(device),
+			_ => None,
+		}
+	}
+
+	pub fn into_wireguard(self) -> Option<wireguard::WireGuardDevice<'a>> {
+		match self {
+			SpecificDevice::WireGuard(device) => Some(device),
 			_ => None,
 		}
 	}

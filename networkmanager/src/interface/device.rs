@@ -21,7 +21,9 @@
 //! …consequently `zbus-xmlgen` did not generate code for the above interfaces.
 
 pub mod bluetooth;
+pub mod tun;
 pub mod wired;
+pub mod wireguard;
 pub mod wireless;
 
 use zbus::dbus_proxy;
