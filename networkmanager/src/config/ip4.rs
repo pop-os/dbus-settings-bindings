@@ -11,7 +11,13 @@ impl<'a> Ipv4Config<'a> {
 		let addresses = self.0.addresses().await?;
 		Ok(addresses
 			.into_iter()
-			.map(|addresses| addresses.into_iter().map(Ipv4Addr::from).collect())
+			.map(|addresses| {
+				addresses
+					.into_iter()
+					.map(|addr| addr.swap_bytes())
+					.map(Ipv4Addr::from)
+					.collect()
+			})
 			.collect())
 	}
 }
