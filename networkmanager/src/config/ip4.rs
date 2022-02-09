@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MPL-2.0
 use crate::interface::config::ip4::Ipv4ConfigProxy;
-use std::{net::Ipv4Addr, ops::Deref};
+use std::{net::Ipv4Addr, ops::Deref, str::FromStr};
 use zbus::Result;
+use zvariant::DeserializeDict;
 
 #[derive(Debug)]
 pub struct Ipv4Config<'a>(Ipv4ConfigProxy<'a>);
@@ -20,6 +21,24 @@ impl<'a> Ipv4Config<'a> {
 			})
 			.collect())
 	}
+
+	pub async fn address_data(&self) -> Result<Vec<AddressData>> {
+		Ok(self
+			.0
+			.address_data()
+			.await?
+			.into_iter()
+			.filter_map(|mut map| {
+				let address = {
+					let address_str = map.remove("address")?;
+					let address_str = address_str.downcast_ref::<zvariant::Str>()?;
+					Ipv4Addr::from_str(address_str).ok()?
+				};
+				let prefix = u64::try_from(map.remove("prefix")?).ok()? as usize;
+				Some(AddressData { address, prefix })
+			})
+			.collect())
+	}
 }
 
 impl<'a> Deref for Ipv4Config<'a> {
@@ -34,4 +53,10 @@ impl<'a> From<Ipv4ConfigProxy<'a>> for Ipv4Config<'a> {
 	fn from(config: Ipv4ConfigProxy<'a>) -> Self {
 		Ipv4Config(config)
 	}
+}
+
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct AddressData {
+	pub address: Ipv4Addr,
+	pub prefix: usize,
 }

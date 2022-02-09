@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MPL-2.0
 use crate::interface::config::ip6::Ipv6ConfigProxy;
-use std::{net::Ipv6Addr, ops::Deref};
+use std::{net::Ipv6Addr, ops::Deref, str::FromStr};
 use zbus::Result;
 
 #[derive(Debug)]
@@ -19,6 +19,24 @@ impl<'a> Ipv6Config<'a> {
 			})
 			.collect())
 	}
+
+	pub async fn address_data(&self) -> Result<Vec<AddressData>> {
+		Ok(self
+			.0
+			.address_data()
+			.await?
+			.into_iter()
+			.filter_map(|mut map| {
+				let address = {
+					let address_str = map.remove("address")?;
+					let address_str = address_str.downcast_ref::<zvariant::Str>()?;
+					Ipv6Addr::from_str(address_str).ok()?
+				};
+				let prefix = u64::try_from(map.remove("prefix")?).ok()? as usize;
+				Some(AddressData { address, prefix })
+			})
+			.collect())
+	}
 }
 
 impl<'a> Deref for Ipv6Config<'a> {
@@ -33,4 +51,10 @@ impl<'a> From<Ipv6ConfigProxy<'a>> for Ipv6Config<'a> {
 	fn from(config: Ipv6ConfigProxy<'a>) -> Self {
 		Ipv6Config(config)
 	}
+}
+
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct AddressData {
+	pub address: Ipv6Addr,
+	pub prefix: usize,
 }
