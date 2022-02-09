@@ -34,7 +34,7 @@ impl<'a> Ipv4Config<'a> {
 					let address_str = address_str.downcast_ref::<zvariant::Str>()?;
 					Ipv4Addr::from_str(address_str).ok()?
 				};
-				let prefix = u64::try_from(map.remove("prefix")?).ok()? as usize;
+				let prefix = u32::try_from(map.remove("prefix")?).ok()?;
 				Some(AddressData { address, prefix })
 			})
 			.collect())
@@ -58,5 +58,5 @@ impl<'a> From<Ipv4ConfigProxy<'a>> for Ipv4Config<'a> {
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct AddressData {
 	pub address: Ipv4Addr,
-	pub prefix: usize,
+	pub prefix: u32,
 }
