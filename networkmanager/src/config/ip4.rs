@@ -2,7 +2,6 @@
 use crate::interface::config::ip4::Ipv4ConfigProxy;
 use std::{net::Ipv4Addr, ops::Deref, str::FromStr};
 use zbus::Result;
-use zvariant::DeserializeDict;
 
 #[derive(Debug)]
 pub struct Ipv4Config<'a>(Ipv4ConfigProxy<'a>);
