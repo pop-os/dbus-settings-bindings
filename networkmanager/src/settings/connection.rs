@@ -263,3 +263,42 @@ derive_value_build!(
 	(pac_script("pac-script"): String),
 	(pac_url("pac-url"): String)
 );
+
+#[derive(Debug, Default, Builder, Clone)]
+pub struct Secrets {
+	#[builder(setter(strip_option))]
+	pub wifi: Option<WifiSecurity>,
+}
+
+impl Secrets {
+	pub async fn new(connection: &Connection<'_>) -> Self {
+		Self {
+			wifi: connection
+				.get_secrets("802-11-wireless-security")
+				.await
+				.ok()
+				.and_then(|mut s| s.remove("802-11-wireless-security").map(WifiSecurity::new)),
+		}
+	}
+}
+
+derive_value_build!(
+	WifiSecurity,
+	(psk("psk"): String),
+	(key_mgmt("key-mgmt"): String),
+	(auth_alg("auth-alg"): String),
+	(leap_password("leap-password"): String),
+	(leap_password_flags("leap-password-flags"): u32),
+	(leap_username("leap-username"): String),
+	(pairwise("pairwise"): Vec<String>),
+	(pmf("pmf"): u32),
+	(psk_flags("psk-flags"): u32),
+	(wep_key_flags("wep-key-flags"): u32),
+	(wep_key_type("wep-key-type"): u32),
+	(wep_key0("wep-key0"): String),
+	(wep_key1("wep-key1"): String),
+	(wep_key2("wep-key2"): String),
+	(wep_key3("wep-key3"): String),
+	(wep_tx_keyidx("wep-tx-keyidx"): u32),
+	(wps_method("wps-method"): u32)
+);
