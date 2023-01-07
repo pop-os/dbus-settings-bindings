@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 use bitflags::bitflags;
 
+#[derive(Debug, Clone, Copy)]
 pub enum State {
 	Asleep,
 	Disconnected,
@@ -27,6 +28,7 @@ impl From<u32> for State {
 	}
 }
 
+#[derive(Debug, Clone, Copy)]
 pub enum ConnectivityState {
 	None,
 	Portal,
@@ -47,6 +49,7 @@ impl From<u32> for ConnectivityState {
 	}
 }
 
+#[derive(Debug, Clone, Copy)]
 pub enum DeviceType {
 	Ethernet,
 	Wifi,
@@ -73,6 +76,7 @@ impl From<u32> for DeviceType {
 	}
 }
 
+#[derive(Debug, Clone, Copy)]
 pub enum DeviceState {
 	Unmanaged,
 	Unavailable,
@@ -109,6 +113,7 @@ impl From<u32> for DeviceState {
 	}
 }
 
+#[derive(Debug, Clone, Copy)]
 pub enum WifiMode {
 	AdHoc,
 	Infra,
