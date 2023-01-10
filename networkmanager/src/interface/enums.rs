@@ -2,7 +2,7 @@
 use bitflags::bitflags;
 
 #[derive(Debug, Clone, Copy)]
-pub enum State {
+pub enum NmState {
 	Asleep,
 	Disconnected,
 	Disconnecting,
@@ -13,23 +13,23 @@ pub enum State {
 	Unknown,
 }
 
-impl From<u32> for State {
-	fn from(state: u32) -> State {
+impl From<u32> for NmState {
+	fn from(state: u32) -> NmState {
 		match state {
-			10 => State::Asleep,
-			20 => State::Disconnected,
-			30 => State::Disconnecting,
-			40 => State::Connecting,
-			50 => State::ConnectedLocal,
-			60 => State::ConnectedSite,
-			70 => State::ConnectedGlobal,
-			_ => State::Unknown,
+			10 => NmState::Asleep,
+			20 => NmState::Disconnected,
+			30 => NmState::Disconnecting,
+			40 => NmState::Connecting,
+			50 => NmState::ConnectedLocal,
+			60 => NmState::ConnectedSite,
+			70 => NmState::ConnectedGlobal,
+			_ => NmState::Unknown,
 		}
 	}
 }
 
 #[derive(Debug, Clone, Copy)]
-pub enum ConnectivityState {
+pub enum NmConnectivityState {
 	None,
 	Portal,
 	Loss,
@@ -37,14 +37,14 @@ pub enum ConnectivityState {
 	Unknown,
 }
 
-impl From<u32> for ConnectivityState {
-	fn from(state: u32) -> ConnectivityState {
+impl From<u32> for NmConnectivityState {
+	fn from(state: u32) -> NmConnectivityState {
 		match state {
-			1 => ConnectivityState::None,
-			2 => ConnectivityState::Portal,
-			3 => ConnectivityState::Loss,
-			4 => ConnectivityState::Full,
-			_ => ConnectivityState::Unknown,
+			1 => NmConnectivityState::None,
+			2 => NmConnectivityState::Portal,
+			3 => NmConnectivityState::Loss,
+			4 => NmConnectivityState::Full,
+			_ => NmConnectivityState::Unknown,
 		}
 	}
 }
@@ -109,6 +109,27 @@ impl From<u32> for DeviceState {
 			110 => DeviceState::Deactivating,
 			120 => DeviceState::Failed,
 			_ => DeviceState::Unknown,
+		}
+	}
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum ActiveConnectionState {
+	Unknown,
+	Activating,
+	Activated,
+	Deactivating,
+	Deactivated,
+}
+
+impl From<u32> for ActiveConnectionState {
+	fn from(device_state: u32) -> Self {
+		match device_state {
+			1 => ActiveConnectionState::Activating,
+			2 => ActiveConnectionState::Activated,
+			3 => ActiveConnectionState::Deactivating,
+			4 => ActiveConnectionState::Deactivated,
+			_ => ActiveConnectionState::Unknown,
 		}
 	}
 }

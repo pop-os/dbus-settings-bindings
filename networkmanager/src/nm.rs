@@ -6,7 +6,7 @@ use crate::{
 	interface::{
 		active_connection::ActiveConnectionProxy,
 		device::DeviceProxy,
-		enums::{ConnectivityState, State},
+		enums::{NmConnectivityState, NmState},
 		NetworkManagerProxy,
 	},
 	settings::{connection::Connection, NetworkManagerSettings},
@@ -62,15 +62,15 @@ impl<'a> NetworkManager<'a> {
 		Ok(out)
 	}
 
-	pub async fn connectivity(&self) -> Result<ConnectivityState> {
-		self.0.connectivity().await.map(ConnectivityState::from)
+	pub async fn connectivity(&self) -> Result<NmConnectivityState> {
+		self.0.connectivity().await.map(NmConnectivityState::from)
 	}
 
-	pub async fn check_connectivity(&self) -> Result<ConnectivityState> {
+	pub async fn check_connectivity(&self) -> Result<NmConnectivityState> {
 		self.0
 			.check_connectivity()
 			.await
-			.map(ConnectivityState::from)
+			.map(NmConnectivityState::from)
 	}
 
 	pub async fn deactivate_connection(&self, connection: &'a ActiveConnection<'a>) -> Result<()> {
@@ -103,8 +103,8 @@ impl<'a> NetworkManager<'a> {
 		Ok(out)
 	}
 
-	pub async fn state(&self) -> Result<State> {
-		self.0.state().await.map(State::from)
+	pub async fn state(&self) -> Result<NmState> {
+		self.0.state().await.map(NmState::from)
 	}
 
 	pub async fn settings(&'a self) -> Result<NetworkManagerSettings<'a>> {

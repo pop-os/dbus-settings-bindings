@@ -7,7 +7,7 @@ use crate::{
 		active_connection::ActiveConnectionProxy,
 		config::{ip4::Ipv4ConfigProxy, ip6::Ipv6ConfigProxy},
 		device::DeviceProxy,
-		enums::{ActivationStateFlags, State},
+		enums::{ActivationStateFlags, ActiveConnectionState},
 	},
 };
 use std::ops::Deref;
@@ -46,8 +46,8 @@ impl<'a> ActiveConnection<'a> {
 		Ok(Ipv6Config::from(config))
 	}
 
-	pub async fn state(&self) -> Result<State> {
-		self.0.state().await.map(State::from)
+	pub async fn state(&self) -> Result<ActiveConnectionState> {
+		self.0.state().await.map(ActiveConnectionState::from)
 	}
 
 	pub async fn state_flags(&self) -> Result<ActivationStateFlags> {
