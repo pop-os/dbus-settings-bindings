@@ -1,0 +1,28 @@
+[package]
+name = "timedate-zbus"
+version = "0.1.0"
+description = "a dbus client (using zbus) for timedate"
+repository = "https://github.com/pop-os/dbus-settings-bindings"
+license = "MPL-2.0"
+edition = "2021"
+categories = ["os::unix-apis"]
+keywords = ["systemd", "timedate", "zbus"]
+
+[package.metadata.docs.rs]
+all-features = true
+
+[dependencies]
+zbus = "3.8.0"
+
+[dev-dependencies]
+chrono = "0.4.23"
+chrono-tz = "0.8.1"
+
+[dev-dependencies.zbus]
+version = "3.8.0"
+default-features = false
+features = ["tokio"]
+
+[dev-dependencies.tokio]
+version = "1.25.0"
+features = ["full"]
