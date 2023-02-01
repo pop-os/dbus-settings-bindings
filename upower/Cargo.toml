@@ -1,0 +1,19 @@
+[package]
+name = "upower_dbus"
+version = "0.3.2"
+authors = ["Michael Murphy <mmstick@pm.me>"]
+repository = "https://github.com/pop-os/dbus-settings-bindings"
+description = "a dbus client (using zbus) for upower"
+readme = "README.md"
+license = "MIT"
+categories = ["os::unix-apis"]
+keywords = ["linux", "systemd", "logind", "dbus", "zbus"]
+edition = "2018"
+
+[dependencies]
+serde = "1.0.152"
+serde_repr = "0.1.10"
+zbus = "3.8.0"
+
+[dev-dependencies]
+futures = "0.3.26"
