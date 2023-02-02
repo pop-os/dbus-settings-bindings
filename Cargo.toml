@@ -3,4 +3,5 @@ members = [
     "networkmanager",
     "timedate",
     "upower",
+    "bluez",
 ]
