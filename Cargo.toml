@@ -3,4 +3,6 @@ members = [
     "networkmanager",
     "timedate",
     "upower",
+    "xdg-desktop-portal",
+    "xdg-desktop-portal/examples/*"
 ]
