@@ -11,9 +11,9 @@ keywords = ["linux", "systemd", "logind", "dbus", "zbus"]
 edition = "2018"
 
 [dependencies]
-serde = "1.0.152"
+serde.workspace = true
 serde_repr = "0.1.10"
-zbus = "3.8.0"
+zbus.workspace = true
 
 [dev-dependencies]
 futures = "0.3.26"
