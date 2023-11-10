@@ -1,6 +1,16 @@
 [workspace]
+
+resolver = "2"
+
 members = [
     "networkmanager",
     "timedate",
     "upower",
 ]
+
+[workspace.dependencies]
+serde = { version = "1.0", features = ["derive"] }
+thiserror = "1.0"
+time = { version = "0.3", features = ["parsing"] }
+zbus = { version = "3.14" }
+zvariant = { version = "3.15"}
