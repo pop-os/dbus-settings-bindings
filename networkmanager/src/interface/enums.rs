@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 use bitflags::bitflags;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum NmState {
 	Asleep,
 	Disconnected,
@@ -10,6 +10,7 @@ pub enum NmState {
 	ConnectedLocal,
 	ConnectedSite,
 	ConnectedGlobal,
+	#[default]
 	Unknown,
 }
 
@@ -28,12 +29,13 @@ impl From<u32> for NmState {
 	}
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum NmConnectivityState {
 	None,
 	Portal,
 	Loss,
 	Full,
+	#[default]
 	Unknown,
 }
 
@@ -49,7 +51,7 @@ impl From<u32> for NmConnectivityState {
 	}
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum DeviceType {
 	Ethernet,
 	Wifi,
@@ -58,6 +60,7 @@ pub enum DeviceType {
 	WireGuard,
 	Generic,
 	Other,
+	#[default]
 	Unknown,
 }
 
@@ -76,7 +79,7 @@ impl From<u32> for DeviceType {
 	}
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum DeviceState {
 	Unmanaged,
 	Unavailable,
@@ -90,6 +93,7 @@ pub enum DeviceState {
 	Activated,
 	Deactivating,
 	Failed,
+	#[default]
 	Unknown,
 }
 
@@ -113,8 +117,9 @@ impl From<u32> for DeviceState {
 	}
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ActiveConnectionState {
+	#[default]
 	Unknown,
 	Activating,
 	Activated,
@@ -134,12 +139,13 @@ impl From<u32> for ActiveConnectionState {
 	}
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum WifiMode {
 	AdHoc,
 	Infra,
 	Ap,
 	Mesh,
+	#[default]
 	Unknown,
 }
 
