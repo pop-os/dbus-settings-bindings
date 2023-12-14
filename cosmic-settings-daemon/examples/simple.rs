@@ -21,7 +21,7 @@ async fn main() -> zbus::Result<()> {
 		.destination(name)?
 		.build()
 		.await?;
-	let mut stream = config_proxy.receive_config_changed().await?;
+	let mut stream = config_proxy.receive_changed().await?;
 
 	println!("Watching config for the libcosmic light theme...");
 	println!("Change the light theme in Settings > Appearance to trigger a signal.");

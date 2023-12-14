@@ -70,14 +70,5 @@ trait CosmicSettingsDaemon {
 )]
 trait Config {
 	#[dbus_proxy(signal)]
-	async fn config_changed(&self, id: String, key: String) -> fdo::Result<()>;
-}
-
-#[dbus_proxy(
-	interface = "com.system76.CosmicSettingsDaemon.State",
-	default_service = "com.system76.CosmicSettingsDaemon.State"
-)]
-trait State {
-	#[dbus_proxy(signal)]
-	async fn state_changed(&self, id: String, key: String) -> fdo::Result<()>;
+	async fn changed(&self, id: String, key: String) -> fdo::Result<()>;
 }
