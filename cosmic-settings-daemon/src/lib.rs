@@ -69,14 +69,7 @@ trait CosmicSettingsDaemon {
 	default_service = "com.system76.CosmicSettingsDaemon.Config"
 )]
 trait Config {
-	/// Pong method
-	fn pong(&self) -> zbus::Result<()>;
-
 	/// Changed signal
 	#[dbus_proxy(signal)]
 	async fn changed(&self, id: String, key: String) -> zbus::Result<()>;
-
-	/// Ping signal
-	#[dbus_proxy(signal)]
-	async fn ping(&self) -> zbus::Result<()>;
 }
