@@ -6,6 +6,7 @@ members = [
     "cosmic-settings-daemon",
     "mpris2",
     "networkmanager",
+    "switcheroo-control",
     "timedate",
     "upower",
 ]
