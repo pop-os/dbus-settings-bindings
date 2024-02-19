@@ -53,6 +53,9 @@ trait Manager {
 	#[dbus_proxy(object = "Client")]
 	fn get_client(&self);
 
+	/// Use this method to explicitly destroy a client, created using GetClient() or CreateClient().
+	///
+	/// Long-running applications, should either use this to delete associated client(s) when not needed, or disconnect from the D-Bus connection used for communicating with Geoclue (which is implicit on client process termination).
 	#[dbus_proxy(object = "Client")]
 	fn delete_client<'a>(&self, client: ObjectPath<'a>);
 
@@ -121,12 +124,17 @@ trait Client {
 	interface = "org.freedesktop.GeoClue2.Location"
 )]
 trait Location {
+	/// The latitude of the location, in degrees.
 	#[dbus_proxy(property)]
 	fn latitude(&self) -> Result<f64>;
+	/// The longitude of the location, in degrees.
 	#[dbus_proxy(property)]
 	fn longitude(&self) -> Result<f64>;
+	/// The accuracy of the location fix, in meters.
 	#[dbus_proxy(property)]
 	fn accuracy(&self) -> Result<f64>;
+	/// The altitude of the location fix, in meters.
+	/// When unknown, its set to minimum f64 value, -1.7976931348623157e+308.
 	#[dbus_proxy(property)]
 	fn altitude(&self) -> Result<f64>;
 	/// Speed in meters per second.

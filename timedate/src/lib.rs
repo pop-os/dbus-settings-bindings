@@ -18,58 +18,58 @@
 use zbus::dbus_proxy;
 
 #[dbus_proxy(
-    interface = "org.freedesktop.timedate1",
-    default_service = "org.freedesktop.timedate1",
-    default_path = "/org/freedesktop/timedate1"
+	interface = "org.freedesktop.timedate1",
+	default_service = "org.freedesktop.timedate1",
+	default_path = "/org/freedesktop/timedate1"
 )]
 trait TimeDate {
-    /// A list of time zones known on the local system as an array of names.
-    fn list_timezones(&self) -> zbus::Result<Vec<String>>;
+	/// A list of time zones known on the local system as an array of names.
+	fn list_timezones(&self) -> zbus::Result<Vec<String>>;
 
-    /// Control whether the RTC is in local time zone or UTC.
-    #[dbus_proxy(name = "SetLocalRTC")]
-    fn set_local_rtc(
-        &self,
-        local_rtc: bool,
-        fix_system: bool,
-        interactive: bool,
-    ) -> zbus::Result<()>;
+	/// Control whether the RTC is in local time zone or UTC.
+	#[dbus_proxy(name = "SetLocalRTC")]
+	fn set_local_rtc(
+		&self,
+		local_rtc: bool,
+		fix_system: bool,
+		interactive: bool,
+	) -> zbus::Result<()>;
 
-    /// Control whether the system clock is synchronized with the network using `systemd-timesyncd`.
-    #[dbus_proxy(name = "SetNTP")]
-    fn set_ntp(&self, use_ntp: bool, interactive: bool) -> zbus::Result<()>;
+	/// Control whether the system clock is synchronized with the network using `systemd-timesyncd`.
+	#[dbus_proxy(name = "SetNTP")]
+	fn set_ntp(&self, use_ntp: bool, interactive: bool) -> zbus::Result<()>;
 
-    /// Change the system clock.
-    fn set_time(&self, usec_utc: i64, relative: bool, interactive: bool) -> zbus::Result<()>;
+	/// Change the system clock.
+	fn set_time(&self, usec_utc: i64, relative: bool, interactive: bool) -> zbus::Result<()>;
 
-    /// Set the system time zone.
-    fn set_timezone(&self, timezone: &str, interactive: bool) -> zbus::Result<()>;
+	/// Set the system time zone.
+	fn set_timezone(&self, timezone: &str, interactive: bool) -> zbus::Result<()>;
 
-    /// Shows whether a service to perform time synchronization over network is available.
-    #[dbus_proxy(property, name = "CanNTP")]
-    fn can_ntp(&self) -> zbus::Result<bool>;
+	/// Shows whether a service to perform time synchronization over network is available.
+	#[dbus_proxy(property, name = "CanNTP")]
+	fn can_ntp(&self) -> zbus::Result<bool>;
 
-    /// Shows whether the RTC is configured to use UTC or the local time zone.
-    #[dbus_proxy(property, name = "LocalRTC")]
-    fn local_rtc(&self) -> zbus::Result<bool>;
+	/// Shows whether the RTC is configured to use UTC or the local time zone.
+	#[dbus_proxy(property, name = "LocalRTC")]
+	fn local_rtc(&self) -> zbus::Result<bool>;
 
-    /// Shows whether the NTP service is enabled.
-    #[dbus_proxy(property, name = "NTP")]
-    fn ntp(&self) -> zbus::Result<bool>;
+	/// Shows whether the NTP service is enabled.
+	#[dbus_proxy(property, name = "NTP")]
+	fn ntp(&self) -> zbus::Result<bool>;
 
-    /// Shows whether the kernel reports the time as synchronized.
-    #[dbus_proxy(property, name = "NTPSynchronized")]
-    fn ntp_synchronized(&self) -> zbus::Result<bool>;
+	/// Shows whether the kernel reports the time as synchronized.
+	#[dbus_proxy(property, name = "NTPSynchronized")]
+	fn ntp_synchronized(&self) -> zbus::Result<bool>;
 
-    /// Shows the current time in RTC.
-    #[dbus_proxy(property, name = "RTCTimeUSec")]
-    fn rtctime_usec(&self) -> zbus::Result<u64>;
+	/// Shows the current time in RTC.
+	#[dbus_proxy(property, name = "RTCTimeUSec")]
+	fn rtctime_usec(&self) -> zbus::Result<u64>;
 
-    /// Shows the current time.
-    #[dbus_proxy(property, name = "TimeUSec")]
-    fn time_usec(&self) -> zbus::Result<u64>;
+	/// Shows the current time.
+	#[dbus_proxy(property, name = "TimeUSec")]
+	fn time_usec(&self) -> zbus::Result<u64>;
 
-    /// Shows the currently-configured time zone.
-    #[dbus_proxy(property)]
-    fn timezone(&self) -> zbus::Result<String>;
+	/// Shows the currently-configured time zone.
+	#[dbus_proxy(property)]
+	fn timezone(&self) -> zbus::Result<String>;
 }
