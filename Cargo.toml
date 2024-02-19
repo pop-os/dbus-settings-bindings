@@ -10,6 +10,8 @@ members = [
     "switcheroo-control",
     "timedate",
     "upower",
+    "xdg-desktop-portal",
+    "xdg-desktop-portal/examples/*"
 ]
 
 [workspace.dependencies]

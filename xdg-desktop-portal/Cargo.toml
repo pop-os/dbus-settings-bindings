@@ -1,0 +1,12 @@
+[package]
+name = "xdg-desktop-portal"
+description = "zbus bindings for the org.freedesktop.portal APIs"
+version = "0.1.0"
+edition = "2021"
+license = "MPL-2.0"
+
+[dependencies]
+derive_setters = "0.1.6"
+futures-util = "0.3.28"
+serde = { version = "1.0.180", features = ["derive"] }
+zbus =  "3.14.1"
