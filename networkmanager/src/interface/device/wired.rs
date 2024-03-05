@@ -20,30 +20,30 @@
 //!
 //! …consequently `zbus-xmlgen` did not generate code for the above interfaces.
 
-use zbus::dbus_proxy;
+use zbus::proxy;
 
-#[dbus_proxy(
+#[proxy(
 	interface = "org.freedesktop.NetworkManager.Device.Wired",
 	default_service = "org.freedesktop.NetworkManager"
 )]
 trait WiredDevice {
 	/// Carrier property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn carrier(&self) -> zbus::Result<bool>;
 
 	/// HwAddress property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn hw_address(&self) -> zbus::Result<String>;
 
 	/// PermHwAddress property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn perm_hw_address(&self) -> zbus::Result<String>;
 
 	/// S390Subchannels property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn s390subchannels(&self) -> zbus::Result<Vec<String>>;
 
 	/// Speed property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn speed(&self) -> zbus::Result<u32>;
 }

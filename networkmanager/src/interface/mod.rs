@@ -29,9 +29,9 @@ pub mod enums;
 pub mod settings;
 pub mod statistics;
 
-use zbus::dbus_proxy;
+use zbus::proxy;
 
-#[dbus_proxy(
+#[proxy(
 	interface = "org.freedesktop.NetworkManager",
 	default_service = "org.freedesktop.NetworkManager",
 	default_path = "/org/freedesktop/NetworkManager"
@@ -136,125 +136,125 @@ pub trait NetworkManager {
 	fn sleep(&self, sleep: bool) -> zbus::Result<()>;
 
 	/// CheckPermissions signal
-	#[dbus_proxy(signal)]
+	#[zbus(signal)]
 	fn check_permissions(&self) -> zbus::Result<()>;
 
 	/// DeviceAdded signal
-	#[dbus_proxy(signal)]
+	#[zbus(signal)]
 	fn device_added(&self, device_path: zbus::zvariant::ObjectPath<'_>) -> zbus::Result<()>;
 
 	/// DeviceRemoved signal
-	#[dbus_proxy(signal)]
+	#[zbus(signal)]
 	fn device_removed(&self, device_path: zbus::zvariant::ObjectPath<'_>) -> zbus::Result<()>;
 
 	/// ActivatingConnection property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn activating_connection(&self) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
 
 	/// ActiveConnections property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn active_connections(&self) -> zbus::Result<Vec<zbus::zvariant::OwnedObjectPath>>;
 
 	/// AllDevices property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn all_devices(&self) -> zbus::Result<Vec<zbus::zvariant::OwnedObjectPath>>;
 
 	/// Capabilities property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn capabilities(&self) -> zbus::Result<Vec<u32>>;
 
 	/// Checkpoints property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn checkpoints(&self) -> zbus::Result<Vec<zbus::zvariant::OwnedObjectPath>>;
 
 	/// Connectivity property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn connectivity(&self) -> zbus::Result<u32>;
 
 	/// ConnectivityCheckAvailable property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn connectivity_check_available(&self) -> zbus::Result<bool>;
 
 	/// ConnectivityCheckEnabled property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn connectivity_check_enabled(&self) -> zbus::Result<bool>;
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn set_connectivity_check_enabled(&self, value: bool) -> zbus::Result<()>;
 
 	/// ConnectivityCheckUri property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn connectivity_check_uri(&self) -> zbus::Result<String>;
 
 	/// Devices property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn devices(&self) -> zbus::Result<Vec<zbus::zvariant::OwnedObjectPath>>;
 
 	/// GlobalDnsConfiguration property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn global_dns_configuration(
 		&self,
 	) -> zbus::Result<std::collections::HashMap<String, zbus::zvariant::OwnedValue>>;
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn set_global_dns_configuration(
 		&self,
 		value: std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
 	) -> zbus::Result<()>;
 
 	/// Metered property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn metered(&self) -> zbus::Result<u32>;
 
 	/// NetworkingEnabled property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn networking_enabled(&self) -> zbus::Result<bool>;
 
 	/// PrimaryConnection property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn primary_connection(&self) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
 
 	/// PrimaryConnectionType property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn primary_connection_type(&self) -> zbus::Result<String>;
 
 	/// Startup property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn startup(&self) -> zbus::Result<bool>;
 
 	/// State property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn state(&self) -> zbus::Result<u32>;
 
 	/// Version property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn version(&self) -> zbus::Result<String>;
 
 	/// WimaxEnabled property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn wimax_enabled(&self) -> zbus::Result<bool>;
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn set_wimax_enabled(&self, value: bool) -> zbus::Result<()>;
 
 	/// WimaxHardwareEnabled property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn wimax_hardware_enabled(&self) -> zbus::Result<bool>;
 
 	/// WirelessEnabled property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn wireless_enabled(&self) -> zbus::Result<bool>;
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn set_wireless_enabled(&self, value: bool) -> zbus::Result<()>;
 
 	/// WirelessHardwareEnabled property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn wireless_hardware_enabled(&self) -> zbus::Result<bool>;
 
 	/// WwanEnabled property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn wwan_enabled(&self) -> zbus::Result<bool>;
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn set_wwan_enabled(&self, value: bool) -> zbus::Result<()>;
 
 	/// WwanHardwareEnabled property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn wwan_hardware_enabled(&self) -> zbus::Result<bool>;
 }

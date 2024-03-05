@@ -20,24 +20,24 @@
 //!
 //! …consequently `zbus-xmlgen` did not generate code for the above interfaces.
 
-use zbus::dbus_proxy;
+use zbus::proxy;
 
-#[dbus_proxy(
+#[proxy(
 	interface = "org.freedesktop.NetworkManager.Device.Statistics",
 	default_service = "org.freedesktop.NetworkManager"
 )]
 pub trait Statistics {
 	/// RefreshRateMs property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn refresh_rate_ms(&self) -> zbus::Result<u32>;
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn set_refresh_rate_ms(&self, value: u32) -> zbus::Result<()>;
 
 	/// RxBytes property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn rx_bytes(&self) -> zbus::Result<u64>;
 
 	/// TxBytes property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn tx_bytes(&self) -> zbus::Result<u64>;
 }

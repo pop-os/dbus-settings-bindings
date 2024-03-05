@@ -20,9 +20,9 @@
 //!
 //! …consequently `zbus-xmlgen` did not generate code for the above interfaces.
 
-use zbus::dbus_proxy;
+use zbus::proxy;
 
-#[dbus_proxy(
+#[proxy(
 	interface = "org.freedesktop.NetworkManager.Settings.Connection",
 	default_service = "org.freedesktop.NetworkManager"
 )]
@@ -87,22 +87,22 @@ pub trait ConnectionSettings {
 	) -> zbus::Result<()>;
 
 	/// Removed signal
-	#[dbus_proxy(signal)]
+	#[zbus(signal)]
 	fn removed(&self) -> zbus::Result<()>;
 
 	/// Updated signal
-	#[dbus_proxy(signal)]
+	#[zbus(signal)]
 	fn updated(&self) -> zbus::Result<()>;
 
 	/// Filename property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn filename(&self) -> zbus::Result<String>;
 
 	/// Flags property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn flags(&self) -> zbus::Result<u32>;
 
 	/// Unsaved property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn unsaved(&self) -> zbus::Result<bool>;
 }

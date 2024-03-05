@@ -11,22 +11,22 @@
 //! section of the zbus documentation.
 //!
 
-use zbus::dbus_proxy;
+use zbus::proxy;
 
-#[dbus_proxy(
+#[proxy(
 	interface = "org.freedesktop.NetworkManager.Device.Bluetooth",
 	default_service = "org.freedesktop.NetworkManager"
 )]
 pub trait BluetoothDevice {
 	/// BtCapabilities property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn bt_capabilities(&self) -> zbus::Result<u32>;
 
 	/// HwAddress property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn hw_address(&self) -> zbus::Result<String>;
 
 	/// Name property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn name(&self) -> zbus::Result<String>;
 }
