@@ -35,14 +35,14 @@ impl<'a> NetworkManager<'a> {
 		connection: &'a Connection<'a>,
 		device: &'a Device<'a>,
 	) -> Result<ActiveConnection<'a>> {
-		let connection = connection.path();
-		let device = device.path();
+		let connection = connection.inner().path();
+		let device = device.inner().path();
 		let specific_object = ObjectPath::from_static_str("/").unwrap();
 		let active_connection_path = self
 			.0
 			.activate_connection(connection, device, &specific_object)
 			.await?;
-		ActiveConnectionProxy::builder(self.0.connection())
+		ActiveConnectionProxy::builder(self.0.inner().connection())
 			.path(active_connection_path)?
 			.build()
 			.await
@@ -53,7 +53,7 @@ impl<'a> NetworkManager<'a> {
 		let active_connections = self.0.active_connections().await?;
 		let mut out = Vec::with_capacity(active_connections.len());
 		for active_connection in active_connections {
-			let active_connection = ActiveConnectionProxy::builder(self.0.connection())
+			let active_connection = ActiveConnectionProxy::builder(self.0.inner().connection())
 				.path(active_connection)?
 				.build()
 				.await?;
@@ -74,14 +74,16 @@ impl<'a> NetworkManager<'a> {
 	}
 
 	pub async fn deactivate_connection(&self, connection: &'a ActiveConnection<'a>) -> Result<()> {
-		self.0.deactivate_connection(connection.path()).await
+		self.0
+			.deactivate_connection(connection.inner().path())
+			.await
 	}
 
 	pub async fn devices(&self) -> Result<Vec<Device<'a>>> {
 		let devices = self.0.get_all_devices().await?;
 		let mut out = Vec::with_capacity(devices.len());
 		for device in devices {
-			let device = DeviceProxy::builder(self.0.connection())
+			let device = DeviceProxy::builder(self.0.inner().connection())
 				.path(device)?
 				.build()
 				.await?;
@@ -94,7 +96,7 @@ impl<'a> NetworkManager<'a> {
 		let devices = self.0.get_all_devices().await?;
 		let mut out = Vec::with_capacity(devices.len());
 		for device in devices {
-			let device = DeviceProxy::builder(self.0.connection())
+			let device = DeviceProxy::builder(self.0.inner().connection())
 				.path(device)?
 				.build()
 				.await?;
@@ -108,6 +110,6 @@ impl<'a> NetworkManager<'a> {
 	}
 
 	pub async fn settings(&'a self) -> Result<NetworkManagerSettings<'a>> {
-		NetworkManagerSettings::new(self.0.connection()).await
+		NetworkManagerSettings::new(self.0.inner().connection()).await
 	}
 }

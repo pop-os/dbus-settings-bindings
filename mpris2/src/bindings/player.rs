@@ -21,9 +21,9 @@
 //! …consequently `zbus-xmlgen` did not generate code for the above interfaces.
 
 use crate::track::TrackId;
-use zbus::dbus_proxy;
+use zbus::proxy;
 
-#[dbus_proxy(
+#[proxy(
 	interface = "org.mpris.MediaPlayer2.Player",
 	default_path = "/org/mpris/MediaPlayer2"
 )]
@@ -56,76 +56,76 @@ trait Player {
 	fn stop(&self) -> zbus::Result<()>;
 
 	/// Seeked signal
-	#[dbus_proxy(signal)]
+	#[zbus(signal)]
 	fn seeked(&self, position: i64) -> zbus::Result<()>;
 
 	/// CanControl property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn can_control(&self) -> zbus::Result<bool>;
 
 	/// CanGoNext property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn can_go_next(&self) -> zbus::Result<bool>;
 
 	/// CanGoPrevious property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn can_go_previous(&self) -> zbus::Result<bool>;
 
 	/// CanPause property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn can_pause(&self) -> zbus::Result<bool>;
 
 	/// CanPlay property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn can_play(&self) -> zbus::Result<bool>;
 
 	/// CanSeek property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn can_seek(&self) -> zbus::Result<bool>;
 
 	/// MaximumRate property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn maximum_rate(&self) -> zbus::Result<f64>;
 
 	/// Metadata property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn metadata(
 		&self,
 	) -> zbus::Result<std::collections::HashMap<String, zbus::zvariant::OwnedValue>>;
 
 	/// MinimumRate property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn minimum_rate(&self) -> zbus::Result<f64>;
 
 	/// PlaybackStatus property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn playback_status(&self) -> zbus::Result<String>;
 
 	/// Position property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn position(&self) -> zbus::Result<i64>;
 
 	/// Rate property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn rate(&self) -> zbus::Result<f64>;
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn set_rate(&self, value: f64) -> zbus::Result<()>;
 
 	/// Shuffle property (optional)
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn shuffle(&self) -> zbus::Result<bool>;
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn set_shuffle(&self, value: bool) -> zbus::Result<()>;
 
 	/// LoopStatus property (optional)
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn loop_status(&self) -> zbus::Result<String>;
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn set_loop_status(&self, value: String) -> zbus::Result<()>;
 
 	/// Volume property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn volume(&self) -> zbus::Result<f64>;
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn set_volume(&self, value: f64) -> zbus::Result<()>;
 }

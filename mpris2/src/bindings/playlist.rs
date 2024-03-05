@@ -20,9 +20,9 @@
 //! …consequently `zbus-xmlgen` did not generate code for the above interfaces.
 
 use crate::playlists::{id::PlaylistId, ordering::PlaylistOrdering, playlist::Playlist};
-use zbus::dbus_proxy;
+use zbus::proxy;
 
-#[dbus_proxy(
+#[proxy(
 	interface = "org.mpris.MediaPlayer2.Playlists",
 	default_path = "/org/mpris/MediaPlayer2"
 )]
@@ -40,18 +40,18 @@ trait Playlists {
 	) -> zbus::Result<Vec<Playlist>>;
 
 	/// PlaylistChanged signal
-	#[dbus_proxy(signal)]
+	#[zbus(signal)]
 	fn playlist_changed(&self, playlist: Playlist) -> zbus::Result<()>;
 
 	/// ActivePlaylist property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn active_playlist(&self) -> zbus::Result<(bool, Playlist)>;
 
 	/// Orderings property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn orderings(&self) -> zbus::Result<Vec<String>>;
 
 	/// PlaylistCount property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn playlist_count(&self) -> zbus::Result<u32>;
 }
