@@ -19,9 +19,9 @@
 //!
 //! …consequently `zbus-xmlgen` did not generate code for the above interfaces.
 
-use zbus::{dbus_proxy, names::OwnedWellKnownName};
+use zbus::{names::OwnedWellKnownName, proxy};
 
-#[dbus_proxy(
+#[proxy(
 	interface = "com.system76.CosmicSettingsDaemon",
 	default_service = "com.system76.CosmicSettingsDaemon",
 	default_path = "/com/system76/CosmicSettingsDaemon"
@@ -54,22 +54,22 @@ trait CosmicSettingsDaemon {
 	) -> zbus::Result<(zbus::zvariant::OwnedObjectPath, OwnedWellKnownName)>;
 
 	/// DisplayBrightness property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn display_brightness(&self) -> zbus::Result<i32>;
 	fn set_display_brightness(&self, value: i32) -> zbus::Result<()>;
 
 	/// KeyboardBrightness property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn keyboard_brightness(&self) -> zbus::Result<i32>;
 	fn set_keyboard_brightness(&self, value: i32) -> zbus::Result<()>;
 }
 
-#[dbus_proxy(
+#[proxy(
 	interface = "com.system76.CosmicSettingsDaemon.Config",
 	default_service = "com.system76.CosmicSettingsDaemon.Config"
 )]
 trait Config {
 	/// Changed signal
-	#[dbus_proxy(signal)]
+	#[zbus(signal)]
 	async fn changed(&self, id: String, key: String) -> zbus::Result<()>;
 }

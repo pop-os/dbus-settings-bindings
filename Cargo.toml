@@ -18,5 +18,5 @@ futures-util = "0.3.30"
 serde = { version = "1.0", features = ["derive"] }
 thiserror = "1.0"
 time = { version = "0.3", features = ["parsing"] }
-zbus = { version = "3.15.0" }
-zvariant = { version = "3.15.0"}
+zbus = { version = "4.1.2" }
+zvariant = { version = "4.0.2"}
