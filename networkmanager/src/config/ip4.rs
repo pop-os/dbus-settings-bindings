@@ -30,7 +30,7 @@ impl<'a> Ipv4Config<'a> {
 			.filter_map(|mut map| {
 				let address = {
 					let address_str = map.remove("address")?;
-					let address_str = address_str.downcast_ref()?;
+					let address_str = address_str.downcast_ref().ok()?;
 					Ipv4Addr::from_str(address_str).ok()?
 				};
 				let prefix = u32::try_from(map.remove("prefix")?).ok()?;

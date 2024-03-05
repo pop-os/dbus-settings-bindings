@@ -10,8 +10,8 @@ pub struct BluetoothDevice<'a>(BluetoothDeviceProxy<'a>);
 
 impl<'a> BluetoothDevice<'a> {
 	pub async fn upcast(&'a self) -> Result<Device<'a>> {
-		DeviceProxy::builder(self.0.connection())
-			.path(self.0.path())?
+		DeviceProxy::builder(self.0.inner().connection())
+			.path(self.0.inner().path())?
 			.build()
 			.await
 			.map(Device::from)
