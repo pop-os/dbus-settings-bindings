@@ -22,28 +22,28 @@
 use std::collections::HashMap;
 
 use zbus::{
-	dbus_proxy,
+	proxy,
 	zvariant::{self, OwnedValue},
 };
 
-#[dbus_proxy(
+#[proxy(
 	interface = "net.hadess.SwitcherooControl",
 	default_service = "net.hadess.SwitcherooControl",
 	default_path = "/net/hadess/SwitcherooControl"
 )]
 trait SwitcherooControl {
 	/// GPUs property
-	#[dbus_proxy(property, name = "GPUs")]
+	#[zbus(property, name = "GPUs")]
 	fn gpus(
 		&self,
 	) -> zbus::Result<Vec<std::collections::HashMap<String, zbus::zvariant::OwnedValue>>>;
 
 	/// HasDualGpu property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn has_dual_gpu(&self) -> zbus::Result<bool>;
 
 	/// NumGPUs property
-	#[dbus_proxy(property, name = "NumGPUs")]
+	#[zbus(property, name = "NumGPUs")]
 	fn num_gpus(&self) -> zbus::Result<u32>;
 }
 
@@ -88,12 +88,12 @@ impl TryFrom<HashMap<String, OwnedValue>> for Gpu {
 		let name = value
 			.get("Name")
 			.ok_or(zvariant::Error::IncorrectType)?
-			.to_owned()
+			.try_clone()?
 			.try_into()?;
 		let environment: Vec<String> = value
 			.get("Environment")
 			.ok_or(zvariant::Error::IncorrectType)?
-			.to_owned()
+			.try_clone()?
 			.try_into()?;
 		let environment: HashMap<String, String> = environment
 			.chunks_exact(2)
