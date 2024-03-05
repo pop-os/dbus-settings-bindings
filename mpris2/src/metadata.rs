@@ -448,27 +448,27 @@ impl MetadataValue {
 
 impl<'a> From<&ZValue<'a>> for MetadataValue {
 	fn from(value: &ZValue) -> Self {
-		match value {
-			ZValue::U8(u) => Self::UInt(*u as u64),
-			ZValue::Bool(b) => Self::Bool(*b),
-			ZValue::I16(i) => Self::Int(*i as i64),
-			ZValue::U16(u) => Self::UInt(*u as u64),
-			ZValue::I32(i) => Self::Int(*i as i64),
-			ZValue::U32(u) => Self::UInt(*u as u64),
-			ZValue::I64(i) => Self::Int(*i),
-			ZValue::U64(u) => Self::UInt(*u),
-			ZValue::F64(f) => Self::Double(*f),
-			ZValue::Str(s) => Self::Str(s.to_string()),
-			ZValue::ObjectPath(path) => Self::Str(path.to_string()),
-			ZValue::Array(a) => Self::Array(a.iter().map(|v| v.into()).collect()),
-			ZValue::Dict(d) => Self::Dict(
-				HashMap::<String, ZValue>::try_from(d.to_owned())
+		match value.try_clone() {
+			Ok(ZValue::U8(u)) => Self::UInt(u as u64),
+			Ok(ZValue::Bool(b)) => Self::Bool(b),
+			Ok(ZValue::I16(i)) => Self::Int(i as i64),
+			Ok(ZValue::U16(u)) => Self::UInt(u as u64),
+			Ok(ZValue::I32(i)) => Self::Int(i as i64),
+			Ok(ZValue::U32(u)) => Self::UInt(u as u64),
+			Ok(ZValue::I64(i)) => Self::Int(i),
+			Ok(ZValue::U64(u)) => Self::UInt(u),
+			Ok(ZValue::F64(f)) => Self::Double(f),
+			Ok(ZValue::Str(s)) => Self::Str(s.to_string()),
+			Ok(ZValue::ObjectPath(path)) => Self::Str(path.to_string()),
+			Ok(ZValue::Array(a)) => Self::Array(a.iter().map(|v| v.into()).collect()),
+			Ok(ZValue::Dict(d)) => Self::Dict(
+				HashMap::<String, ZValue>::try_from(d)
 					.unwrap()
 					.into_iter()
 					.map(|(k, v)| (k, (&v).into()))
 					.collect(),
 			),
-			ZValue::Value(value) => Self::from(&**value),
+			Ok(ZValue::Value(value)) => Self::from(&*value),
 			_ => Self::__Unsupported,
 		}
 	}

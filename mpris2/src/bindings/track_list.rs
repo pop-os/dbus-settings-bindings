@@ -20,9 +20,9 @@
 //! …consequently `zbus-xmlgen` did not generate code for the above interfaces.
 
 use crate::track::TrackId;
-use zbus::dbus_proxy;
+use zbus::proxy;
 
-#[dbus_proxy(
+#[proxy(
 	interface = "org.mpris.MediaPlayer2.TrackList",
 	default_path = "/org/mpris/MediaPlayer2"
 )]
@@ -44,15 +44,15 @@ trait TrackList {
 	fn remove_track(&self, track_id: &TrackId) -> zbus::Result<()>;
 
 	/// TrackListReplaced signal
-	#[dbus_proxy(signal)]
+	#[zbus(signal)]
 	fn track_list_replaced(&self, tracks: Vec<TrackId>, current_track: TrackId)
 		-> zbus::Result<()>;
 
 	/// CanEditTracks property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn can_edit_tracks(&self) -> zbus::Result<bool>;
 
 	/// Tracks property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn tracks(&self) -> zbus::Result<Vec<TrackId>>;
 }

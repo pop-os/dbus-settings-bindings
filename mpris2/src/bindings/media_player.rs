@@ -20,9 +20,9 @@
 //!
 //! …consequently `zbus-xmlgen` did not generate code for the above interfaces.
 
-use zbus::dbus_proxy;
+use zbus::proxy;
 
-#[dbus_proxy(
+#[proxy(
 	interface = "org.mpris.MediaPlayer2",
 	default_path = "/org/mpris/MediaPlayer2"
 )]
@@ -34,30 +34,30 @@ trait MediaPlayer2 {
 	fn raise(&self) -> zbus::Result<()>;
 
 	/// CanQuit property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn can_quit(&self) -> zbus::Result<bool>;
 
 	/// CanRaise property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn can_raise(&self) -> zbus::Result<bool>;
 
 	/// DesktopEntry property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn desktop_entry(&self) -> zbus::Result<String>;
 
 	/// HasTrackList property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn has_track_list(&self) -> zbus::Result<bool>;
 
 	/// Identity property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn identity(&self) -> zbus::Result<String>;
 
 	/// SupportedMimeTypes property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn supported_mime_types(&self) -> zbus::Result<Vec<String>>;
 
 	/// SupportedUriSchemes property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn supported_uri_schemes(&self) -> zbus::Result<Vec<String>>;
 }
