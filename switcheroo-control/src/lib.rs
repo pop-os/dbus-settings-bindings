@@ -49,7 +49,7 @@ trait SwitcherooControl {
 
 impl<'a> SwitcherooControlProxy<'a> {
 	pub fn get_cached_gpus(&self) -> zbus::Result<Vec<Gpu>> {
-		let res = self.cached_gpus().map_err(|err| zbus::Error::from(err))?;
+		let res = self.cached_gpus()?;
 		if let Some(res) = res {
 			convert_gpus(res)
 		} else {
@@ -66,7 +66,7 @@ impl<'a> SwitcherooControlProxy<'a> {
 
 impl<'a> SwitcherooControlProxyBlocking<'a> {
 	pub fn get_cached_gpus(&self) -> zbus::Result<Vec<Gpu>> {
-		let res = self.cached_gpus().map_err(|err| zbus::Error::from(err))?;
+		let res = self.cached_gpus()?;
 		if let Some(res) = res {
 			convert_gpus(res)
 		} else {
