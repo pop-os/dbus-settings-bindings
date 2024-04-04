@@ -4,13 +4,14 @@ use crate::{
 		media_player::MediaPlayer2Proxy, player::PlayerProxy, playlist::PlaylistsProxy,
 		track_list::TrackListProxy,
 	},
+	enumerator::Enumerator,
 	error::{Error, Result},
 	player::Player,
 	playlists::Playlists,
 	track_list::TrackList,
 };
 use std::ops::Deref;
-use zbus::{fdo::DBusProxy, names::OwnedBusName, Connection};
+use zbus::{names::OwnedBusName, Connection};
 
 #[derive(Debug, Clone)]
 pub struct MediaPlayer {
@@ -30,17 +31,7 @@ impl MediaPlayer {
 
 	/// Gets the names of all the MPRIS players that are available on the current session.
 	pub async fn available_players(connection: &Connection) -> Result<Vec<OwnedBusName>> {
-		let dbus = DBusProxy::builder(connection)
-			.path("/org/freedesktop/DBus")?
-			.build()
-			.await?;
-		let mut players = Vec::new();
-		for name in dbus.list_names().await? {
-			if name.starts_with("org.mpris.MediaPlayer2.") {
-				players.push(name);
-			}
-		}
-		Ok(players)
+		Ok(Enumerator::new(connection).await?.players().await?)
 	}
 
 	/// Gets a new instance of all the MPRIS players that are available on the current session.

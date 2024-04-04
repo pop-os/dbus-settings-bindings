@@ -13,6 +13,7 @@ members = [
 ]
 
 [workspace.dependencies]
+futures-util = "0.3.30"
 serde = { version = "1.0", features = ["derive"] }
 thiserror = "1.0"
 time = { version = "0.3", features = ["parsing"] }

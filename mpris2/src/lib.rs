@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MPL-2.0
 pub mod bindings;
+pub mod enumerator;
 pub mod error;
 pub mod media_player;
 pub mod metadata;
