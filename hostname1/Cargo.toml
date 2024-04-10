@@ -6,7 +6,7 @@ repository = "https://github.com/pop-os/dbus-settings-bindings"
 edition = "2021"
 license = "MPL-2.0"
 categories = ["os::linux-apis"]
-keywords = ["dbus", "hostname", "hostname1", "zbus", "org.freedesktop.hostname1"]
+keywords = ["dbus", "hostname", "hostname1", "zbus", "freedesktop"]
 
 [dependencies]
 zbus = "3.0.0"
