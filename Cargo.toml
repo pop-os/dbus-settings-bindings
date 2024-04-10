@@ -5,6 +5,7 @@ resolver = "2"
 members = [
     "cosmic-settings-daemon",
     "geoclue2",
+    "hostname1",
     "mpris2",
     "networkmanager",
     "switcheroo-control",
