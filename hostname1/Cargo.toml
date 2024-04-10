@@ -1,0 +1,16 @@
+[package]
+name = "hostname1-zbus"
+version = "0.1.0"
+description = "dbus bindings for org.freedesktop.hostname1 with zbus"
+repository = "https://github.com/pop-os/dbus-settings-bindings"
+edition = "2021"
+license = "MPL-2.0"
+categories = ["os::linux-apis"]
+keywords = ["dbus", "hostname", "hostname1", "zbus", "org.freedesktop.hostname1"]
+
+[dependencies]
+zbus = "3.0.0"
+
+[dev-dependencies]
+pico-args = "0.5.0"
+tokio = { version = "1", features = ["full"] }
