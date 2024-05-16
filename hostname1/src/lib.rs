@@ -19,9 +19,9 @@
 //!
 //! …consequently `zbus-xmlgen` did not generate code for the above interfaces.
 
-use zbus::dbus_proxy;
+use zbus::dbus;
 
-#[dbus_proxy(
+#[dbus(
 	interface = "org.freedesktop.hostname1",
 	default_service = "org.freedesktop.hostname1",
 	default_path = "/org/freedesktop/hostname1"
@@ -31,7 +31,7 @@ trait Hostname1 {
 	fn describe(&self) -> zbus::Result<String>;
 
 	/// GetProductUUID method
-	#[dbus_proxy(name = "GetProductUUID")]
+	#[zbus(name = "GetProductUUID")]
 	fn get_product_uuid(&self, interactive: bool) -> zbus::Result<Vec<u8>>;
 
 	/// SetChassis method
@@ -56,70 +56,70 @@ trait Hostname1 {
 	fn set_static_hostname(&self, hostname: &str, interactive: bool) -> zbus::Result<()>;
 
 	/// Chassis property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn chassis(&self) -> zbus::Result<String>;
 
 	/// DefaultHostname property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn default_hostname(&self) -> zbus::Result<String>;
 
 	/// Deployment property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn deployment(&self) -> zbus::Result<String>;
 
 	/// HardwareModel property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn hardware_model(&self) -> zbus::Result<String>;
 
 	/// HardwareVendor property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn hardware_vendor(&self) -> zbus::Result<String>;
 
 	/// HomeURL property
-	#[dbus_proxy(property, name = "HomeURL")]
+	#[zbus(property, name = "HomeURL")]
 	fn home_url(&self) -> zbus::Result<String>;
 
 	/// Hostname property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn hostname(&self) -> zbus::Result<String>;
 
 	/// HostnameSource property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn hostname_source(&self) -> zbus::Result<String>;
 
 	/// IconName property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn icon_name(&self) -> zbus::Result<String>;
 
 	/// KernelName property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn kernel_name(&self) -> zbus::Result<String>;
 
 	/// KernelRelease property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn kernel_release(&self) -> zbus::Result<String>;
 
 	/// KernelVersion property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn kernel_version(&self) -> zbus::Result<String>;
 
 	/// Location property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn location(&self) -> zbus::Result<String>;
 
 	/// OperatingSystemCPEName property
-	#[dbus_proxy(property, name = "OperatingSystemCPEName")]
+	#[zbus(property, name = "OperatingSystemCPEName")]
 	fn operating_system_cpename(&self) -> zbus::Result<String>;
 
 	/// OperatingSystemPrettyName property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn operating_system_pretty_name(&self) -> zbus::Result<String>;
 
 	/// PrettyHostname property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn pretty_hostname(&self) -> zbus::Result<String>;
 
 	/// StaticHostname property
-	#[dbus_proxy(property)]
+	#[zbus(property)]
 	fn static_hostname(&self) -> zbus::Result<String>;
 }
