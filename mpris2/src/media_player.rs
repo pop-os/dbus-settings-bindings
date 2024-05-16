@@ -46,8 +46,8 @@ impl MediaPlayer {
 
 	/// Returns an instance to the `org.mpris.MediaPlayer2.Player` interface of this object.
 	pub async fn player(&self) -> Result<Player> {
-		PlayerProxy::builder(self.proxy.connection())
-			.destination(self.proxy.destination().to_owned())?
+		PlayerProxy::builder(self.proxy.inner().connection())
+			.destination(self.proxy.inner().destination().to_owned())?
 			.build()
 			.await
 			.map(Player::from)
@@ -58,8 +58,8 @@ impl MediaPlayer {
 	/// if a track list is available.
 	pub async fn track_list(&self) -> Result<Option<TrackList>> {
 		if self.proxy.has_track_list().await? {
-			TrackListProxy::builder(self.proxy.connection())
-				.destination(self.proxy.destination().to_owned())?
+			TrackListProxy::builder(self.proxy.inner().connection())
+				.destination(self.proxy.inner().destination().to_owned())?
 				.build()
 				.await
 				.map(TrackList::from)
@@ -74,8 +74,8 @@ impl MediaPlayer {
 	/// if a track list is available.
 	pub async fn playlists(&self) -> Result<Option<Playlists>> {
 		if self.proxy.has_track_list().await? {
-			PlaylistsProxy::builder(self.proxy.connection())
-				.destination(self.proxy.destination().to_owned())?
+			PlaylistsProxy::builder(self.proxy.inner().connection())
+				.destination(self.proxy.inner().destination().to_owned())?
 				.build()
 				.await
 				.map(Playlists::from)

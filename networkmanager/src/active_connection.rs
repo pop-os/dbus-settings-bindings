@@ -21,7 +21,7 @@ impl<'a> ActiveConnection<'a> {
 		let devices = self.0.devices().await?;
 		let mut out = Vec::with_capacity(devices.len());
 		for device in devices {
-			let device = DeviceProxy::builder(self.0.connection())
+			let device = DeviceProxy::builder(self.0.inner().connection())
 				.path(device)?
 				.build()
 				.await?;
@@ -31,7 +31,7 @@ impl<'a> ActiveConnection<'a> {
 	}
 
 	pub async fn ip4_config(&self) -> Result<Ipv4Config<'a>> {
-		let config = Ipv4ConfigProxy::builder(self.0.connection())
+		let config = Ipv4ConfigProxy::builder(self.0.inner().connection())
 			.path(self.0.ip4_config().await?)?
 			.build()
 			.await?;
@@ -39,7 +39,7 @@ impl<'a> ActiveConnection<'a> {
 	}
 
 	pub async fn ip6_config(&self) -> Result<Ipv6Config<'a>> {
-		let config = Ipv6ConfigProxy::builder(self.0.connection())
+		let config = Ipv6ConfigProxy::builder(self.0.inner().connection())
 			.path(self.0.ip6_config().await?)?
 			.build()
 			.await?;

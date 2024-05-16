@@ -27,7 +27,7 @@ impl<'a> NetworkManagerSettings<'a> {
 		let connections = self.0.list_connections().await?;
 		let mut out = Vec::with_capacity(connections.len());
 		for connection in connections {
-			let connection = ConnectionSettingsProxy::builder(self.0.connection())
+			let connection = ConnectionSettingsProxy::builder(self.0.inner().connection())
 				.path(connection)?
 				.build()
 				.await?;

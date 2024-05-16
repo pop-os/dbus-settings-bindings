@@ -42,7 +42,7 @@ macro_rules! derive_value_build {
 				ret
 			}
 
-			pub fn build<'a>(&'a self) -> std::collections::HashMap<String, zbus::zvariant::Value<'a>> {
+			pub fn build(&self) -> std::collections::HashMap<String, zbus::zvariant::Value<'_>> {
 				let mut out = std::collections::HashMap::new();
 				$(
 					if let Some(val) = &self.$arg {

@@ -8,7 +8,7 @@ use std::{
 	fmt::{self, Display},
 	str::FromStr,
 };
-use zvariant::{OwnedValue, Signature, Type, Value};
+use zvariant::{Signature, Type, Value};
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum PlaylistOrdering {
@@ -38,7 +38,9 @@ impl<'a> TryFrom<Value<'a>> for PlaylistOrdering {
 			Value::Str(value) => Self::from_str(&value),
 			_ => Err(Error::IncorrectValue {
 				wanted: "Str",
-				actual: OwnedValue::from(value),
+				actual: value
+					.try_to_owned()
+					.map_err(|e| Error::Zbus(zbus::Error::Variant(e)))?,
 			}),
 		}
 	}

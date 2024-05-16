@@ -17,11 +17,8 @@ zbus.workspace = true
 [dev-dependencies]
 chrono = "0.4.23"
 chrono-tz = "0.8.1"
-
-[dev-dependencies.zbus]
-version = "3.14"
-default-features = false
-features = ["tokio"]
+zbus.workspace = true
+zbus.features = ["tokio"]
 
 [dev-dependencies.tokio]
 version = "1.25.0"

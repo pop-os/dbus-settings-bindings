@@ -33,8 +33,8 @@ impl Player {
 
 	/// Returns this player's `org.mpris.MediaPlayer2` instance
 	pub async fn media_player(&self) -> Result<MediaPlayer> {
-		let proxy = MediaPlayer2Proxy::builder(self.proxy.connection())
-			.destination(self.proxy.destination().to_owned())?
+		let proxy = MediaPlayer2Proxy::builder(self.proxy.inner().connection())
+			.destination(self.proxy.inner().destination().to_owned())?
 			.build()
 			.await?;
 		Ok(proxy.into())
