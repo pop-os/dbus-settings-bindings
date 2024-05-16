@@ -19,9 +19,9 @@
 //!
 //! …consequently `zbus-xmlgen` did not generate code for the above interfaces.
 
-use zbus::dbus;
+use zbus::proxy;
 
-#[dbus(
+#[proxy(
 	interface = "org.freedesktop.hostname1",
 	default_service = "org.freedesktop.hostname1",
 	default_path = "/org/freedesktop/hostname1"
