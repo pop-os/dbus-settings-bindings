@@ -3,7 +3,9 @@
 #![doc = include_str!("../README.md")]
 
 mod device;
+mod kbdbacklight;
 mod upower;
 
 pub use self::device::*;
+pub use self::kbdbacklight::*;
 pub use self::upower::*;
