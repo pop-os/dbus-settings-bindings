@@ -111,6 +111,12 @@ trait Device {
 	#[zbus(property)]
 	fn temperature(&self) -> zbus::Result<f64>;
 
+	#[zbus(property)]
+	fn time_to_empty(&self) -> zbus::Result<i64>;
+
+	#[zbus(property)]
+	fn time_to_full(&self) -> zbus::Result<i64>;
+
 	#[zbus(property, name = "Type")]
 	fn type_(&self) -> zbus::Result<BatteryType>;
 
