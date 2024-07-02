@@ -6,6 +6,7 @@ members = [
     "cosmic-settings-daemon",
     "geoclue2",
     "hostname1",
+    "locale1",
     "mpris2",
     "networkmanager",
     "switcheroo-control",
