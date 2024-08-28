@@ -17,7 +17,9 @@ use crate::{
 			wireguard::WireGuardDeviceProxy, wireless::WirelessDeviceProxy, DeviceProxy,
 		},
 		enums::{DeviceCapabilities, DeviceState, DeviceType},
+		settings::connection::ConnectionSettingsProxy,
 	},
+	settings::connection::Connection,
 };
 use std::{net::Ipv4Addr, ops::Deref};
 use zbus::Result;
@@ -35,11 +37,11 @@ impl<'a> Device<'a> {
 			.into())
 	}
 
-	pub async fn available_connections(&self) -> Result<Vec<ActiveConnection<'a>>> {
+	pub async fn available_connections(&self) -> Result<Vec<Connection<'a>>> {
 		let available_connections = self.0.available_connections().await?;
 		let mut out = Vec::with_capacity(available_connections.len());
 		for connection in available_connections {
-			let connection = ActiveConnectionProxy::builder(self.0.inner().connection())
+			let connection = ConnectionSettingsProxy::builder(self.0.inner().connection())
 				.path(connection)?
 				.build()
 				.await?;
