@@ -30,13 +30,23 @@ impl<'a> NetworkManager<'a> {
 		NetworkManagerProxy::new(connection).await.map(Self)
 	}
 
+	/// Activate a connection profile for the given device.
 	pub async fn activate_connection(
 		&self,
-		connection: &'a Connection<'a>,
-		device: &'a Device<'a>,
+		connection: &Connection<'_>,
+		device: &Device<'_>,
 	) -> Result<ActiveConnection<'a>> {
 		let connection = connection.inner().path();
 		let device = device.inner().path();
+		self.activate_connection_by_paths(connection, device).await
+	}
+
+	/// Activate a connection profile for the given device by their object paths.
+	pub async fn activate_connection_by_paths(
+		&self,
+		connection: &ObjectPath<'_>,
+		device: &ObjectPath<'_>,
+	) -> Result<ActiveConnection<'a>> {
 		let specific_object = ObjectPath::from_static_str("/").unwrap();
 		let active_connection_path = self
 			.0
