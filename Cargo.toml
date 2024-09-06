@@ -12,6 +12,7 @@ members = [
     "switcheroo-control",
     "timedate",
     "upower",
+    "bluez",
 ]
 
 [workspace.dependencies]
