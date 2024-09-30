@@ -1,10 +1,13 @@
 use std::collections::HashMap;
 
-use futures::join;
+use futures_util::join;
 
 pub mod adapter1;
+pub mod agent_manager1;
 pub mod battery1;
 pub mod device1;
+pub mod health_manager1;
+pub mod profile_manager1;
 
 pub async fn get_adapters<'a>(
 	connection: &zbus::Connection,
@@ -23,7 +26,7 @@ pub async fn get_adapters<'a>(
 		.collect();
 	let adapters: Vec<
 		zbus::Result<(zbus::zvariant::OwnedObjectPath, adapter1::Adapter1Proxy<'a>)>,
-	> = futures::future::join_all(adapter_addresses.into_iter().map(|path| async {
+	> = futures_util::future::join_all(adapter_addresses.into_iter().map(|path| async {
 		Ok((
 			path.clone(),
 			adapter1::Adapter1Proxy::new(connection, path).await?,
@@ -103,11 +106,7 @@ pub async fn get_device<'a>(
 	connection: &zbus::Connection,
 	device_path: zbus::zvariant::OwnedObjectPath,
 ) -> zbus::Result<BluetoothDevice<'a>> {
-	BluetoothDevice::new(
-		connection,
-		device_path.into(),
-	)
-	.await
+	BluetoothDevice::new(connection, device_path.into()).await
 }
 
 pub async fn get_adapter<'a>(
@@ -147,7 +146,7 @@ pub async fn get_devices<'a>(
 		})
 		.collect();
 	let devices: Vec<zbus::Result<(zbus::zvariant::OwnedObjectPath, BluetoothDevice<'a>)>> =
-		futures::future::join_all(device_addresses.into_iter().map(|path| async {
+		futures_util::future::join_all(device_addresses.into_iter().map(|path| async {
 			Ok((
 				path.clone(),
 				BluetoothDevice::new(connection, path.into()).await?,
