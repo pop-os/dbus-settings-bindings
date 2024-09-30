@@ -1,12 +1,10 @@
 use std::process::ExitCode;
 
-use futures::StreamExt;
-
 #[tokio::main]
 async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
 	let connection = zbus::Connection::system().await?;
 
-	let adapters = bluez_zbus::adapters(&connection).await?;
+	let adapters = bluez_zbus::get_adapters(&connection).await?;
 
 	// if adapters.is_empty() {
 	// 	eprintln!("No adapter found");
@@ -27,7 +25,7 @@ async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
 				return Ok(ExitCode::FAILURE);
 			}
 			Ok(devices) => {
-				for proxy in devices {
+				for (_path, proxy) in devices {
 					if !proxy.device.connected().await? {
 						continue;
 					}
@@ -55,7 +53,7 @@ async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
 				return Ok(ExitCode::FAILURE);
 			}
 			Ok(devices) => {
-				for proxy in devices {
+				for (_path, proxy) in devices {
 					if !proxy.device.paired().await? {
 						continue;
 					}
@@ -78,15 +76,19 @@ async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
 		},
 
 		Some("nearby-devices") => {
-			futures::future::join_all(adapters.iter().map(|adapter| adapter.start_discovery()))
-				.await;
+			futures_util::future::join_all(
+				adapters
+					.iter()
+					.map(|(_path, adapter)| adapter.start_discovery()),
+			)
+			.await;
 			match bluez_zbus::get_devices(&connection, None).await {
 				Err(why) => {
 					eprintln!("error: could not get devices: {why}");
 					return Ok(ExitCode::FAILURE);
 				}
 				Ok(devices) => {
-					for proxy in devices {
+					for (_path, proxy) in devices {
 						if proxy.device.paired().await? {
 							continue;
 						}
@@ -116,18 +118,19 @@ async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
 					return Ok(ExitCode::FAILURE);
 				}
 				Ok(devices) => {
-					let devices: Vec<bluez_zbus::BluetoothDevice> =
-						futures::future::join_all(devices.into_iter().map(|proxy| async {
+					let devices: Vec<bluez_zbus::BluetoothDevice> = futures_util::future::join_all(
+						devices.into_iter().map(|(_path, proxy)| async {
 							match (proxy.device.name().await, proxy.device.address().await) {
 								(Ok(alias), _) if alias == addr_or_alias => Some(proxy),
 								(_, Ok(addr)) if addr == addr_or_alias => Some(proxy),
 								_ => None,
 							}
-						}))
-						.await
-						.into_iter()
-						.flatten()
-						.collect();
+						}),
+					)
+					.await
+					.into_iter()
+					.flatten()
+					.collect();
 					if devices.is_empty() {
 						eprintln!("No device found");
 						return Ok(ExitCode::FAILURE);
@@ -164,18 +167,20 @@ async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
 					return Ok(ExitCode::FAILURE);
 				}
 				Ok(devices) => {
-					let devices: Vec<bluez_zbus::BluetoothDevice> =
-						futures::future::join_all(devices.into_iter().map(|proxy| async {
+					let devices: Vec<bluez_zbus::BluetoothDevice> = futures_util::future::join_all(
+						devices.into_iter().map(|(_path, proxy)| async {
 							match (proxy.device.name().await, proxy.device.address().await) {
 								(Ok(alias), _) if alias == addr_or_alias => Some(proxy),
 								(_, Ok(addr)) if addr == addr_or_alias => Some(proxy),
 								_ => None,
 							}
-						}))
-						.await
-						.into_iter()
-						.flatten()
-						.collect();
+						}),
+					)
+					.await
+					.into_iter()
+					.flatten()
+					.collect();
+
 					if devices.is_empty() {
 						eprintln!("No device found");
 						return Ok(ExitCode::FAILURE);
@@ -212,18 +217,19 @@ async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
 					return Ok(ExitCode::FAILURE);
 				}
 				Ok(devices) => {
-					let devices: Vec<bluez_zbus::BluetoothDevice> =
-						futures::future::join_all(devices.into_iter().map(|proxy| async {
+					let devices: Vec<bluez_zbus::BluetoothDevice> = futures_util::future::join_all(
+						devices.into_iter().map(|(_path, proxy)| async {
 							match (proxy.device.name().await, proxy.device.address().await) {
 								(Ok(alias), _) if alias == addr_or_alias => Some(proxy),
 								(_, Ok(addr)) if addr == addr_or_alias => Some(proxy),
 								_ => None,
 							}
-						}))
-						.await
-						.into_iter()
-						.flatten()
-						.collect();
+						}),
+					)
+					.await
+					.into_iter()
+					.flatten()
+					.collect();
 					if devices.is_empty() {
 						eprintln!("No device found");
 						return Ok(ExitCode::FAILURE);
