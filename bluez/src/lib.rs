@@ -1,8 +1,12 @@
+// Copyright 2024 System76 <info@system76.com>
+// SPDX-License-Identifier: MPL-2.0
+
 use std::collections::HashMap;
 
 use futures_util::join;
 
 pub mod adapter1;
+pub mod agent1;
 pub mod agent_manager1;
 pub mod battery1;
 pub mod device1;

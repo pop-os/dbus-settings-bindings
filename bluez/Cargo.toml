@@ -9,9 +9,14 @@ categories = ["os::linux-apis"]
 keywords = ["dbus", "bluez", "zbus", "bluetooth"]
 
 [dependencies]
+futures-channel.workspace = true
 futures-util.workspace = true
+tracing.workspace = true
 zbus.workspace = true
 
 [dev-dependencies]
+color-eyre = "0.6.3"
+eyre = "0.6.12"
 pico-args = "0.5.0"
 tokio = { version = "1", features = ["full"] }
+tracing-subscriber = "0.3.18"
