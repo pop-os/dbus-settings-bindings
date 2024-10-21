@@ -9,7 +9,7 @@ categories = ["os::linux-apis"]
 keywords = ["dbus", "bluez", "zbus", "bluetooth"]
 
 [dependencies]
-futures-channel.workspace = true
+futures-channel = { workspace = true, features = ["sink"] }
 futures-util.workspace = true
 tracing.workspace = true
 zbus.workspace = true
