@@ -9,7 +9,7 @@ categories = ["os::linux-apis"]
 keywords = ["dbus", "hostname", "hostname1", "zbus", "freedesktop"]
 
 [dependencies]
-zbus = "4.2.1"
+zbus.workspace = true
 
 [dev-dependencies]
 pico-args = "0.5.0"

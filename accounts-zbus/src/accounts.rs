@@ -30,7 +30,7 @@ use crate::{UserProxy, UserProxyBlocking};
 	default_service = "org.freedesktop.Accounts",
 	default_path = "/org/freedesktop/Accounts"
 )]
-trait Accounts {
+pub trait Accounts {
 	/// CacheUser method
 	fn cache_user(&self, name: &str) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
 

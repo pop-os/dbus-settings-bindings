@@ -68,7 +68,7 @@ pub enum BatteryLevel {
 	default_service = "org.freedesktop.UPower",
 	assume_defaults = false
 )]
-trait Device {
+pub trait Device {
 	#[zbus(property)]
 	fn battery_level(&self) -> zbus::Result<BatteryLevel>;
 

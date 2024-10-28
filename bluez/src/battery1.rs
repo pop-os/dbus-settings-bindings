@@ -20,7 +20,7 @@
 //! [D-Bus standard interfaces]: https://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces,
 use zbus::proxy;
 #[proxy(interface = "org.bluez.Battery1", default_service = "org.bluez")]
-trait Battery1 {
+pub trait Battery1 {
 	/// Percentage property
 	#[zbus(property)]
 	fn percentage(&self) -> zbus::Result<u8>;
