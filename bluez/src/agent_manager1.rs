@@ -23,7 +23,7 @@ use zbus::proxy;
 	default_service = "org.bluez",
 	default_path = "/org/bluez"
 )]
-trait AgentManager1 {
+pub trait AgentManager1 {
 	/// RegisterAgent method
 	fn register_agent(
 		&self,

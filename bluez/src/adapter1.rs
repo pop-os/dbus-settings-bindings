@@ -20,7 +20,7 @@
 //! [D-Bus standard interfaces]: https://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces,
 use zbus::proxy;
 #[proxy(interface = "org.bluez.Adapter1", default_service = "org.bluez")]
-trait Adapter1 {
+pub trait Adapter1 {
 	/// ConnectDevice method
 	fn connect_device(
 		&self,

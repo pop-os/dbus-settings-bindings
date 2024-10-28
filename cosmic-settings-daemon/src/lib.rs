@@ -26,7 +26,7 @@ use zbus::{names::OwnedWellKnownName, proxy};
 	default_service = "com.system76.CosmicSettingsDaemon",
 	default_path = "/com/system76/CosmicSettingsDaemon"
 )]
-trait CosmicSettingsDaemon {
+pub trait CosmicSettingsDaemon {
 	/// DecreaseDisplayBrightness method
 	fn decrease_display_brightness(&self) -> zbus::Result<()>;
 
@@ -68,7 +68,7 @@ trait CosmicSettingsDaemon {
 	interface = "com.system76.CosmicSettingsDaemon.Config",
 	default_service = "com.system76.CosmicSettingsDaemon.Config"
 )]
-trait Config {
+pub trait Config {
 	/// Changed signal
 	#[zbus(signal)]
 	async fn changed(&self, id: String, key: String) -> zbus::Result<()>;

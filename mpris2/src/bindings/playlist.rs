@@ -26,7 +26,7 @@ use zbus::proxy;
 	interface = "org.mpris.MediaPlayer2.Playlists",
 	default_path = "/org/mpris/MediaPlayer2"
 )]
-trait Playlists {
+pub trait Playlists {
 	/// ActivatePlaylist method
 	fn activate_playlist(&self, playlist_id: &PlaylistId) -> zbus::Result<()>;
 

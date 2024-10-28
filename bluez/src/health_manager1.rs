@@ -23,7 +23,7 @@ use zbus::proxy;
 	default_service = "org.bluez",
 	default_path = "/org/bluez"
 )]
-trait HealthManager1 {
+pub trait HealthManager1 {
 	/// CreateApplication method
 	fn create_application(
 		&self,

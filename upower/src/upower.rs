@@ -6,7 +6,7 @@ use zbus::proxy;
 use crate::device::{DeviceProxy, DeviceProxyBlocking};
 
 #[proxy(interface = "org.freedesktop.UPower", assume_defaults = true)]
-trait UPower {
+pub trait UPower {
 	/// EnumerateDevices method
 	fn enumerate_devices(&self) -> zbus::Result<Vec<zbus::zvariant::OwnedObjectPath>>;
 

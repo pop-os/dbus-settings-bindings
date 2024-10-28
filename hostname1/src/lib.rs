@@ -26,7 +26,7 @@ use zbus::proxy;
 	default_service = "org.freedesktop.hostname1",
 	default_path = "/org/freedesktop/hostname1"
 )]
-trait Hostname1 {
+pub trait Hostname1 {
 	/// Describe method
 	fn describe(&self) -> zbus::Result<String>;
 
