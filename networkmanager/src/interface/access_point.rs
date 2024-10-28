@@ -26,7 +26,7 @@ use zbus::proxy;
 	interface = "org.freedesktop.NetworkManager.AccessPoint",
 	default_service = "org.freedesktop.NetworkManager"
 )]
-trait AccessPoint {
+pub trait AccessPoint {
 	/// Flags property
 	#[zbus(property)]
 	fn flags(&self) -> zbus::Result<u32>;

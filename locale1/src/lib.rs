@@ -9,7 +9,7 @@ use zbus::proxy;
 	default_service = "org.freedesktop.locale1",
 	default_path = "/org/freedesktop/locale1"
 )]
-trait locale1 {
+pub trait locale1 {
 	/// SetLocale method
 	fn set_locale(&self, locale: &[&str], interactive: bool) -> zbus::Result<()>;
 

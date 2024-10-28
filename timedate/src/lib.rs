@@ -22,7 +22,7 @@ use zbus::proxy;
 	default_service = "org.freedesktop.timedate1",
 	default_path = "/org/freedesktop/timedate1"
 )]
-trait TimeDate {
+pub trait TimeDate {
 	/// A list of time zones known on the local system as an array of names.
 	fn list_timezones(&self) -> zbus::Result<Vec<String>>;
 

@@ -31,7 +31,7 @@ use zbus::{
 	default_service = "net.hadess.SwitcherooControl",
 	default_path = "/net/hadess/SwitcherooControl"
 )]
-trait SwitcherooControl {
+pub trait SwitcherooControl {
 	/// GPUs property
 	#[zbus(property, name = "GPUs")]
 	fn gpus(

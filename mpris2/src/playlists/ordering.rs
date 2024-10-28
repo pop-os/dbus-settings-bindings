@@ -25,9 +25,7 @@ pub enum PlaylistOrdering {
 }
 
 impl Type for PlaylistOrdering {
-	fn signature() -> Signature<'static> {
-		String::signature()
-	}
+	const SIGNATURE: &'static Signature = String::SIGNATURE;
 }
 
 impl<'a> TryFrom<Value<'a>> for PlaylistOrdering {

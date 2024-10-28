@@ -26,7 +26,7 @@ use zbus::proxy;
 	interface = "org.mpris.MediaPlayer2.TrackList",
 	default_path = "/org/mpris/MediaPlayer2"
 )]
-trait TrackList {
+pub trait TrackList {
 	/// AddTrack method
 	fn add_track(&self, uri: &str, after_track: &TrackId, set_as_current: bool)
 		-> zbus::Result<()>;

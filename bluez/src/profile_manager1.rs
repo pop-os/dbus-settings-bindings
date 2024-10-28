@@ -25,7 +25,7 @@ use zbus::proxy;
 	default_service = "org.bluez",
 	default_path = "/org/bluez"
 )]
-trait ProfileManager1 {
+pub trait ProfileManager1 {
 	/// RegisterProfile method
 	fn register_profile(
 		&self,

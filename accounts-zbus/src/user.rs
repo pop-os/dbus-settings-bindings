@@ -28,7 +28,7 @@ use zbus::proxy;
 	default_service = "org.freedesktop.Accounts",
 	// default_path = "/org/freedesktop/Accounts/User1000"
 )]
-trait User {
+pub trait User {
 	/// GetPasswordExpirationPolicy method
 	fn get_password_expiration_policy(&self) -> zbus::Result<(i64, i64, i64, i64, i64, i64)>;
 
