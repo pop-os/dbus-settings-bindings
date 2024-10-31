@@ -13,6 +13,7 @@ members = [
     "timedate",
     "upower",
     "bluez",
+    "a11y",
 ]
 
 [workspace.dependencies]
