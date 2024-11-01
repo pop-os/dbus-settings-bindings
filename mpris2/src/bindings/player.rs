@@ -27,7 +27,7 @@ use zbus::proxy;
 	interface = "org.mpris.MediaPlayer2.Player",
 	default_path = "/org/mpris/MediaPlayer2"
 )]
-trait Player {
+pub trait Player {
 	/// Next method
 	fn next(&self) -> zbus::Result<()>;
 

@@ -48,7 +48,7 @@ impl TryFrom<OwnedValue> for Accuracy {
 	interface = "org.freedesktop.GeoClue2.Manager",
 	default_path = "/org/freedesktop/GeoClue2/Manager"
 )]
-trait Manager {
+pub trait Manager {
 	/// Retrieves a client object which can only be used by the calling application only. On the first call from a specific D-Bus peer, this method will create the client object but subsequent calls will return the path of the existing client.
 	#[zbus(object = "Client")]
 	fn get_client(&self);
@@ -72,7 +72,7 @@ trait Manager {
 	default_service = "org.freedesktop.GeoClue2",
 	interface = "org.freedesktop.GeoClue2.Client"
 )]
-trait Client {
+pub trait Client {
 	/// Start method
 	fn start(&self) -> zbus::Result<()>;
 
@@ -123,7 +123,7 @@ trait Client {
 	default_service = "org.freedesktop.GeoClue2",
 	interface = "org.freedesktop.GeoClue2.Location"
 )]
-trait Location {
+pub trait Location {
 	/// The latitude of the location, in degrees.
 	#[zbus(property)]
 	fn latitude(&self) -> Result<f64>;

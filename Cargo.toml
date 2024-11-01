@@ -23,5 +23,5 @@ serde = { version = "1.0", features = ["derive"] }
 thiserror = "1.0"
 time = { version = "0.3", features = ["parsing"] }
 tracing = "0.1.40"
-zbus = { version = "4.2.1" }
-zvariant = { version = "4.1.0" }
+zbus = { version = "5.0.1" }
+zvariant = { version = "5.0.1" }
