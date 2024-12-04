@@ -1,0 +1,14 @@
+[package]
+name = "accounts-zbus"
+version = "0.1.0"
+edition = "2021"
+license = "MPL-2.0"
+
+[dependencies]
+futures-channel.workspace = true
+futures-util.workspace = true
+tracing.workspace = true
+zbus.workspace = true
+
+[dev-dependencies]
+tokio = { version = "1", features = ["full"] }

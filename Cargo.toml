@@ -3,17 +3,18 @@
 resolver = "2"
 
 members = [
-    "cosmic-settings-daemon",
-    "geoclue2",
-    "hostname1",
-    "locale1",
-    "mpris2",
-    "networkmanager",
-    "switcheroo-control",
-    "timedate",
-    "upower",
-    "bluez",
-    "a11y",
+	"a11y",
+	"accounts-zbus",
+	"bluez",
+	"cosmic-settings-daemon",
+	"geoclue2",
+	"hostname1",
+	"locale1",
+	"mpris2",
+	"networkmanager",
+	"switcheroo-control",
+	"timedate",
+	"upower",
 ]
 
 [workspace.dependencies]
