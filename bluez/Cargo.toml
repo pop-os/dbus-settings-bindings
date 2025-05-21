@@ -10,7 +10,7 @@ keywords = ["dbus", "bluez", "zbus", "bluetooth"]
 
 [dependencies]
 futures-channel = { workspace = true, features = ["sink"] }
-futures-util.workspace = true
+futures-util = {workspace = true, features = ["sink"] }
 tracing.workspace = true
 zbus.workspace = true
 
