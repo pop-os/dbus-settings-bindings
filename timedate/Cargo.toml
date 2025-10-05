@@ -15,11 +15,11 @@ all-features = true
 zbus.workspace = true
 
 [dev-dependencies]
-chrono = "0.4.23"
-chrono-tz = "0.10.0"
+chrono = "0.4.42"
+chrono-tz = "0.10.4"
 zbus.workspace = true
 zbus.features = ["tokio"]
 
 [dev-dependencies.tokio]
-version = "1.25.0"
+version = "1.47.1"
 features = ["full"]

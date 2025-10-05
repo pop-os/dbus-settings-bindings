@@ -1,6 +1,6 @@
 [workspace]
 
-resolver = "2"
+resolver = "3"
 
 members = [
 	"a11y",
@@ -18,11 +18,11 @@ members = [
 ]
 
 [workspace.dependencies]
-futures-channel = "0.3.30"
-futures-util = "0.3.30"
+futures-channel = "0.3.31"
+futures-util = "0.3.31"
 serde = { version = "1.0", features = ["derive"] }
-thiserror = "1.0"
+thiserror = "2.0"
 time = { version = "0.3", features = ["parsing"] }
-tracing = "0.1.40"
-zbus = { version = "5.7.1" }
-zvariant = { version = "5.5.3" }
+tracing = "0.1.41"
+zbus = { version = "5.11.0" }
+zvariant = { version = "5.7.0" }

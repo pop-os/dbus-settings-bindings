@@ -15,8 +15,8 @@ tracing.workspace = true
 zbus.workspace = true
 
 [dev-dependencies]
-color-eyre = "0.6.3"
+color-eyre = "0.6.5"
 eyre = "0.6.12"
 pico-args = "0.5.0"
 tokio = { version = "1", features = ["full"] }
-tracing-subscriber = "0.3.18"
+tracing-subscriber = "0.3.20"
