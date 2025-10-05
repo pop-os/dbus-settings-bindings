@@ -65,7 +65,7 @@ impl TrackList {
 		self.proxy
 			.tracks()
 			.await
-			.map(|x| x.into_iter().map(TrackId::from).collect())
+			.map(|x| x.into_iter().collect())
 			.map_err(Error::from)
 	}
 
