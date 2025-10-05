@@ -32,5 +32,5 @@ pub trait HealthManager1 {
 
 	/// DestroyApplication method
 	fn destroy_application(&self, application: &zbus::zvariant::ObjectPath<'_>)
-		-> zbus::Result<()>;
+	-> zbus::Result<()>;
 }

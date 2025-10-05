@@ -4,15 +4,15 @@ use crate::{
 	active_connection::ActiveConnection,
 	device::Device,
 	interface::{
+		NetworkManagerProxy,
 		active_connection::ActiveConnectionProxy,
 		device::DeviceProxy,
 		enums::{NmConnectivityState, NmState},
-		NetworkManagerProxy,
 	},
-	settings::{connection::Connection, NetworkManagerSettings},
+	settings::{NetworkManagerSettings, connection::Connection},
 };
 use std::ops::Deref;
-use zbus::{zvariant::ObjectPath, Result};
+use zbus::{Result, zvariant::ObjectPath};
 
 #[derive(Debug)]
 pub struct NetworkManager<'a>(NetworkManagerProxy<'a>);

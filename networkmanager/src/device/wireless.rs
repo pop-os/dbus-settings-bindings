@@ -5,7 +5,7 @@ use crate::{
 	access_point::AccessPoint,
 	interface::{
 		access_point::AccessPointProxy,
-		device::{wireless::WirelessDeviceProxy, DeviceProxy},
+		device::{DeviceProxy, wireless::WirelessDeviceProxy},
 		enums::{WifiCapabilities, WifiMode},
 	},
 };

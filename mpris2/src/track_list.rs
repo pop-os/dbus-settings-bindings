@@ -6,7 +6,7 @@ use crate::{
 	track::TrackId,
 };
 use std::{collections::BTreeMap, ops::Deref};
-use zbus::{names::OwnedBusName, Connection};
+use zbus::{Connection, names::OwnedBusName};
 
 #[derive(Debug, Clone)]
 pub struct TrackList {

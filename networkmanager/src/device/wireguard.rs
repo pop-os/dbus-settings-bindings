@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::Device;
-use crate::interface::device::{wireguard::WireGuardDeviceProxy, DeviceProxy};
+use crate::interface::device::{DeviceProxy, wireguard::WireGuardDeviceProxy};
 use std::ops::Deref;
 use zbus::Result;
 

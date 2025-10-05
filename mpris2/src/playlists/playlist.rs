@@ -8,14 +8,14 @@ pub struct Playlist((PlaylistId, String, String));
 
 impl Playlist {
 	pub fn id(&self) -> &PlaylistId {
-		&self.0 .0
+		&self.0.0
 	}
 
 	pub fn name(&self) -> &str {
-		&self.0 .1
+		&self.0.1
 	}
 
 	pub fn icon(&self) -> &str {
-		&self.0 .2
+		&self.0.2
 	}
 }

@@ -2,7 +2,7 @@
 name = "mpris2-zbus"
 description = "zbus-based bindings for MPRIS2 (Media Player Remote Interfacing Specification) on Linux"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 license = "MPL-2.0"
 
 [dependencies]

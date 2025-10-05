@@ -13,8 +13,9 @@ use crate::{
 		active_connection::ActiveConnectionProxy,
 		config::{ip4::Ipv4ConfigProxy, ip6::Ipv6ConfigProxy},
 		device::{
-			bluetooth::BluetoothDeviceProxy, tun::TunDeviceProxy, wired::WiredDeviceProxy,
-			wireguard::WireGuardDeviceProxy, wireless::WirelessDeviceProxy, DeviceProxy,
+			DeviceProxy, bluetooth::BluetoothDeviceProxy, tun::TunDeviceProxy,
+			wired::WiredDeviceProxy, wireguard::WireGuardDeviceProxy,
+			wireless::WirelessDeviceProxy,
 		},
 		enums::{DeviceCapabilities, DeviceState, DeviceType},
 		settings::connection::ConnectionSettingsProxy,

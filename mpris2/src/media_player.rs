@@ -11,7 +11,7 @@ use crate::{
 	track_list::TrackList,
 };
 use std::ops::Deref;
-use zbus::{names::OwnedBusName, Connection};
+use zbus::{Connection, names::OwnedBusName};
 
 #[derive(Debug, Clone)]
 pub struct MediaPlayer {

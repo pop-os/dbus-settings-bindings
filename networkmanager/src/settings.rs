@@ -3,7 +3,7 @@
 pub mod connection;
 
 use self::connection::Connection;
-use crate::interface::settings::{connection::ConnectionSettingsProxy, SettingsProxy};
+use crate::interface::settings::{SettingsProxy, connection::ConnectionSettingsProxy};
 use std::ops::Deref;
 use zbus::Result;
 
