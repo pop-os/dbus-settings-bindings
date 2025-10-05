@@ -14,5 +14,5 @@ zbus.workspace = true
 zvariant.workspace = true
 
 [dev-dependencies]
-miette = { version = "7.2", features = ["fancy"] }
+miette = { version = "7.6", features = ["fancy"] }
 tokio = { version = "1", features = ["full"] }

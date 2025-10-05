@@ -5,10 +5,9 @@ edition = "2024"
 license = "MPL-2.0"
 
 [dependencies]
-bitflags = "2.4"
+bitflags = "2.9"
 derive_builder = "0.20.2"
-procfs = { version = "0.17", default-features = false }
-thiserror.workspace = true
+procfs = { version = "0.18", default-features = false }
 time.workspace = true
 zvariant.workspace = true
 zbus.workspace = true

@@ -9,5 +9,5 @@ license = "MPL-2.0"
 
 [dependencies]
 serde.workspace = true
-serde_repr = "0.1.18"
+serde_repr = "0.1.20"
 zbus.workspace = true
