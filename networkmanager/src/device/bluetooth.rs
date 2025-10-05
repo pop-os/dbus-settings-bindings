@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::Device;
-use crate::interface::device::{bluetooth::BluetoothDeviceProxy, DeviceProxy};
+use crate::interface::device::{DeviceProxy, bluetooth::BluetoothDeviceProxy};
 use std::ops::Deref;
 use zbus::Result;
 

@@ -29,7 +29,7 @@ use zbus::proxy;
 pub trait TrackList {
 	/// AddTrack method
 	fn add_track(&self, uri: &str, after_track: &TrackId, set_as_current: bool)
-		-> zbus::Result<()>;
+	-> zbus::Result<()>;
 
 	/// GetTracksMetadata method
 	fn get_tracks_metadata(
@@ -46,7 +46,7 @@ pub trait TrackList {
 	/// TrackListReplaced signal
 	#[zbus(signal)]
 	fn track_list_replaced(&self, tracks: Vec<TrackId>, current_track: TrackId)
-		-> zbus::Result<()>;
+	-> zbus::Result<()>;
 
 	/// CanEditTracks property
 	#[zbus(property)]

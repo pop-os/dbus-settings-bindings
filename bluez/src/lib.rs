@@ -45,7 +45,9 @@ pub async fn get_adapters<'a>(
 			.filter_map(std::result::Result::err)
 			.collect();
 		if errors.len() > 1 {
-			eprintln!("Multiple errors occurs when fetching connected device: {errors:?}. Only the last one will be returned.");
+			eprintln!(
+				"Multiple errors occurs when fetching connected device: {errors:?}. Only the last one will be returned."
+			);
 		}
 		return Err(errors.pop().unwrap());
 	}
@@ -165,7 +167,9 @@ pub async fn get_devices<'a>(
 			.filter_map(std::result::Result::err)
 			.collect();
 		if errors.len() > 1 {
-			eprintln!("Multiple errors occurs when fetching connected device: {errors:?}. Only the last one will be returned.");
+			eprintln!(
+				"Multiple errors occurs when fetching connected device: {errors:?}. Only the last one will be returned."
+			);
 		}
 		return Err(errors.pop().unwrap());
 	}

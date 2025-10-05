@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use futures_util::{
-	stream::{self, StreamExt},
 	Stream,
+	stream::{self, StreamExt},
 };
-use zbus::{fdo::DBusProxy, names::OwnedBusName, Connection};
+use zbus::{Connection, fdo::DBusProxy, names::OwnedBusName};
 
 #[derive(Clone, Debug)]
 pub enum Event {

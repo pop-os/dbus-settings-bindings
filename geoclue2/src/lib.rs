@@ -1,8 +1,7 @@
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use zbus::{
-	proxy,
+	Result, proxy,
 	zvariant::{ObjectPath, OwnedValue, Type},
-	Result,
 };
 
 #[repr(u32)]

@@ -8,7 +8,7 @@ use crate::{
 	error::{Error, Result},
 };
 use std::ops::Deref;
-use zbus::{names::OwnedBusName, Connection};
+use zbus::{Connection, names::OwnedBusName};
 
 pub struct Playlists {
 	proxy: PlaylistsProxy<'static>,
