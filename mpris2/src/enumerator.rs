@@ -33,7 +33,7 @@ impl Enumerator {
 	/// Returns a stream that is signalled when an mpris client is added or removed
 	pub async fn receive_changes(
 		&self,
-	) -> zbus::Result<impl Stream<Item = zbus::Result<Event>> + Unpin> {
+	) -> zbus::Result<impl use<> + Stream<Item = zbus::Result<Event>> + Unpin> {
 		let stream = self.proxy.receive_name_owner_changed().await?;
 		Ok(stream
 			.filter_map(|signal| {
