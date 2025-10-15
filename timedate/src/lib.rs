@@ -46,7 +46,7 @@ pub trait TimeDate {
 	fn set_timezone(&self, timezone: &str, interactive: bool) -> zbus::Result<()>;
 
 	/// Shows whether a service to perform time synchronization over network is available.
-	#[zbus(property, name = "CanNTP")]
+	#[zbus(property(emits_changed_signal = "false"), name = "CanNTP")]
 	fn can_ntp(&self) -> zbus::Result<bool>;
 
 	/// Shows whether the RTC is configured to use UTC or the local time zone.
@@ -58,15 +58,15 @@ pub trait TimeDate {
 	fn ntp(&self) -> zbus::Result<bool>;
 
 	/// Shows whether the kernel reports the time as synchronized.
-	#[zbus(property, name = "NTPSynchronized")]
+	#[zbus(property(emits_changed_signal = "false"), name = "NTPSynchronized")]
 	fn ntp_synchronized(&self) -> zbus::Result<bool>;
 
 	/// Shows the current time in RTC.
-	#[zbus(property, name = "RTCTimeUSec")]
+	#[zbus(property(emits_changed_signal = "false"), name = "RTCTimeUSec")]
 	fn rtctime_usec(&self) -> zbus::Result<u64>;
 
 	/// Shows the current time.
-	#[zbus(property, name = "TimeUSec")]
+	#[zbus(property(emits_changed_signal = "false"), name = "TimeUSec")]
 	fn time_usec(&self) -> zbus::Result<u64>;
 
 	/// Shows the currently-configured time zone.
