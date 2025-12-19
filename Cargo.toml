@@ -12,6 +12,7 @@ members = [
 	"locale1",
 	"mpris2",
 	"networkmanager",
+	"secret-agent",
 	"switcheroo-control",
 	"timedate",
 	"upower",

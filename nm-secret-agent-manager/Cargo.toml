@@ -1,0 +1,7 @@
+[package]
+name = "nm-secret-agent-manager"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+zbus.workspace = true
