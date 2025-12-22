@@ -94,7 +94,7 @@ pub trait Device {
 	fn charge_start_threshold(&self) -> zbus::Result<u32>;
 
 	#[zbus(property)]
-	fn charge_threshold_enabled(&self) -> zbus::Result<u32>;
+	fn charge_threshold_enabled(&self) -> zbus::Result<bool>;
 
 	#[zbus(property)]
 	fn charge_threshold_settings_supported(&self) -> zbus::Result<u32>;
@@ -183,12 +183,9 @@ pub trait Device {
 	#[zbus(property)]
 	fn voltage_min_design(&self) -> zbus::Result<f64>;
 
+
 	#[zbus(signal)]
 	fn enable_charge_threshold(&self, message: bool) -> zbus::Result<()>;
-
-
-	// #[zbus(signal)]
-	// fn enable_charge_threshold(&self, charge_threshold: bool) -> zbus::Result<()>;
 
 	#[zbus(signal)]
 	fn get_history(&self, type_: String, timespan: u32, resolution: u32) -> zbus::Result<Vec<u32, f64, u32>>;
