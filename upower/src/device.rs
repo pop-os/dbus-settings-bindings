@@ -63,6 +63,18 @@ pub enum BatteryLevel {
 	Full = 8,
 }
 
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash, Deserialize_repr, Serialize_repr, OwnedValue)]
+#[repr(u32)]
+pub enum BatteryTechnology {
+	Unknown = 0,
+	LithiumIon = 1,
+	LithiumPolymer = 2,
+	LithiumIronPhosphate = 3,
+	LeadAcid = 4,
+	NickelCadmium = 5,
+	NickelMetalHydride = 6,
+}
+
 #[proxy(
 	interface = "org.freedesktop.UPower.Device",
 	default_service = "org.freedesktop.UPower",
@@ -76,6 +88,21 @@ pub trait Device {
 	fn capacity(&self) -> zbus::Result<f64>;
 
 	#[zbus(property)]
+	fn charge_end_threshold(&self) -> zbus::Result<u32>;
+
+	#[zbus(property)]
+	fn charge_start_threshold(&self) -> zbus::Result<u32>;
+
+	#[zbus(property)]
+	fn charge_threshold_enabled(&self) -> zbus::Result<u32>;
+
+	#[zbus(property)]
+	fn charge_threshold_settings_supported(&self) -> zbus::Result<u32>;
+
+	#[zbus(property)]
+	fn charge_threshold_supported(&self) -> zbus::Result<bool>;
+
+	#[zbus(property)]
 	fn energy(&self) -> zbus::Result<f64>;
 
 	#[zbus(property)]
@@ -86,6 +113,9 @@ pub trait Device {
 
 	#[zbus(property)]
 	fn energy_full_design(&self) -> zbus::Result<f64>;
+
+	#[zbus(property)]
+	fn energy_rate(&self) -> zbus::Result<f64>;
 
 	#[zbus(property)]
 	fn has_history(&self) -> zbus::Result<bool>;
@@ -102,6 +132,7 @@ pub trait Device {
 	#[zbus(property)]
 	fn is_rechargeable(&self) -> zbus::Result<bool>;
 
+	#[deprecated(since="0.3.2", note="deprecated since 0.99.12")]
 	#[zbus(property)]
 	fn luminosity(&self) -> zbus::Result<f64>;
 
@@ -129,6 +160,9 @@ pub trait Device {
 	fn state(&self) -> zbus::Result<BatteryState>;
 
 	#[zbus(property)]
+	fn technology(&self) -> zbus::Result<BatteryTechnology>;
+
+	#[zbus(property)]
 	fn temperature(&self) -> zbus::Result<f64>;
 
 	#[zbus(property)]
@@ -145,4 +179,23 @@ pub trait Device {
 
 	#[zbus(property)]
 	fn voltage(&self) -> zbus::Result<f64>;
+
+	#[zbus(property)]
+	fn voltage_min_design(&self) -> zbus::Result<f64>;
+
+	#[zbus(signal)]
+	fn enable_charge_threshold(&self, message: bool) -> zbus::Result<()>;
+
+
+	// #[zbus(signal)]
+	// fn enable_charge_threshold(&self, charge_threshold: bool) -> zbus::Result<()>;
+
+	#[zbus(signal)]
+	fn get_history(&self, type_: String, timespan: u32, resolution: u32) -> zbus::Result<Vec<u32, f64, u32>>;
+
+	#[zbus(signal)]
+	fn get_statistics(&self, type_: String) -> zbus::Result<()>;
+
+	#[zbus(signal)]
+	fn refresh(&self) -> zbus::Result<()>;
 }
