@@ -183,6 +183,9 @@ pub trait Device {
 	#[zbus(property)]
 	fn voltage_min_design(&self) -> zbus::Result<f64>;
 
+	#[zbus(property)]
+	fn voltage_max_design(&self) -> zbus::Result<f64>;
+
 
 	#[zbus(signal)]
 	fn enable_charge_threshold(&self, message: bool) -> zbus::Result<()>;
