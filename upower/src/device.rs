@@ -187,14 +187,13 @@ pub trait Device {
 	fn voltage_max_design(&self) -> zbus::Result<f64>;
 
 
+	fn get_history(&self, type_: String, timespan: u32, resolution: u32) -> zbus::Result<Vec<(u32, f64, u32)>>;
+
+	fn get_statistics(&self, type_: String) -> zbus::Result<Vec<(f64, f64)>>;
+
+
 	#[zbus(signal)]
 	fn enable_charge_threshold(&self, message: bool) -> zbus::Result<()>;
-
-	#[zbus(signal)]
-	fn get_history(&self, type_: String, timespan: u32, resolution: u32) -> zbus::Result<Vec<u32, f64, u32>>;
-
-	#[zbus(signal)]
-	fn get_statistics(&self, type_: String) -> zbus::Result<()>;
 
 	#[zbus(signal)]
 	fn refresh(&self) -> zbus::Result<()>;
