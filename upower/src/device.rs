@@ -132,7 +132,7 @@ pub trait Device {
 	#[zbus(property)]
 	fn is_rechargeable(&self) -> zbus::Result<bool>;
 
-	#[deprecated(since="0.3.2", note="deprecated since 0.99.12")]
+	#[deprecated(since = "0.3.2", note = "deprecated since 0.99.12")]
 	#[zbus(property)]
 	fn luminosity(&self) -> zbus::Result<f64>;
 
@@ -186,11 +186,14 @@ pub trait Device {
 	#[zbus(property)]
 	fn voltage_max_design(&self) -> zbus::Result<f64>;
 
-
-	fn get_history(&self, type_: String, timespan: u32, resolution: u32) -> zbus::Result<Vec<(u32, f64, u32)>>;
+	fn get_history(
+		&self,
+		type_: String,
+		timespan: u32,
+		resolution: u32,
+	) -> zbus::Result<Vec<(u32, f64, u32)>>;
 
 	fn get_statistics(&self, type_: String) -> zbus::Result<Vec<(f64, f64)>>;
-
 
 	#[zbus(signal)]
 	fn enable_charge_threshold(&self, message: bool) -> zbus::Result<()>;
