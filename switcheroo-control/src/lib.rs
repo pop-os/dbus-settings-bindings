@@ -103,11 +103,16 @@ impl TryFrom<HashMap<String, OwnedValue>> for Gpu {
 			.get("Default")
 			.ok_or(zvariant::Error::IncorrectType)?
 			.try_into()?;
+		let discrete = value
+			.get("Discrete")
+			.and_then(|v| v.try_into().ok())
+			.unwrap_or(!default);
 
 		Ok(Self {
 			name,
 			environment,
 			default,
+			discrete,
 		})
 	}
 }
@@ -125,4 +130,5 @@ pub struct Gpu {
 	pub name: String,
 	pub environment: HashMap<String, String>,
 	pub default: bool,
+	pub discrete: bool,
 }
