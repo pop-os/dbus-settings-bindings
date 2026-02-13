@@ -99,7 +99,7 @@ impl TryFrom<HashMap<String, OwnedValue>> for Gpu {
 			.chunks_exact(2)
 			.map(|chunk| (chunk[0].clone(), chunk[1].clone()))
 			.collect();
-		let default = value
+		let default: bool = value
 			.get("Default")
 			.ok_or(zvariant::Error::IncorrectType)?
 			.try_into()?;
