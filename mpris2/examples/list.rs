@@ -43,7 +43,7 @@ async fn main() -> Result<()> {
 			.await
 			.into_diagnostic()
 			.wrap_err_with(|| format!("Failed to get position for media player '{}'", name))?
-			.map(|s| format!("{} seconds", s.as_seconds_f32()))
+			.map(|s| format!("{} seconds", s.as_secs_f32()))
 			.unwrap_or_else(|| "N/A".to_owned());
 		println!("\tPosition: {}", position);
 		if !player

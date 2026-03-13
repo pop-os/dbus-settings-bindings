@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MPL-2.0
 use crate::error::{Error, Result};
+use jiff::{SignedDuration, Timestamp};
 use std::{
 	collections::HashMap,
 	fmt,
 	ops::{Deref, DerefMut},
 };
-use time::{Duration, OffsetDateTime};
 use zbus::zvariant::{OwnedObjectPath, Value as ZValue};
 
 #[derive(Debug, Clone, PartialEq)]
@@ -90,7 +90,7 @@ impl Metadata {
 	}
 
 	/// `xesam:contentCreated`: When the track was created. Usually only the year component will be useful.
-	pub fn created(&self) -> Option<OffsetDateTime> {
+	pub fn created(&self) -> Option<Timestamp> {
 		self.inner
 			.get("xesam:contentCreated")
 			.cloned()
@@ -106,7 +106,7 @@ impl Metadata {
 	}
 
 	/// `xesam:firstUsed`: When the track was first played.
-	pub fn first_played(&self) -> Option<OffsetDateTime> {
+	pub fn first_played(&self) -> Option<Timestamp> {
 		self.inner
 			.get("xesam:firstUsed")
 			.cloned()
@@ -128,7 +128,7 @@ impl Metadata {
 	}
 
 	/// `xesam:lastUsed`: When the track was last played.
-	pub fn last_played(&self) -> Option<OffsetDateTime> {
+	pub fn last_played(&self) -> Option<Timestamp> {
 		self.inner
 			.get("xesam:lastUsed")
 			.cloned()
@@ -199,7 +199,7 @@ impl Metadata {
 	}
 
 	/// `mpris:length`: The length of the track in microseconds.
-	pub fn length(&self) -> Option<Duration> {
+	pub fn length(&self) -> Option<SignedDuration> {
 		self.inner
 			.get("mpris:length")
 			.cloned()
@@ -209,7 +209,7 @@ impl Metadata {
 				MetadataValue::Str(s) => s.parse().ok(),
 				_ => None,
 			})
-			.map(Duration::microseconds)
+			.map(SignedDuration::from_micros)
 	}
 
 	/// `mpris:artUrl`: The location of an image representing the track or album.
@@ -309,17 +309,13 @@ impl MetadataValue {
 
 	/// Tries to extract a date/time from the variant,
 	/// returning an error if the variant is not a date/time.
-	pub fn try_into_date(self) -> Result<OffsetDateTime> {
+	pub fn try_into_date(self) -> Result<Timestamp> {
 		let variant = self.variant();
 		match self {
-			MetadataValue::Str(s) => {
-				OffsetDateTime::parse(&s, &time::format_description::well_known::Rfc3339).map_err(
-					|_| Error::IncorrectVariant {
-						wanted: "String (DateTime)",
-						actual: variant,
-					},
-				)
-			}
+			MetadataValue::Str(s) => s.parse::<Timestamp>().map_err(|_| Error::IncorrectVariant {
+				wanted: "String (DateTime)",
+				actual: variant,
+			}),
 			_ => Err(Error::IncorrectVariant {
 				wanted: "String (DateTime)",
 				actual: variant,
@@ -329,7 +325,7 @@ impl MetadataValue {
 
 	/// Tries to extract a date/time from the variant,
 	/// panicking if the variant is not a date/time.
-	pub fn into_date(self) -> OffsetDateTime {
+	pub fn into_date(self) -> Timestamp {
 		self.try_into_date().unwrap_or_else(|err| panic!("{}", err))
 	}
 

@@ -8,14 +8,13 @@ use crate::{
 	util::clock_boottime_to_time,
 };
 use std::ops::Deref;
-use time::OffsetDateTime;
 use zbus::Result;
 
 #[derive(Debug)]
 pub struct AccessPoint<'a>(AccessPointProxy<'a>);
 
 impl<'a> AccessPoint<'a> {
-	pub async fn last_seen(&self) -> Result<Option<OffsetDateTime>> {
+	pub async fn last_seen(&self) -> Result<Option<jiff::Timestamp>> {
 		Ok(clock_boottime_to_time(self.0.last_seen().await?))
 	}
 

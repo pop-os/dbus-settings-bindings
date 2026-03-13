@@ -1,7 +1,7 @@
 // Copyright 2023 System76 <info@system76.com>
 // SPDX-License-Identifier: MPL-2.0
 
-use chrono::TimeZone;
+use jiff::{Timestamp, tz::TimeZone};
 
 const TZ_FORMAT: &str = "%a %Y-%m-%d %H:%M:%S %Z";
 const RTC_FORMAT: &str = "%a %Y-%m-%d %H:%M:%S";
@@ -23,21 +23,24 @@ pub async fn main() -> zbus::Result<()> {
 	let time_usecs = proxy.time_usec().await?;
 	let timezone = proxy.timezone().await?;
 
-	let tz: chrono_tz::Tz = timezone.parse().unwrap();
+	let tz = TimeZone::get(&timezone).unwrap();
+	let utc = TimeZone::UTC;
 
-	let datetime = tz.timestamp_millis_opt((time_usecs / 1000) as i64).unwrap();
+	let datetime = Timestamp::from_microsecond(time_usecs as i64)
+		.unwrap()
+		.to_zoned(tz.clone());
 
-	let rtc_millis = (rtc_time_usecs / 1000) as i64;
+	let rtc_ts = Timestamp::from_microsecond(rtc_time_usecs as i64).unwrap();
 	let rtc_time = (if rtc_in_local {
-		tz.timestamp_millis_opt(rtc_millis).unwrap()
+		rtc_ts.to_zoned(tz)
 	} else {
-		chrono_tz::UTC.timestamp_millis_opt(rtc_millis).unwrap()
+		rtc_ts.to_zoned(utc.clone())
 	})
-	.format(RTC_FORMAT);
+	.strftime(RTC_FORMAT);
 
-	let local = datetime.format(TZ_FORMAT);
-	let universal = datetime.with_timezone(&chrono_tz::UTC).format(TZ_FORMAT);
-	let tz_string = datetime.format("%Z, %z");
+	let local = datetime.strftime(TZ_FORMAT);
+	let universal = datetime.with_time_zone(utc).strftime(TZ_FORMAT);
+	let tz_string = datetime.strftime("%Z, %z");
 
 	let rtc_in_local = CHOICES[usize::from(rtc_in_local)];
 	let synchronized = CHOICES[usize::from(proxy.ntp_synchronized().await.unwrap_or_default())];
