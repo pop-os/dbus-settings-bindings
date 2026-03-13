@@ -9,7 +9,7 @@ license = "MPL-2.0"
 futures-util.workspace = true
 serde.workspace = true
 thiserror.workspace = true
-time.workspace = true
+jiff.workspace = true
 zbus.workspace = true
 zvariant.workspace = true
 

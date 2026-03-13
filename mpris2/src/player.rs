@@ -7,12 +7,12 @@ use crate::{
 	metadata::Metadata,
 	track::TrackId,
 };
+use jiff::SignedDuration;
 use std::{
 	fmt::{self, Display},
 	ops::Deref,
 	str::FromStr,
 };
-use time::Duration;
 use zbus::{Connection, names::OwnedBusName};
 
 #[derive(Debug, Clone)]
@@ -41,11 +41,9 @@ impl Player {
 	}
 
 	/// Seeks the specified duration.
-	pub async fn seek(&self, duration: Duration) -> Result<bool> {
+	pub async fn seek(&self, duration: SignedDuration) -> Result<bool> {
 		if self.proxy.can_seek().await? {
-			self.proxy
-				.seek(duration.whole_microseconds() as i64)
-				.await?;
+			self.proxy.seek(duration.as_micros() as i64).await?;
 			Ok(true)
 		} else {
 			Ok(false)
@@ -55,9 +53,9 @@ impl Player {
 	/// Sets the current track position.
 	///
 	/// If `track` does not match the id of the currently-playing track, the call is ignored as "stale".
-	pub async fn set_position(&self, track: &TrackId, position: Duration) -> Result<()> {
+	pub async fn set_position(&self, track: &TrackId, position: SignedDuration) -> Result<()> {
 		self.proxy
-			.set_position(track, position.whole_microseconds() as i64)
+			.set_position(track, position.as_micros() as i64)
 			.await
 			.map_err(Error::from)
 	}
@@ -65,8 +63,8 @@ impl Player {
 	/// How far into the current track the player is.
 	///
 	/// Not all players support this, and it will return None if this is the case.
-	pub async fn position(&self) -> Result<Option<Duration>> {
-		handle_optional(self.proxy.position().await.map(Duration::microseconds))
+	pub async fn position(&self) -> Result<Option<SignedDuration>> {
+		handle_optional(self.proxy.position().await.map(SignedDuration::from_micros))
 	}
 
 	/// Gets the current playback status of the player.

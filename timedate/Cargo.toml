@@ -15,8 +15,7 @@ all-features = true
 zbus.workspace = true
 
 [dev-dependencies]
-chrono = "0.4.42"
-chrono-tz = "0.10.4"
+jiff.workspace = true
 zbus.workspace = true
 zbus.features = ["tokio"]
 
