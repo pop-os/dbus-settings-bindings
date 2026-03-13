@@ -19,11 +19,11 @@ members = [
 ]
 
 [workspace.dependencies]
-futures-channel = "0.3.31"
-futures-util = "0.3.31"
+futures-channel = "0.3.32"
+futures-util = "0.3.32"
 serde = { version = "1.0", features = ["derive"] }
 thiserror = "2.0"
 jiff = "0.2"
-tracing = "0.1.41"
-zbus = { version = "5.11.0" }
-zvariant = { version = "5.7.0" }
+tracing = "0.1.44"
+zbus = { version = "5.14.0" }
+zvariant = { version = "5.10.0" }
