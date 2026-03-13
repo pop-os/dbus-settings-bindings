@@ -16,4 +16,4 @@ serde_repr = "0.1.20"
 zbus.workspace = true
 
 [dev-dependencies]
-futures = "0.3.31"
+futures = "0.3.32"
