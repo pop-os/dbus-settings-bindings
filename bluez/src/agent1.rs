@@ -122,6 +122,15 @@ impl Agent {
 	) -> zbus::fdo::Result<()> {
 		tracing::debug!(?device, passkey, entered, "display_passkey");
 
+		_ = self
+			.message_sender
+			.send(Message::DisplayPasskey {
+				device,
+				passkey,
+				entered,
+			})
+			.await;
+
 		Ok(())
 	}
 
@@ -150,6 +159,14 @@ impl Agent {
 	) -> zbus::fdo::Result<()> {
 		tracing::debug!(?device, pin_code, "display_pin_code");
 
+		_ = self
+			.message_sender
+			.send(Message::DisplayPinCode {
+				device,
+				pincode: pin_code,
+			})
+			.await;
+
 		Ok(())
 	}
 
@@ -173,7 +190,18 @@ impl Agent {
 	async fn request_authorization(&mut self, device: OwnedObjectPath) -> zbus::fdo::Result<()> {
 		tracing::debug!(?device, "request_authorization");
 
-		Ok(())
+		let (response, response_rx) = oneshot::channel::<bool>();
+
+		_ = self
+			.message_sender
+			.send(Message::RequestAuthorization { device, response })
+			.await;
+
+		match response_rx.await {
+			Ok(true) => Ok(()),
+			Ok(false) => Err(zbus::fdo::Error::Failed("cancelled".to_string())),
+			Err(why) => Err(zbus::fdo::Error::Failed(why.to_string())),
+		}
 	}
 
 	/// This method gets called when the service daemon
