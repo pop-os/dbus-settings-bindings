@@ -2,7 +2,7 @@
 async fn main() -> zbus::Result<()> {
 	let connection = zbus::Connection::system().await?;
 
-	let proxy = locale1::locale1Proxy::new(&connection).await?;
+	let proxy = locale1_zbus::locale1Proxy::new(&connection).await?;
 
 	println!("Locale {:?}", proxy.locale().await?);
 	println!("Layout {:?}", proxy.x11layout().await?);

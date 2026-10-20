@@ -31,7 +31,7 @@ pub trait Ipv6Config {
 	#[zbus(property)]
 	fn address_data(
 		&self,
-	) -> zbus::Result<Vec<std::collections::HashMap<String, zbus::zvariant::OwnedValue>>>;
+	) -> zbus::Result<Vec<std::collections::HashMap<String, zbus::OwnedVariant>>>;
 
 	/// Addresses property
 	#[zbus(property)]
@@ -61,7 +61,7 @@ pub trait Ipv6Config {
 	#[zbus(property)]
 	fn route_data(
 		&self,
-	) -> zbus::Result<Vec<std::collections::HashMap<String, zbus::zvariant::OwnedValue>>>;
+	) -> zbus::Result<Vec<std::collections::HashMap<String, zbus::OwnedVariant>>>;
 
 	/// Routes property
 	#[zbus(property)]

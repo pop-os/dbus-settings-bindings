@@ -89,9 +89,7 @@ pub trait Player {
 
 	/// Metadata property
 	#[zbus(property)]
-	fn metadata(
-		&self,
-	) -> zbus::Result<std::collections::HashMap<String, zbus::zvariant::OwnedValue>>;
+	fn metadata(&self) -> zbus::Result<std::collections::HashMap<String, zbus::OwnedVariant>>;
 
 	/// MinimumRate property
 	#[zbus(property)]

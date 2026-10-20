@@ -11,7 +11,7 @@ async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
 		Some("hostname") => match parser.subcommand()?.as_deref() {
 			Some("set") => match parser.free_from_str::<String>().ok().as_deref() {
 				Some(new_hostname) => {
-					if let Err(why) = proxy.set_hostname(&new_hostname, false).await {
+					if let Err(why) = proxy.set_hostname(new_hostname, false).await {
 						eprintln!("error: could not set hostname: {why}");
 						return Ok(ExitCode::FAILURE);
 					}
@@ -31,7 +31,7 @@ async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
 		Some("static-hostname") => match parser.subcommand()?.as_deref() {
 			Some("set") => match parser.free_from_str::<String>().ok().as_deref() {
 				Some(new_hostname) => {
-					if let Err(why) = proxy.set_static_hostname(&new_hostname, false).await {
+					if let Err(why) = proxy.set_static_hostname(new_hostname, false).await {
 						eprintln!("error: could not set hostname: {why}");
 						return Ok(ExitCode::FAILURE);
 					}

@@ -29,11 +29,11 @@ pub trait ProfileManager1 {
 	/// RegisterProfile method
 	fn register_profile(
 		&self,
-		profile: &zbus::zvariant::ObjectPath<'_>,
+		profile: &zbus::ObjectPath<'_>,
 		UUID: &str,
-		options: std::collections::HashMap<&str, &zbus::zvariant::Value<'_>>,
+		options: std::collections::HashMap<&str, &zbus::Variant<'_>>,
 	) -> zbus::Result<()>;
 
 	/// UnregisterProfile method
-	fn unregister_profile(&self, profile: &zbus::zvariant::ObjectPath<'_>) -> zbus::Result<()>;
+	fn unregister_profile(&self, profile: &zbus::ObjectPath<'_>) -> zbus::Result<()>;
 }

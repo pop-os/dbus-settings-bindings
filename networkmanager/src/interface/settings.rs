@@ -35,22 +35,22 @@ pub trait Settings {
 		&self,
 		connection: std::collections::HashMap<
 			&str,
-			std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
+			std::collections::HashMap<&str, zbus::Variant<'_>>,
 		>,
-	) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
+	) -> zbus::Result<zbus::OwnedObjectPath>;
 
 	/// AddConnection2 method
 	fn add_connection2(
 		&self,
 		settings: std::collections::HashMap<
 			&str,
-			std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
+			std::collections::HashMap<&str, zbus::Variant<'_>>,
 		>,
 		flags: u32,
-		args: std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
+		args: std::collections::HashMap<&str, zbus::Variant<'_>>,
 	) -> zbus::Result<(
-		zbus::zvariant::OwnedObjectPath,
-		std::collections::HashMap<String, zbus::zvariant::OwnedValue>,
+		zbus::OwnedObjectPath,
+		std::collections::HashMap<String, zbus::OwnedVariant>,
 	)>;
 
 	/// AddConnectionUnsaved method
@@ -58,15 +58,15 @@ pub trait Settings {
 		&self,
 		connection: std::collections::HashMap<
 			&str,
-			std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
+			std::collections::HashMap<&str, zbus::Variant<'_>>,
 		>,
-	) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
+	) -> zbus::Result<zbus::OwnedObjectPath>;
 
 	/// GetConnectionByUuid method
-	fn get_connection_by_uuid(&self, uuid: &str) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
+	fn get_connection_by_uuid(&self, uuid: &str) -> zbus::Result<zbus::OwnedObjectPath>;
 
 	/// ListConnections method
-	fn list_connections(&self) -> zbus::Result<Vec<zbus::zvariant::OwnedObjectPath>>;
+	fn list_connections(&self) -> zbus::Result<Vec<zbus::OwnedObjectPath>>;
 
 	/// LoadConnections method
 	fn load_connections(&self, filenames: &[&str]) -> zbus::Result<(bool, Vec<String>)>;
@@ -79,11 +79,11 @@ pub trait Settings {
 
 	/// ConnectionRemoved signal
 	#[zbus(signal)]
-	fn connection_removed(&self, connection: zbus::zvariant::ObjectPath<'_>) -> zbus::Result<()>;
+	fn connection_removed(&self, connection: zbus::ObjectPath<'_>) -> zbus::Result<()>;
 
 	/// NewConnection signal
 	#[zbus(signal)]
-	fn new_connection(&self, connection: zbus::zvariant::ObjectPath<'_>) -> zbus::Result<()>;
+	fn new_connection(&self, connection: zbus::ObjectPath<'_>) -> zbus::Result<()>;
 
 	/// CanModify property
 	#[zbus(property)]
@@ -91,7 +91,7 @@ pub trait Settings {
 
 	/// Connections property
 	#[zbus(property)]
-	fn connections(&self) -> zbus::Result<Vec<zbus::zvariant::OwnedObjectPath>>;
+	fn connections(&self) -> zbus::Result<Vec<zbus::OwnedObjectPath>>;
 
 	/// Hostname property
 	#[zbus(property)]

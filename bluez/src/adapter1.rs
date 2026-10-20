@@ -24,19 +24,19 @@ pub trait Adapter1 {
 	/// ConnectDevice method
 	fn connect_device(
 		&self,
-		properties: std::collections::HashMap<&str, &zbus::zvariant::Value<'_>>,
+		properties: std::collections::HashMap<&str, &zbus::Variant<'_>>,
 	) -> zbus::Result<()>;
 
 	/// GetDiscoveryFilters method
 	fn get_discovery_filters(&self) -> zbus::Result<Vec<String>>;
 
 	/// RemoveDevice method
-	fn remove_device(&self, device: &zbus::zvariant::ObjectPath<'_>) -> zbus::Result<()>;
+	fn remove_device(&self, device: &zbus::ObjectPath<'_>) -> zbus::Result<()>;
 
 	/// SetDiscoveryFilter method
 	fn set_discovery_filter(
 		&self,
-		properties: std::collections::HashMap<&str, &zbus::zvariant::Value<'_>>,
+		properties: std::collections::HashMap<&str, &zbus::Variant<'_>>,
 	) -> zbus::Result<()>;
 
 	/// StartDiscovery method

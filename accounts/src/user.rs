@@ -187,7 +187,7 @@ pub trait User {
 		Vec<(
 			i64,
 			i64,
-			std::collections::HashMap<String, zbus::zvariant::OwnedValue>,
+			std::collections::HashMap<String, zbus::OwnedVariant>,
 		)>,
 	>;
 

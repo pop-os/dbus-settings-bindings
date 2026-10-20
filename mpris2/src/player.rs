@@ -24,7 +24,7 @@ impl Player {
 	/// Creates a new instance of the `org.mpris.MediaPlayer2.Player` interface.
 	pub async fn new(connection: &Connection, name: OwnedBusName) -> Result<Self> {
 		PlayerProxy::builder(connection)
-			.destination(name)?
+			.destination(name)
 			.build()
 			.await
 			.map(Self::from)
@@ -34,7 +34,7 @@ impl Player {
 	/// Returns this player's `org.mpris.MediaPlayer2` instance
 	pub async fn media_player(&self) -> Result<MediaPlayer> {
 		let proxy = MediaPlayer2Proxy::builder(self.proxy.inner().connection())
-			.destination(self.proxy.inner().destination().to_owned())?
+			.destination(self.proxy.inner().destination().to_owned())
 			.build()
 			.await?;
 		Ok(proxy.into())

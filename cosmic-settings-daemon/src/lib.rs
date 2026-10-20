@@ -44,14 +44,14 @@ pub trait CosmicSettingsDaemon {
 		&self,
 		id: &str,
 		version: u64,
-	) -> zbus::Result<(zbus::zvariant::OwnedObjectPath, OwnedWellKnownName)>;
+	) -> zbus::Result<(zbus::OwnedObjectPath, OwnedWellKnownName)>;
 
 	/// WatchState method
 	fn watch_state(
 		&self,
 		id: &str,
 		version: u64,
-	) -> zbus::Result<(zbus::zvariant::OwnedObjectPath, OwnedWellKnownName)>;
+	) -> zbus::Result<(zbus::OwnedObjectPath, OwnedWellKnownName)>;
 
 	/// DisplayBrightness property
 	#[zbus(property)]

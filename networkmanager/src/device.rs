@@ -32,7 +32,7 @@ impl<'a> Device<'a> {
 	pub async fn active_connection(&self) -> Result<ActiveConnection<'a>> {
 		let active_connection = self.0.active_connection().await?;
 		Ok(ActiveConnectionProxy::builder(self.0.inner().connection())
-			.path(active_connection)?
+			.path(active_connection)
 			.build()
 			.await?
 			.into())
@@ -43,7 +43,7 @@ impl<'a> Device<'a> {
 		let mut out = Vec::with_capacity(available_connections.len());
 		for connection in available_connections {
 			let connection = ConnectionSettingsProxy::builder(self.0.inner().connection())
-				.path(connection)?
+				.path(connection)
 				.build()
 				.await?;
 			out.push(connection.into());
@@ -66,35 +66,35 @@ impl<'a> Device<'a> {
 		match self.device_type().await? {
 			DeviceType::Bluetooth => Ok(Some(SpecificDevice::Bluetooth(
 				BluetoothDeviceProxy::builder(self.0.inner().connection())
-					.path(self.0.inner().path())?
+					.path(self.0.inner().path())
 					.build()
 					.await?
 					.into(),
 			))),
 			DeviceType::Ethernet => Ok(Some(SpecificDevice::Wired(
 				WiredDeviceProxy::builder(self.0.inner().connection())
-					.path(self.0.inner().path())?
+					.path(self.0.inner().path())
 					.build()
 					.await?
 					.into(),
 			))),
 			DeviceType::Wifi => Ok(Some(SpecificDevice::Wireless(
 				WirelessDeviceProxy::builder(self.0.inner().connection())
-					.path(self.0.inner().path())?
+					.path(self.0.inner().path())
 					.build()
 					.await?
 					.into(),
 			))),
 			DeviceType::TunTap => Ok(Some(SpecificDevice::TunTap(
 				TunDeviceProxy::builder(self.0.inner().connection())
-					.path(self.0.inner().path())?
+					.path(self.0.inner().path())
 					.build()
 					.await?
 					.into(),
 			))),
 			DeviceType::WireGuard => Ok(Some(SpecificDevice::WireGuard(
 				WireGuardDeviceProxy::builder(self.0.inner().connection())
-					.path(self.0.inner().path())?
+					.path(self.0.inner().path())
 					.build()
 					.await?
 					.into(),
@@ -109,7 +109,7 @@ impl<'a> Device<'a> {
 
 	pub async fn ip4_config(&self) -> Result<Ipv4Config<'a>> {
 		let config = Ipv4ConfigProxy::builder(self.0.inner().connection())
-			.path(self.0.ip4_config().await?)?
+			.path(self.0.ip4_config().await?)
 			.build()
 			.await?;
 		Ok(Ipv4Config::from(config))
@@ -117,7 +117,7 @@ impl<'a> Device<'a> {
 
 	pub async fn ip6_config(&self) -> Result<Ipv6Config<'a>> {
 		let config = Ipv6ConfigProxy::builder(self.0.inner().connection())
-			.path(self.0.ip6_config().await?)?
+			.path(self.0.ip6_config().await?)
 			.build()
 			.await?;
 		Ok(Ipv6Config::from(config))

@@ -35,7 +35,7 @@ pub trait TrackList {
 	fn get_tracks_metadata(
 		&self,
 		track_ids: Vec<TrackId>,
-	) -> zbus::Result<Vec<std::collections::HashMap<String, zbus::zvariant::OwnedValue>>>;
+	) -> zbus::Result<Vec<std::collections::HashMap<String, zbus::OwnedVariant>>>;
 
 	/// GoTo method
 	fn go_to(&self, track_id: &TrackId) -> zbus::Result<()>;

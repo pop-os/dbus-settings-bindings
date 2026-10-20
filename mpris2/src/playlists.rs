@@ -18,7 +18,7 @@ impl Playlists {
 	/// Creates a new instance of the `org.mpris.MediaPlayer2.Playlists` interface.
 	pub async fn new(connection: &Connection, name: OwnedBusName) -> Result<Self> {
 		PlaylistsProxy::builder(connection)
-			.destination(name)?
+			.destination(name)
 			.build()
 			.await
 			.map(Self::from)
