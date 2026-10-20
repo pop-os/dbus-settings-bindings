@@ -27,10 +27,9 @@ pub trait HealthManager1 {
 	/// CreateApplication method
 	fn create_application(
 		&self,
-		config: std::collections::HashMap<&str, &zbus::zvariant::Value<'_>>,
-	) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
+		config: std::collections::HashMap<&str, &zbus::Variant<'_>>,
+	) -> zbus::Result<zbus::OwnedObjectPath>;
 
 	/// DestroyApplication method
-	fn destroy_application(&self, application: &zbus::zvariant::ObjectPath<'_>)
-	-> zbus::Result<()>;
+	fn destroy_application(&self, application: &zbus::ObjectPath<'_>) -> zbus::Result<()>;
 }

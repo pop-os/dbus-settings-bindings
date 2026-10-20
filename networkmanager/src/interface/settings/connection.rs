@@ -38,20 +38,14 @@ pub trait ConnectionSettings {
 		&self,
 		setting_name: &str,
 	) -> zbus::Result<
-		std::collections::HashMap<
-			String,
-			std::collections::HashMap<String, zbus::zvariant::OwnedValue>,
-		>,
+		std::collections::HashMap<String, std::collections::HashMap<String, zbus::OwnedVariant>>,
 	>;
 
 	/// GetSettings method
 	fn get_settings(
 		&self,
 	) -> zbus::Result<
-		std::collections::HashMap<
-			String,
-			std::collections::HashMap<String, zbus::zvariant::OwnedValue>,
-		>,
+		std::collections::HashMap<String, std::collections::HashMap<String, zbus::OwnedVariant>>,
 	>;
 
 	/// Save method
@@ -62,7 +56,7 @@ pub trait ConnectionSettings {
 		&self,
 		properties: std::collections::HashMap<
 			&str,
-			std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
+			std::collections::HashMap<&str, zbus::Variant<'_>>,
 		>,
 	) -> zbus::Result<()>;
 
@@ -71,18 +65,18 @@ pub trait ConnectionSettings {
 		&self,
 		settings: std::collections::HashMap<
 			&str,
-			std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
+			std::collections::HashMap<&str, zbus::Variant<'_>>,
 		>,
 		flags: u32,
-		args: std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
-	) -> zbus::Result<std::collections::HashMap<String, zbus::zvariant::OwnedValue>>;
+		args: std::collections::HashMap<&str, zbus::Variant<'_>>,
+	) -> zbus::Result<std::collections::HashMap<String, zbus::OwnedVariant>>;
 
 	/// UpdateUnsaved method
 	fn update_unsaved(
 		&self,
 		properties: std::collections::HashMap<
 			&str,
-			std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
+			std::collections::HashMap<&str, zbus::Variant<'_>>,
 		>,
 	) -> zbus::Result<()>;
 

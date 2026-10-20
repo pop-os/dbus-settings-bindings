@@ -20,13 +20,9 @@
 //! …consequently `zbus-xmlgen` did not generate code for the above interfaces.
 
 use std::collections::HashMap;
+use zbus::OwnedVariant;
 
-use zbus::{
-	proxy,
-	zvariant::{self, OwnedValue},
-};
-
-#[proxy(
+#[zbus::proxy(
 	interface = "net.hadess.SwitcherooControl",
 	default_service = "net.hadess.SwitcherooControl",
 	default_path = "/net/hadess/SwitcherooControl"
@@ -36,7 +32,7 @@ pub trait SwitcherooControl {
 	#[zbus(property, name = "GPUs")]
 	fn gpus(
 		&self,
-	) -> zbus::Result<Vec<std::collections::HashMap<String, zbus::zvariant::OwnedValue>>>;
+	) -> zbus::Result<Vec<std::collections::HashMap<String, zbus::zvariant::OwnedVariant>>>;
 
 	/// HasDualGpu property
 	#[zbus(property)]
@@ -64,35 +60,18 @@ impl<'a> SwitcherooControlProxy<'a> {
 	}
 }
 
-impl<'a> SwitcherooControlProxyBlocking<'a> {
-	pub fn get_cached_gpus(&self) -> zbus::Result<Vec<Gpu>> {
-		let res = self.cached_gpus()?;
-		if let Some(res) = res {
-			convert_gpus(res)
-		} else {
-			Err(zbus::Error::FDO(Box::new(zbus::fdo::Error::Failed(
-				"No cached GPUs".into(),
-			))))
-		}
-	}
+impl TryFrom<HashMap<String, OwnedVariant>> for Gpu {
+	type Error = zbus::Error;
 
-	pub fn get_gpus(&self) -> zbus::Result<Vec<Gpu>> {
-		convert_gpus(self.gpus()?)
-	}
-}
-
-impl TryFrom<HashMap<String, OwnedValue>> for Gpu {
-	type Error = zvariant::Error;
-
-	fn try_from(value: HashMap<String, OwnedValue>) -> Result<Self, Self::Error> {
+	fn try_from(value: HashMap<String, OwnedVariant>) -> Result<Self, Self::Error> {
 		let name = value
 			.get("Name")
-			.ok_or(zvariant::Error::IncorrectType)?
+			.ok_or(zbus::Error::IncorrectType)?
 			.try_clone()?
 			.try_into()?;
 		let environment: Vec<String> = value
 			.get("Environment")
-			.ok_or(zvariant::Error::IncorrectType)?
+			.ok_or(zbus::Error::IncorrectType)?
 			.try_clone()?
 			.try_into()?;
 		let environment: HashMap<String, String> = environment
@@ -101,7 +80,7 @@ impl TryFrom<HashMap<String, OwnedValue>> for Gpu {
 			.collect();
 		let default: bool = value
 			.get("Default")
-			.ok_or(zvariant::Error::IncorrectType)?
+			.ok_or(zbus::Error::IncorrectType)?
 			.try_into()?;
 		let discrete = value
 			.get("Discrete")
@@ -117,7 +96,7 @@ impl TryFrom<HashMap<String, OwnedValue>> for Gpu {
 	}
 }
 
-fn convert_gpus(gpus: Vec<HashMap<String, OwnedValue>>) -> zbus::Result<Vec<Gpu>> {
+fn convert_gpus(gpus: Vec<HashMap<String, OwnedVariant>>) -> zbus::Result<Vec<Gpu>> {
 	let mut graphics = Vec::with_capacity(gpus.len());
 	for gpu in gpus {
 		graphics.push(gpu.try_into()?);

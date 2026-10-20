@@ -1,7 +1,10 @@
 [package]
-name = "locale1"
-version = "0.1.0"
+name = "locale1-zbus"
+version = "1.0.0"
+repository = "https://github.com/pop-os/dbus-settings-bindings"
+description = "dbus bindings for org.freedesktop.locale1 with zbus"
 edition = "2024"
+license = "MPL-2.0"
 
 [dependencies]
 zbus.workspace = true

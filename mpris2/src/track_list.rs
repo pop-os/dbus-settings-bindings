@@ -17,7 +17,7 @@ impl TrackList {
 	/// Creates a new instance of the `org.mpris.MediaPlayer2.TrackList` interface.
 	pub async fn new(connection: &Connection, name: OwnedBusName) -> Result<Self> {
 		TrackListProxy::builder(connection)
-			.destination(name)?
+			.destination(name)
 			.build()
 			.await
 			.map(Self::from)

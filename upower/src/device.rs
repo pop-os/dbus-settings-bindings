@@ -2,10 +2,20 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use serde_repr::{Deserialize_repr, Serialize_repr};
-use zbus::proxy;
-use zbus::zvariant::OwnedValue;
+use zbus::zvariant::OwnedVariant;
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash, Deserialize_repr, Serialize_repr, OwnedValue)]
+#[derive(
+	Copy,
+	Clone,
+	Debug,
+	PartialEq,
+	Eq,
+	Hash,
+	Deserialize_repr,
+	Serialize_repr,
+	OwnedVariant,
+	zbus::Type,
+)]
 #[repr(u32)]
 pub enum BatteryState {
 	Unknown = 0,
@@ -17,7 +27,18 @@ pub enum BatteryState {
 	PendingDischarge = 6,
 }
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash, Deserialize_repr, Serialize_repr, OwnedValue)]
+#[derive(
+	Copy,
+	Clone,
+	Debug,
+	PartialEq,
+	Eq,
+	Hash,
+	Deserialize_repr,
+	Serialize_repr,
+	OwnedVariant,
+	zbus::Type,
+)]
 #[repr(u32)]
 pub enum BatteryType {
 	Unknown = 0,
@@ -51,7 +72,18 @@ pub enum BatteryType {
 	BluetoothGeneric = 28,
 }
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash, Deserialize_repr, Serialize_repr, OwnedValue)]
+#[derive(
+	Copy,
+	Clone,
+	Debug,
+	PartialEq,
+	Eq,
+	Hash,
+	Deserialize_repr,
+	Serialize_repr,
+	OwnedVariant,
+	zbus::Type,
+)]
 #[repr(u32)]
 pub enum BatteryLevel {
 	Unknown = 0,
@@ -63,7 +95,18 @@ pub enum BatteryLevel {
 	Full = 8,
 }
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash, Deserialize_repr, Serialize_repr, OwnedValue)]
+#[derive(
+	Copy,
+	Clone,
+	Debug,
+	PartialEq,
+	Eq,
+	Hash,
+	Deserialize_repr,
+	Serialize_repr,
+	OwnedVariant,
+	zbus::Type,
+)]
 #[repr(u32)]
 pub enum BatteryTechnology {
 	Unknown = 0,
@@ -75,7 +118,7 @@ pub enum BatteryTechnology {
 	NickelMetalHydride = 6,
 }
 
-#[proxy(
+#[zbus::proxy(
 	interface = "org.freedesktop.UPower.Device",
 	default_service = "org.freedesktop.UPower",
 	assume_defaults = false

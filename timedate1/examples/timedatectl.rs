@@ -10,7 +10,7 @@ const CHOICES: &[&str] = &["no", "yes"];
 #[tokio::main]
 pub async fn main() -> zbus::Result<()> {
 	let connection = zbus::Connection::system().await?;
-	let proxy = timedate_zbus::TimeDateProxy::new(&connection).await?;
+	let proxy = timedate1_zbus::TimeDateProxy::new(&connection).await?;
 
 	let ntp_service = if proxy.ntp().await? {
 		"active"

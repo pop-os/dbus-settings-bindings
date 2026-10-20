@@ -24,7 +24,7 @@
 //! [D-Bus standard interfaces]: https://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces,
 use zbus::proxy;
 
-use crate::{UserProxy, UserProxyBlocking};
+use crate::UserProxy;
 #[proxy(
 	interface = "org.freedesktop.Accounts",
 	default_service = "org.freedesktop.Accounts",
@@ -32,7 +32,7 @@ use crate::{UserProxy, UserProxyBlocking};
 )]
 pub trait Accounts {
 	/// CacheUser method
-	fn cache_user(&self, name: &str) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
+	fn cache_user(&self, name: &str) -> zbus::Result<zbus::OwnedObjectPath>;
 
 	/// CreateUser method
 	fn create_user(
@@ -40,37 +40,37 @@ pub trait Accounts {
 		name: &str,
 		fullname: &str,
 		account_type: i32,
-	) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
+	) -> zbus::Result<zbus::OwnedObjectPath>;
 
 	/// DeleteUser method
 	fn delete_user(&self, id: i64, remove_files: bool) -> zbus::Result<()>;
 
 	/// FindUserById method
-	fn find_user_by_id(&self, id: i64) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
+	fn find_user_by_id(&self, id: i64) -> zbus::Result<zbus::OwnedObjectPath>;
 
 	/// FindUserByName method
-	fn find_user_by_name(&self, name: &str) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
+	fn find_user_by_name(&self, name: &str) -> zbus::Result<zbus::OwnedObjectPath>;
 
 	/// GetUsersLanguages method
 	fn get_users_languages(&self) -> zbus::Result<Vec<String>>;
 
 	/// ListCachedUsers method
-	fn list_cached_users(&self) -> zbus::Result<Vec<zbus::zvariant::OwnedObjectPath>>;
+	fn list_cached_users(&self) -> zbus::Result<Vec<zbus::OwnedObjectPath>>;
 
 	/// UncacheUser method
 	fn uncache_user(&self, name: &str) -> zbus::Result<()>;
 
 	/// UserAdded signal
 	#[zbus(signal)]
-	fn user_added(&self, user: zbus::zvariant::ObjectPath<'_>) -> zbus::Result<()>;
+	fn user_added(&self, user: zbus::ObjectPath<'_>) -> zbus::Result<()>;
 
 	/// UserDeleted signal
 	#[zbus(signal)]
-	fn user_deleted(&self, user: zbus::zvariant::ObjectPath<'_>) -> zbus::Result<()>;
+	fn user_deleted(&self, user: zbus::ObjectPath<'_>) -> zbus::Result<()>;
 
 	/// AutomaticLoginUsers property
 	#[zbus(property)]
-	fn automatic_login_users(&self) -> zbus::Result<Vec<zbus::zvariant::OwnedObjectPath>>;
+	fn automatic_login_users(&self) -> zbus::Result<Vec<zbus::OwnedObjectPath>>;
 
 	/// DaemonVersion property
 	#[zbus(property)]
@@ -89,20 +89,8 @@ impl<'p> UserProxy<'p> {
 	/// Create a user proxy from a known user ID.
 	pub async fn from_uid(conn: &zbus::Connection, uid: u64) -> zbus::Result<UserProxy<'p>> {
 		Self::builder(conn)
-			.path(format!("/org/freedesktop/Accounts/User{uid}"))?
+			.path(format!("/org/freedesktop/Accounts/User{uid}"))
 			.build()
 			.await
-	}
-}
-
-impl<'p> UserProxyBlocking<'p> {
-	/// Create a user proxy from a known user ID.
-	pub fn from_uid(
-		conn: &zbus::blocking::Connection,
-		uid: u64,
-	) -> zbus::Result<UserProxyBlocking<'p>> {
-		Self::builder(conn)
-			.path(format!("/org/freedesktop/Accounts/User{uid}"))?
-			.build()
 	}
 }

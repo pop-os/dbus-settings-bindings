@@ -1,14 +1,12 @@
 // Copyright 2021 System76 <info@system76.com>
 // SPDX-License-Identifier: MPL-2.0
 
-use zbus::proxy;
+use crate::device::DeviceProxy;
 
-use crate::device::{DeviceProxy, DeviceProxyBlocking};
-
-#[proxy(interface = "org.freedesktop.UPower", assume_defaults = true)]
+#[zbus::proxy(interface = "org.freedesktop.UPower", assume_defaults = true)]
 pub trait UPower {
 	/// EnumerateDevices method
-	fn enumerate_devices(&self) -> zbus::Result<Vec<zbus::zvariant::OwnedObjectPath>>;
+	fn enumerate_devices(&self) -> zbus::Result<Vec<zbus::OwnedObjectPath>>;
 
 	/// GetCriticalAction method
 	fn get_critical_action(&self) -> zbus::Result<String>;
@@ -19,11 +17,11 @@ pub trait UPower {
 
 	/// DeviceAdded signal
 	#[zbus(signal)]
-	fn device_added(&self, device: zbus::zvariant::ObjectPath<'_>) -> zbus::Result<()>;
+	fn device_added(&self, device: zbus::ObjectPath<'_>) -> zbus::Result<()>;
 
 	/// DeviceRemoved signal
 	#[zbus(signal)]
-	fn device_removed(&self, device: zbus::zvariant::ObjectPath<'_>) -> zbus::Result<()>;
+	fn device_removed(&self, device: zbus::ObjectPath<'_>) -> zbus::Result<()>;
 
 	/// DaemonVersion property
 	#[zbus(property)]

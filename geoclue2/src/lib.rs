@@ -1,8 +1,5 @@
 use serde_repr::{Deserialize_repr, Serialize_repr};
-use zbus::{
-	Result, proxy,
-	zvariant::{ObjectPath, OwnedValue, Type},
-};
+use zbus::{ObjectPath, OwnedVariant, Result, Type, proxy};
 
 #[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Type, Debug, PartialEq, Eq)]
@@ -27,10 +24,10 @@ impl From<Accuracy> for u32 {
 	}
 }
 
-impl TryFrom<OwnedValue> for Accuracy {
-	type Error = <u32 as TryFrom<OwnedValue>>::Error;
+impl TryFrom<OwnedVariant> for Accuracy {
+	type Error = <u32 as TryFrom<OwnedVariant>>::Error;
 
-	fn try_from(value: OwnedValue) -> std::prelude::v1::Result<Self, Self::Error> {
+	fn try_from(value: OwnedVariant) -> std::prelude::v1::Result<Self, Self::Error> {
 		Ok(match <u32>::try_from(value)? {
 			1 => Accuracy::Country,
 			2 => Accuracy::City,
@@ -82,8 +79,8 @@ pub trait Client {
 	#[zbus(signal)]
 	fn location_updated(
 		&self,
-		old: zbus::zvariant::ObjectPath<'_>,
-		new: zbus::zvariant::ObjectPath<'_>,
+		old: zbus::ObjectPath<'_>,
+		new: zbus::ObjectPath<'_>,
 	) -> zbus::Result<()>;
 
 	/// Active property
@@ -104,7 +101,7 @@ pub trait Client {
 
 	/// Location property
 	#[zbus(property, object = "Location")]
-	fn location(&self) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
+	fn location(&self) -> zbus::Result<zbus::OwnedObjectPath>;
 
 	/// RequestedAccuracyLevel property
 	#[zbus(property)]

@@ -1,7 +1,10 @@
 [package]
-name = "cosmic-dbus-a11y"
-version = "0.1.0"
+name = "a11y-zbus"
+version = "1.0.0"
+repository = "https://github.com/pop-os/dbus-settings-bindings"
+description = "dbus bindings for org.a11y with zbus"
 edition = "2024"
+license = "MPL-2.0"
 
 [dependencies]
 zbus.workspace = true

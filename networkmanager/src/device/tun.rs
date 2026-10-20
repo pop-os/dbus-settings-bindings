@@ -11,7 +11,7 @@ pub struct TunDevice<'a>(TunDeviceProxy<'a>);
 impl<'a> TunDevice<'a> {
 	pub async fn upcast(&'a self) -> Result<Device<'a>> {
 		DeviceProxy::builder(self.0.inner().connection())
-			.path(self.0.inner().path())?
+			.path(self.0.inner().path())
 			.build()
 			.await
 			.map(Device::from)

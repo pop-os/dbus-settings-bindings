@@ -1,7 +1,7 @@
 [package]
-name = "timedate-zbus"
-version = "0.1.0"
-description = "a dbus client (using zbus) for timedate"
+name = "timedate1-zbus"
+version = "1.0.0"
+description = "dbus bindings for org.freedesktop.timedate1 with zbus"
 repository = "https://github.com/pop-os/dbus-settings-bindings"
 license = "MPL-2.0"
 edition = "2024"
@@ -20,5 +20,5 @@ zbus.workspace = true
 zbus.features = ["tokio"]
 
 [dev-dependencies.tokio]
-version = "1.50.0"
+version = "1.54.0"
 features = ["full"]
