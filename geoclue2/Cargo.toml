@@ -1,7 +1,8 @@
 [package]
-name = "geoclue2"
-description = "zbus-based bindings for GeoClue2 on Linux"
-version = "0.1.0"
+name = "geoclue2-zbus"
+repository = "https://github.com/pop-os/dbus-settings-bindings"
+description = "zbus-based bindings for org.freedesktop.GeoClue2 with zbus"
+version = "1.0.0"
 edition = "2024"
 license = "MPL-2.0"
 
@@ -9,5 +10,5 @@ license = "MPL-2.0"
 
 [dependencies]
 serde.workspace = true
-serde_repr = "0.1.20"
+serde_repr = "0.1.21"
 zbus.workspace = true

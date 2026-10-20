@@ -18,7 +18,7 @@ pub enum Error {
 	#[error("Tried to convert Value::{wanted}, but it was got {actual:?}")]
 	IncorrectValue {
 		wanted: &'static str,
-		actual: zvariant::OwnedValue,
+		actual: zbus::OwnedVariant,
 	},
 
 	/// A zbus error.

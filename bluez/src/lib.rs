@@ -15,12 +15,12 @@ pub mod profile_manager1;
 
 pub async fn get_adapters<'a>(
 	connection: &zbus::Connection,
-) -> zbus::Result<HashMap<zbus::zvariant::OwnedObjectPath, adapter1::Adapter1Proxy<'a>>> {
+) -> zbus::Result<HashMap<zbus::OwnedObjectPath, adapter1::Adapter1Proxy<'a>>> {
 	let managed_object_proxy =
 		zbus::fdo::ObjectManagerProxy::new(connection, "org.bluez", "/").await?;
 	let managed_object: zbus::fdo::ManagedObjects =
 		managed_object_proxy.get_managed_objects().await?;
-	let adapter_addresses: Vec<zbus::zvariant::OwnedObjectPath> = managed_object
+	let adapter_addresses: Vec<zbus::OwnedObjectPath> = managed_object
 		.into_iter()
 		.filter_map(move |(path, interfaces)| {
 			interfaces
@@ -28,15 +28,14 @@ pub async fn get_adapters<'a>(
 				.then_some(path.to_owned())
 		})
 		.collect();
-	let adapters: Vec<
-		zbus::Result<(zbus::zvariant::OwnedObjectPath, adapter1::Adapter1Proxy<'a>)>,
-	> = futures_util::future::join_all(adapter_addresses.into_iter().map(|path| async {
-		Ok((
-			path.clone(),
-			adapter1::Adapter1Proxy::new(connection, path).await?,
-		))
-	}))
-	.await;
+	let adapters: Vec<zbus::Result<(zbus::OwnedObjectPath, adapter1::Adapter1Proxy<'a>)>> =
+		futures_util::future::join_all(adapter_addresses.into_iter().map(|path| async {
+			Ok((
+				path.clone(),
+				adapter1::Adapter1Proxy::new(connection, path).await?,
+			))
+		}))
+		.await;
 
 	let errors = adapters.iter().filter(|device| device.is_err());
 	if errors.count() > 0 {
@@ -66,14 +65,14 @@ pub struct BluetoothDevice<'a> {
 impl<'a> BluetoothDevice<'a> {
 	pub async fn new<'b: 'a>(
 		connection: &zbus::Connection,
-		path: zbus::zvariant::ObjectPath<'b>,
+		path: zbus::ObjectPath<'b>,
 	) -> zbus::Result<Self> {
 		let (device, battery) = join!(
 			device1::Device1Proxy::builder(connection)
-				.path(&path)?
+				.path(&path)
 				.build(),
 			battery1::Battery1Proxy::builder(connection)
-				.path(path)?
+				.path(path)
 				.build()
 		);
 
@@ -103,28 +102,28 @@ impl<'a> BluetoothDevice<'a> {
 			.unwrap_or("unknown".to_owned())
 	}
 
-	pub fn path(&self) -> zbus::zvariant::OwnedObjectPath {
+	pub fn path(&self) -> zbus::OwnedObjectPath {
 		self.device.inner().path().to_owned().into()
 	}
 }
 
 pub async fn get_device<'a>(
 	connection: &zbus::Connection,
-	device_path: zbus::zvariant::OwnedObjectPath,
+	device_path: zbus::OwnedObjectPath,
 ) -> zbus::Result<BluetoothDevice<'a>> {
 	BluetoothDevice::new(connection, device_path.into()).await
 }
 
 pub async fn get_adapter<'a>(
 	connection: &zbus::Connection,
-	adapter_path: impl TryInto<zbus::zvariant::ObjectPath<'a>>,
+	adapter_path: impl TryInto<zbus::ObjectPath<'a>>,
 ) -> zbus::Result<adapter1::Adapter1Proxy<'a>> {
 	adapter1::Adapter1Proxy::builder(connection)
 		.path(
 			adapter_path
 				.try_into()
 				.map_err(|_| zbus::Error::Failure("Invalid adapter path".to_owned()))?,
-		)?
+		)
 		.build()
 		.await
 }
@@ -132,12 +131,12 @@ pub async fn get_adapter<'a>(
 pub async fn get_devices<'a>(
 	connection: &zbus::Connection,
 	adapter: Option<&str>,
-) -> zbus::Result<HashMap<zbus::zvariant::OwnedObjectPath, BluetoothDevice<'a>>> {
+) -> zbus::Result<HashMap<zbus::OwnedObjectPath, BluetoothDevice<'a>>> {
 	let managed_object_proxy =
 		zbus::fdo::ObjectManagerProxy::new(connection, "org.bluez", "/").await?;
 	let managed_object: zbus::fdo::ManagedObjects =
 		managed_object_proxy.get_managed_objects().await?;
-	let device_addresses: Vec<zbus::zvariant::OwnedObjectPath> = managed_object
+	let device_addresses: Vec<zbus::OwnedObjectPath> = managed_object
 		.into_iter()
 		.filter_map(move |(path, interfaces)| {
 			if matches!(
@@ -151,7 +150,7 @@ pub async fn get_devices<'a>(
 			None
 		})
 		.collect();
-	let devices: Vec<zbus::Result<(zbus::zvariant::OwnedObjectPath, BluetoothDevice<'a>)>> =
+	let devices: Vec<zbus::Result<(zbus::OwnedObjectPath, BluetoothDevice<'a>)>> =
 		futures_util::future::join_all(device_addresses.into_iter().map(|path| async {
 			Ok((
 				path.clone(),

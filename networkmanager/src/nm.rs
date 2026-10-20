@@ -12,7 +12,7 @@ use crate::{
 	settings::{NetworkManagerSettings, connection::Connection},
 };
 use std::ops::Deref;
-use zbus::{Result, zvariant::ObjectPath};
+use zbus::{ObjectPath, Result};
 
 #[derive(Debug)]
 pub struct NetworkManager<'a>(NetworkManagerProxy<'a>);
@@ -53,7 +53,7 @@ impl<'a> NetworkManager<'a> {
 			.activate_connection(connection, device, &specific_object)
 			.await?;
 		ActiveConnectionProxy::builder(self.0.inner().connection())
-			.path(active_connection_path)?
+			.path(active_connection_path)
 			.build()
 			.await
 			.map(ActiveConnection::from)
@@ -64,7 +64,7 @@ impl<'a> NetworkManager<'a> {
 		let mut out = Vec::with_capacity(active_connections.len());
 		for active_connection in active_connections {
 			let active_connection = ActiveConnectionProxy::builder(self.0.inner().connection())
-				.path(active_connection)?
+				.path(active_connection)
 				.build()
 				.await?;
 			out.push(active_connection.into());
@@ -94,7 +94,7 @@ impl<'a> NetworkManager<'a> {
 		let mut out = Vec::with_capacity(devices.len());
 		for device in devices {
 			let device = DeviceProxy::builder(self.0.inner().connection())
-				.path(device)?
+				.path(device)
 				.build()
 				.await?;
 			out.push(device.into());
@@ -107,7 +107,7 @@ impl<'a> NetworkManager<'a> {
 		let mut out = Vec::with_capacity(devices.len());
 		for device in devices {
 			let device = DeviceProxy::builder(self.0.inner().connection())
-				.path(device)?
+				.path(device)
 				.build()
 				.await?;
 			out.push(device.into());

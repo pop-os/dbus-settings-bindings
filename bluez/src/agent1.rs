@@ -5,8 +5,7 @@
 
 use futures_channel::{mpsc, oneshot};
 use futures_util::SinkExt;
-use zbus::DBusError;
-use zbus::zvariant::OwnedObjectPath;
+use zbus::OwnedObjectPath;
 
 pub fn create() -> (Agent, mpsc::Receiver<Message>) {
 	let (message_sender, message_receiver) = futures_channel::mpsc::channel(1);
@@ -72,7 +71,7 @@ pub enum Message {
 	},
 }
 
-#[derive(DBusError, Debug)]
+#[derive(zbus::DBusError, Debug)]
 #[zbus(prefix = "org.bluez.Error")]
 enum Error {
 	#[zbus(error)]

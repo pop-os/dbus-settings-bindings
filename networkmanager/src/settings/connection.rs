@@ -32,7 +32,7 @@ macro_rules! derive_value_build {
 		}
 
 		impl $name {
-			pub fn new(mut src: std::collections::HashMap<String, zbus::zvariant::OwnedValue>) -> Self {
+			pub fn new(mut src: std::collections::HashMap<String, zbus::OwnedVariant>) -> Self {
 				let mut ret = Self::default();
 				$(
 					if let Some(val) = src.remove($rename).and_then(|val| val.try_into().ok()) {
@@ -42,7 +42,7 @@ macro_rules! derive_value_build {
 				ret
 			}
 
-			pub fn build(&self) -> std::collections::HashMap<String, zbus::zvariant::Value<'_>> {
+			pub fn build(&self) -> std::collections::HashMap<String, zbus::Variant<'_>> {
 				let mut out = std::collections::HashMap::new();
 				$(
 					if let Some(val) = &self.$arg {
@@ -77,7 +77,7 @@ impl Settings {
 	pub fn new(
 		mut src: std::collections::HashMap<
 			String,
-			std::collections::HashMap<String, zbus::zvariant::OwnedValue>,
+			std::collections::HashMap<String, zbus::OwnedVariant>,
 		>,
 	) -> Self {
 		Self {
@@ -93,10 +93,7 @@ impl Settings {
 
 	pub fn build(
 		&self,
-	) -> std::collections::HashMap<
-		String,
-		std::collections::HashMap<String, zbus::zvariant::Value<'_>>,
-	> {
+	) -> std::collections::HashMap<String, std::collections::HashMap<String, zbus::Variant<'_>>> {
 		let mut out = std::collections::HashMap::new();
 		if let Some(val) = &self.connection {
 			out.insert("connection".into(), val.build());

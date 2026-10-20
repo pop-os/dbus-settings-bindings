@@ -5,10 +5,10 @@ use std::{
 	fmt::{self, Display},
 	ops::Deref,
 };
-use zbus::zvariant::{ObjectPath, OwnedObjectPath, Type, Value};
+use zbus::{ObjectPath, OwnedObjectPath, Type, Variant};
 
 /// A reference to an MPRIS track.
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Type, Serialize, Deserialize, Value)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Type, Serialize, Deserialize, Variant)]
 pub struct TrackId(OwnedObjectPath);
 
 impl TrackId {

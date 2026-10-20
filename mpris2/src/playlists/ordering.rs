@@ -8,7 +8,7 @@ use std::{
 	fmt::{self, Display},
 	str::FromStr,
 };
-use zvariant::{Signature, Type, Value};
+use zbus::{Signature, Type};
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum PlaylistOrdering {
@@ -28,25 +28,23 @@ impl Type for PlaylistOrdering {
 	const SIGNATURE: &'static Signature = String::SIGNATURE;
 }
 
-impl<'a> TryFrom<Value<'a>> for PlaylistOrdering {
+impl<'a> TryFrom<zbus::Variant<'a>> for PlaylistOrdering {
 	type Error = Error;
 
-	fn try_from(value: Value<'a>) -> Result<Self> {
+	fn try_from(value: zbus::Variant<'a>) -> Result<Self> {
 		match value {
-			Value::Str(value) => Self::from_str(&value),
+			zbus::Variant::Str(value) => Self::from_str(&value),
 			_ => Err(Error::IncorrectValue {
 				wanted: "Str",
-				actual: value
-					.try_to_owned()
-					.map_err(|e| Error::Zbus(zbus::Error::Variant(e)))?,
+				actual: value.try_to_owned().map_err(Error::Zbus)?,
 			}),
 		}
 	}
 }
 
-impl<'a> From<PlaylistOrdering> for Value<'a> {
+impl<'a> From<PlaylistOrdering> for zbus::Variant<'a> {
 	fn from(ordering: PlaylistOrdering) -> Self {
-		Value::Str(ordering.to_string().into())
+		zbus::Variant::Str(ordering.to_string().into())
 	}
 }
 

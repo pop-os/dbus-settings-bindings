@@ -4,7 +4,7 @@ use futures::StreamExt;
 async fn main() -> zbus::Result<()> {
 	let connection = zbus::Connection::session().await?;
 
-	let proxy = cosmic_settings_daemon::CosmicSettingsDaemonProxy::new(&connection).await?;
+	let proxy = cosmic_settings_daemon_zbus::CosmicSettingsDaemonProxy::new(&connection).await?;
 
 	println!("Display brightness: {}", proxy.display_brightness().await?);
 	println!(
@@ -16,9 +16,9 @@ async fn main() -> zbus::Result<()> {
 		.watch_config("com.system76.CosmicTheme.Light", 1)
 		.await?;
 	dbg!(&config_path, &name);
-	let config_proxy = cosmic_settings_daemon::ConfigProxy::builder(&connection)
-		.path(config_path)?
-		.destination(name)?
+	let config_proxy = cosmic_settings_daemon_zbus::ConfigProxy::builder(&connection)
+		.path(config_path)
+		.destination(name)
 		.build()
 		.await?;
 	let mut stream = config_proxy.receive_changed().await?;

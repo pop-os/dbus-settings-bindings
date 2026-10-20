@@ -28,7 +28,7 @@ impl<'a> NetworkManagerSettings<'a> {
 		let mut out = Vec::with_capacity(connections.len());
 		for connection in connections {
 			let connection = ConnectionSettingsProxy::builder(self.0.inner().connection())
-				.path(connection)?
+				.path(connection)
 				.build()
 				.await?;
 			out.push(connection.into());

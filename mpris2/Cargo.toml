@@ -1,7 +1,8 @@
 [package]
 name = "mpris2-zbus"
+repository = "https://github.com/pop-os/dbus-settings-bindings"
 description = "zbus-based bindings for MPRIS2 (Media Player Remote Interfacing Specification) on Linux"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2024"
 license = "MPL-2.0"
 
@@ -11,7 +12,6 @@ serde.workspace = true
 thiserror.workspace = true
 jiff.workspace = true
 zbus.workspace = true
-zvariant.workspace = true
 
 [dev-dependencies]
 miette = { version = "7.6", features = ["fancy"] }
