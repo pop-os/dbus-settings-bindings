@@ -5,6 +5,7 @@
 
 use futures_channel::{mpsc, oneshot};
 use futures_util::SinkExt;
+use zbus::DBusError;
 use zbus::zvariant::OwnedObjectPath;
 
 pub fn create() -> (Agent, mpsc::Receiver<Message>) {
@@ -71,6 +72,15 @@ pub enum Message {
 	},
 }
 
+#[derive(DBusError, Debug)]
+#[zbus(prefix = "org.bluez.Error")]
+enum Error {
+	#[zbus(error)]
+	ZBus(zbus::Error),
+	Rejected,
+	Canceled,
+}
+
 pub struct Agent {
 	pub(self) message_sender: mpsc::Sender<Message>,
 }
@@ -79,17 +89,14 @@ pub struct Agent {
 impl Agent {
 	/// This method gets called when the service daemon
 	/// needs to authorize a connection/service request.
-	async fn authorize_service(
-		&mut self,
-		device: OwnedObjectPath,
-		uuid: String,
-	) -> zbus::fdo::Result<()> {
+	async fn authorize_service(&self, device: OwnedObjectPath, uuid: String) -> Result<(), Error> {
 		tracing::debug!(?device, uuid, "authorize_service");
 
 		let (response, response_rx) = oneshot::channel::<bool>();
 
 		_ = self
 			.message_sender
+			.clone()
 			.send(Message::AuthorizeService {
 				device,
 				uuid,
@@ -99,17 +106,17 @@ impl Agent {
 
 		match response_rx.await {
 			Ok(true) => Ok(()),
-			Ok(false) => Err(zbus::fdo::Error::Failed("rejected".to_string())),
-			Err(why) => Err(zbus::fdo::Error::Failed(why.to_string())),
+			Ok(false) => Err(Error::Rejected),
+			Err(_) => Err(Error::Canceled),
 		}
 	}
 
 	/// This method gets called to indicate that the agent request
 	/// failed before a reply was returned.
-	async fn cancel(&mut self) -> zbus::fdo::Result<()> {
+	async fn cancel(&self) -> zbus::fdo::Result<()> {
 		tracing::debug!("cancel");
 
-		_ = self.message_sender.send(Message::Cancel).await;
+		_ = self.message_sender.clone().send(Message::Cancel).await;
 
 		Ok(())
 	}
@@ -131,7 +138,7 @@ impl Agent {
 	/// so the display should be zero-padded at the start if
 	/// the value contains less than 6 digits.
 	async fn display_passkey(
-		&mut self,
+		&self,
 		device: OwnedObjectPath,
 		passkey: u32,
 		entered: u16,
@@ -140,6 +147,7 @@ impl Agent {
 
 		_ = self
 			.message_sender
+			.clone()
 			.send(Message::DisplayPasskey {
 				device,
 				passkey,
@@ -169,7 +177,7 @@ impl Agent {
 	/// zero-padded to 6 digits. This is for harmony with
 	/// the later specification.
 	async fn display_pin_code(
-		&mut self,
+		&self,
 		device: OwnedObjectPath,
 		pin_code: String,
 	) -> zbus::fdo::Result<()> {
@@ -177,6 +185,7 @@ impl Agent {
 
 		_ = self
 			.message_sender
+			.clone()
 			.send(Message::DisplayPinCode {
 				device,
 				pincode: pin_code,
@@ -186,10 +195,10 @@ impl Agent {
 		Ok(())
 	}
 
-	async fn release(&mut self) -> zbus::fdo::Result<()> {
+	async fn release(&self) -> zbus::fdo::Result<()> {
 		tracing::debug!("release");
 
-		_ = self.message_sender.send(Message::Release).await;
+		_ = self.message_sender.clone().send(Message::Release).await;
 
 		Ok(())
 	}
@@ -203,20 +212,21 @@ impl Agent {
 	/// In the latter case, the
 	/// device would not be connected to the adapter via
 	/// Bluetooth yet.
-	async fn request_authorization(&mut self, device: OwnedObjectPath) -> zbus::fdo::Result<()> {
+	async fn request_authorization(&self, device: OwnedObjectPath) -> Result<(), Error> {
 		tracing::debug!(?device, "request_authorization");
 
 		let (response, response_rx) = oneshot::channel::<bool>();
 
 		_ = self
 			.message_sender
+			.clone()
 			.send(Message::RequestAuthorization { device, response })
 			.await;
 
 		match response_rx.await {
 			Ok(true) => Ok(()),
-			Ok(false) => Err(zbus::fdo::Error::Failed("cancelled".to_string())),
-			Err(why) => Err(zbus::fdo::Error::Failed(why.to_string())),
+			Ok(false) => Err(Error::Rejected),
+			Err(_) => Err(Error::Canceled),
 		}
 	}
 
@@ -230,16 +240,17 @@ impl Agent {
 	/// so the display should be zero-padded at the start if
 	/// the value contains less than 6 digits.
 	async fn request_confirmation(
-		&mut self,
+		&self,
 		device: OwnedObjectPath,
 		passkey: u32,
-	) -> zbus::fdo::Result<()> {
+	) -> Result<(), Error> {
 		tracing::debug!(?device, passkey, "request_confirmation");
 
 		let (response, response_rx) = oneshot::channel::<bool>();
 
 		_ = self
 			.message_sender
+			.clone()
 			.send(Message::RequestConfirmation {
 				device,
 				passkey,
@@ -249,8 +260,8 @@ impl Agent {
 
 		match response_rx.await {
 			Ok(true) => Ok(()),
-			Ok(false) => Err(zbus::fdo::Error::Failed("cancelled".to_string())),
-			Err(why) => Err(zbus::fdo::Error::Failed(why.to_string())),
+			Ok(false) => Err(Error::Rejected),
+			Err(_) => Err(Error::Canceled),
 		}
 	}
 
@@ -259,20 +270,21 @@ impl Agent {
 	///
 	/// The return value should be a numeric value
 	/// between 0-999999.
-	async fn request_passkey(&mut self, device: OwnedObjectPath) -> zbus::fdo::Result<u32> {
+	async fn request_passkey(&self, device: OwnedObjectPath) -> Result<u32, Error> {
 		tracing::debug!(?device, "request_passkey");
 
 		let (response, response_rx) = oneshot::channel::<Option<u32>>();
 
 		_ = self
 			.message_sender
+			.clone()
 			.send(Message::RequestPasskey { device, response })
 			.await;
 
 		match response_rx.await {
 			Ok(Some(passkey)) => Ok(passkey),
-			Ok(None) => Err(zbus::fdo::Error::Failed("cancelled".to_string())),
-			Err(why) => Err(zbus::fdo::Error::Failed(why.to_string())),
+			Ok(None) => Err(Error::Rejected),
+			Err(_) => Err(Error::Canceled),
 		}
 	}
 
@@ -281,20 +293,21 @@ impl Agent {
 	///
 	/// The return value should be a string of 1-16 characters
 	/// length. The string can be alphanumeric.
-	async fn request_pin_code(&mut self, device: OwnedObjectPath) -> zbus::fdo::Result<String> {
+	async fn request_pin_code(&self, device: OwnedObjectPath) -> Result<String, Error> {
 		tracing::debug!(?device, "request_pin_code");
 
 		let (response, response_rx) = oneshot::channel::<Option<String>>();
 
 		_ = self
 			.message_sender
+			.clone()
 			.send(Message::RequestPinCode { device, response })
 			.await;
 
 		match response_rx.await {
 			Ok(Some(pin_code)) => Ok(pin_code),
-			Ok(None) => Err(zbus::fdo::Error::Failed("cancelled".to_string())),
-			Err(why) => Err(zbus::fdo::Error::Failed(why.to_string())),
+			Ok(None) => Err(Error::Rejected),
+			Err(_) => Err(Error::Canceled),
 		}
 	}
 }
