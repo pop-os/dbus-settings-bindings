@@ -31,7 +31,7 @@ pub trait Ipv4Config {
 	#[zbus(property)]
 	fn address_data(
 		&self,
-	) -> zbus::Result<Vec<std::collections::HashMap<String, zbus::zvariant::OwnedValue>>>;
+	) -> zbus::Result<Vec<std::collections::HashMap<String, zbus::OwnedVariant>>>;
 
 	/// Addresses property
 	#[zbus(property)]
@@ -57,7 +57,7 @@ pub trait Ipv4Config {
 	#[zbus(property)]
 	fn nameserver_data(
 		&self,
-	) -> zbus::Result<Vec<std::collections::HashMap<String, zbus::zvariant::OwnedValue>>>;
+	) -> zbus::Result<Vec<std::collections::HashMap<String, zbus::OwnedVariant>>>;
 
 	/// Nameservers property
 	#[zbus(property)]
@@ -67,7 +67,7 @@ pub trait Ipv4Config {
 	#[zbus(property)]
 	fn route_data(
 		&self,
-	) -> zbus::Result<Vec<std::collections::HashMap<String, zbus::zvariant::OwnedValue>>>;
+	) -> zbus::Result<Vec<std::collections::HashMap<String, zbus::OwnedVariant>>>;
 
 	/// Routes property
 	#[zbus(property)]

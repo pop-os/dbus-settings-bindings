@@ -6,7 +6,7 @@ use std::{
 	fmt,
 	ops::{Deref, DerefMut},
 };
-use zbus::zvariant::{OwnedObjectPath, Value as ZValue};
+use zbus::OwnedObjectPath;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Metadata {
@@ -251,7 +251,7 @@ impl fmt::Display for Metadata {
 	}
 }
 
-impl<'a, V: Into<ZValue<'a>>> From<HashMap<String, V>> for Metadata {
+impl<'a, V: Into<zbus::Variant<'a>>> From<HashMap<String, V>> for Metadata {
 	fn from(map: HashMap<String, V>) -> Self {
 		Self {
 			inner: map
@@ -442,29 +442,29 @@ impl MetadataValue {
 	}
 }
 
-impl<'a> From<&ZValue<'a>> for MetadataValue {
-	fn from(value: &ZValue) -> Self {
+impl<'a> From<&zbus::Variant<'a>> for MetadataValue {
+	fn from(value: &zbus::Variant) -> Self {
 		match value.try_clone() {
-			Ok(ZValue::U8(u)) => Self::UInt(u as u64),
-			Ok(ZValue::Bool(b)) => Self::Bool(b),
-			Ok(ZValue::I16(i)) => Self::Int(i as i64),
-			Ok(ZValue::U16(u)) => Self::UInt(u as u64),
-			Ok(ZValue::I32(i)) => Self::Int(i as i64),
-			Ok(ZValue::U32(u)) => Self::UInt(u as u64),
-			Ok(ZValue::I64(i)) => Self::Int(i),
-			Ok(ZValue::U64(u)) => Self::UInt(u),
-			Ok(ZValue::F64(f)) => Self::Double(f),
-			Ok(ZValue::Str(s)) => Self::Str(s.to_string()),
-			Ok(ZValue::ObjectPath(path)) => Self::Str(path.to_string()),
-			Ok(ZValue::Array(a)) => Self::Array(a.iter().map(|v| v.into()).collect()),
-			Ok(ZValue::Dict(d)) => Self::Dict(
-				HashMap::<String, ZValue>::try_from(d)
+			Ok(zbus::Variant::U8(u)) => Self::UInt(u as u64),
+			Ok(zbus::Variant::Bool(b)) => Self::Bool(b),
+			Ok(zbus::Variant::I16(i)) => Self::Int(i as i64),
+			Ok(zbus::Variant::U16(u)) => Self::UInt(u as u64),
+			Ok(zbus::Variant::I32(i)) => Self::Int(i as i64),
+			Ok(zbus::Variant::U32(u)) => Self::UInt(u as u64),
+			Ok(zbus::Variant::I64(i)) => Self::Int(i),
+			Ok(zbus::Variant::U64(u)) => Self::UInt(u),
+			Ok(zbus::Variant::F64(f)) => Self::Double(f),
+			Ok(zbus::Variant::Str(s)) => Self::Str(s.to_string()),
+			Ok(zbus::Variant::ObjectPath(path)) => Self::Str(path.to_string()),
+			Ok(zbus::Variant::Array(a)) => Self::Array(a.iter().map(|v| v.into()).collect()),
+			Ok(zbus::Variant::Dict(d)) => Self::Dict(
+				HashMap::<String, zbus::Variant>::try_from(d)
 					.unwrap()
 					.into_iter()
 					.map(|(k, v)| (k, (&v).into()))
 					.collect(),
 			),
-			Ok(ZValue::Value(value)) => Self::from(&*value),
+			Ok(zbus::Variant::Variant(value)) => Self::from(&*value),
 			_ => Self::__Unsupported,
 		}
 	}

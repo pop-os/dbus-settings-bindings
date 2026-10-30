@@ -25,15 +25,11 @@ use zbus::proxy;
 )]
 pub trait AgentManager1 {
 	/// RegisterAgent method
-	fn register_agent(
-		&self,
-		agent: &zbus::zvariant::ObjectPath<'_>,
-		capability: &str,
-	) -> zbus::Result<()>;
+	fn register_agent(&self, agent: &zbus::ObjectPath<'_>, capability: &str) -> zbus::Result<()>;
 
 	/// RequestDefaultAgent method
-	fn request_default_agent(&self, agent: &zbus::zvariant::ObjectPath<'_>) -> zbus::Result<()>;
+	fn request_default_agent(&self, agent: &zbus::ObjectPath<'_>) -> zbus::Result<()>;
 
 	/// UnregisterAgent method
-	fn unregister_agent(&self, agent: &zbus::zvariant::ObjectPath<'_>) -> zbus::Result<()>;
+	fn unregister_agent(&self, agent: &zbus::ObjectPath<'_>) -> zbus::Result<()>;
 }

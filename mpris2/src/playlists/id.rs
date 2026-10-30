@@ -5,9 +5,9 @@ use std::{
 	fmt::{self, Display},
 	ops::Deref,
 };
-use zvariant::{ObjectPath, OwnedObjectPath, Type, Value};
+use zbus::{ObjectPath, OwnedObjectPath, Type, Variant};
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Type, Serialize, Deserialize, Value)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Type, Serialize, Deserialize, Variant)]
 pub struct PlaylistId(OwnedObjectPath);
 
 impl PlaylistId {

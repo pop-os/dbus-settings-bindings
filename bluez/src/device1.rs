@@ -43,7 +43,7 @@ pub trait Device1 {
 
 	/// Adapter property
 	#[zbus(property)]
-	fn adapter(&self) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
+	fn adapter(&self) -> zbus::Result<zbus::OwnedObjectPath>;
 
 	/// Address property
 	#[zbus(property)]
@@ -55,9 +55,7 @@ pub trait Device1 {
 
 	/// AdvertisingData property
 	#[zbus(property)]
-	fn advertising_data(
-		&self,
-	) -> zbus::Result<std::collections::HashMap<u8, zbus::zvariant::OwnedValue>>;
+	fn advertising_data(&self) -> zbus::Result<std::collections::HashMap<u8, zbus::OwnedVariant>>;
 
 	/// AdvertisingFlags property
 	#[zbus(property)]
@@ -97,9 +95,8 @@ pub trait Device1 {
 
 	/// ManufacturerData property
 	#[zbus(property)]
-	fn manufacturer_data(
-		&self,
-	) -> zbus::Result<std::collections::HashMap<u16, zbus::zvariant::OwnedValue>>;
+	fn manufacturer_data(&self)
+	-> zbus::Result<std::collections::HashMap<u16, zbus::OwnedVariant>>;
 
 	/// Modalias property
 	#[zbus(property)]
@@ -119,9 +116,7 @@ pub trait Device1 {
 
 	/// ServiceData property
 	#[zbus(property)]
-	fn service_data(
-		&self,
-	) -> zbus::Result<std::collections::HashMap<String, zbus::zvariant::OwnedValue>>;
+	fn service_data(&self) -> zbus::Result<std::collections::HashMap<String, zbus::OwnedVariant>>;
 
 	/// ServicesResolved property
 	#[zbus(property)]

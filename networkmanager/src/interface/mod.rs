@@ -40,39 +40,36 @@ pub trait NetworkManager {
 	/// ActivateConnection method
 	fn activate_connection(
 		&self,
-		connection: &zbus::zvariant::ObjectPath<'_>,
-		device: &zbus::zvariant::ObjectPath<'_>,
-		specific_object: &zbus::zvariant::ObjectPath<'_>,
-	) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
+		connection: &zbus::ObjectPath<'_>,
+		device: &zbus::ObjectPath<'_>,
+		specific_object: &zbus::ObjectPath<'_>,
+	) -> zbus::Result<zbus::OwnedObjectPath>;
 
 	/// AddAndActivateConnection method
 	fn add_and_activate_connection(
 		&self,
 		connection: std::collections::HashMap<
 			&str,
-			std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
+			std::collections::HashMap<&str, zbus::Variant<'_>>,
 		>,
-		device: &zbus::zvariant::ObjectPath<'_>,
-		specific_object: &zbus::zvariant::ObjectPath<'_>,
-	) -> zbus::Result<(
-		zbus::zvariant::OwnedObjectPath,
-		zbus::zvariant::OwnedObjectPath,
-	)>;
+		device: &zbus::ObjectPath<'_>,
+		specific_object: &zbus::ObjectPath<'_>,
+	) -> zbus::Result<(zbus::OwnedObjectPath, zbus::OwnedObjectPath)>;
 
 	/// AddAndActivateConnection2 method
 	fn add_and_activate_connection2(
 		&self,
 		connection: std::collections::HashMap<
 			&str,
-			std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
+			std::collections::HashMap<&str, zbus::Variant<'_>>,
 		>,
-		device: &zbus::zvariant::ObjectPath<'_>,
-		specific_object: &zbus::zvariant::ObjectPath<'_>,
-		options: std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
+		device: &zbus::ObjectPath<'_>,
+		specific_object: &zbus::ObjectPath<'_>,
+		options: std::collections::HashMap<&str, zbus::Variant<'_>>,
 	) -> zbus::Result<(
-		zbus::zvariant::OwnedObjectPath,
-		zbus::zvariant::OwnedObjectPath,
-		std::collections::HashMap<String, zbus::zvariant::OwnedValue>,
+		zbus::OwnedObjectPath,
+		zbus::OwnedObjectPath,
+		std::collections::HashMap<String, zbus::OwnedVariant>,
 	)>;
 
 	/// CheckConnectivity method
@@ -81,44 +78,41 @@ pub trait NetworkManager {
 	/// CheckpointAdjustRollbackTimeout method
 	fn checkpoint_adjust_rollback_timeout(
 		&self,
-		checkpoint: &zbus::zvariant::ObjectPath<'_>,
+		checkpoint: &zbus::ObjectPath<'_>,
 		add_timeout: u32,
 	) -> zbus::Result<()>;
 
 	/// CheckpointCreate method
 	fn checkpoint_create(
 		&self,
-		devices: &[zbus::zvariant::ObjectPath<'_>],
+		devices: &[zbus::ObjectPath<'_>],
 		rollback_timeout: u32,
 		flags: u32,
-	) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
+	) -> zbus::Result<zbus::OwnedObjectPath>;
 
 	/// CheckpointDestroy method
-	fn checkpoint_destroy(&self, checkpoint: &zbus::zvariant::ObjectPath<'_>) -> zbus::Result<()>;
+	fn checkpoint_destroy(&self, checkpoint: &zbus::ObjectPath<'_>) -> zbus::Result<()>;
 
 	/// CheckpointRollback method
 	fn checkpoint_rollback(
 		&self,
-		checkpoint: &zbus::zvariant::ObjectPath<'_>,
+		checkpoint: &zbus::ObjectPath<'_>,
 	) -> zbus::Result<std::collections::HashMap<String, u32>>;
 
 	/// DeactivateConnection method
-	fn deactivate_connection(
-		&self,
-		active_connection: &zbus::zvariant::ObjectPath<'_>,
-	) -> zbus::Result<()>;
+	fn deactivate_connection(&self, active_connection: &zbus::ObjectPath<'_>) -> zbus::Result<()>;
 
 	/// Enable method
 	fn enable(&self, enable: bool) -> zbus::Result<()>;
 
 	/// GetAllDevices method
-	fn get_all_devices(&self) -> zbus::Result<Vec<zbus::zvariant::OwnedObjectPath>>;
+	fn get_all_devices(&self) -> zbus::Result<Vec<zbus::OwnedObjectPath>>;
 
 	/// GetDeviceByIpIface method
-	fn get_device_by_ip_iface(&self, iface: &str) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
+	fn get_device_by_ip_iface(&self, iface: &str) -> zbus::Result<zbus::OwnedObjectPath>;
 
 	/// GetDevices method
-	fn get_devices(&self) -> zbus::Result<Vec<zbus::zvariant::OwnedObjectPath>>;
+	fn get_devices(&self) -> zbus::Result<Vec<zbus::OwnedObjectPath>>;
 
 	/// GetLogging method
 	fn get_logging(&self) -> zbus::Result<(String, String)>;
@@ -141,23 +135,23 @@ pub trait NetworkManager {
 
 	/// DeviceAdded signal
 	#[zbus(signal)]
-	fn device_added(&self, device_path: zbus::zvariant::ObjectPath<'_>) -> zbus::Result<()>;
+	fn device_added(&self, device_path: zbus::ObjectPath<'_>) -> zbus::Result<()>;
 
 	/// DeviceRemoved signal
 	#[zbus(signal)]
-	fn device_removed(&self, device_path: zbus::zvariant::ObjectPath<'_>) -> zbus::Result<()>;
+	fn device_removed(&self, device_path: zbus::ObjectPath<'_>) -> zbus::Result<()>;
 
 	/// ActivatingConnection property
 	#[zbus(property)]
-	fn activating_connection(&self) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
+	fn activating_connection(&self) -> zbus::Result<zbus::OwnedObjectPath>;
 
 	/// ActiveConnections property
 	#[zbus(property)]
-	fn active_connections(&self) -> zbus::Result<Vec<zbus::zvariant::OwnedObjectPath>>;
+	fn active_connections(&self) -> zbus::Result<Vec<zbus::OwnedObjectPath>>;
 
 	/// AllDevices property
 	#[zbus(property)]
-	fn all_devices(&self) -> zbus::Result<Vec<zbus::zvariant::OwnedObjectPath>>;
+	fn all_devices(&self) -> zbus::Result<Vec<zbus::OwnedObjectPath>>;
 
 	/// Capabilities property
 	#[zbus(property)]
@@ -165,7 +159,7 @@ pub trait NetworkManager {
 
 	/// Checkpoints property
 	#[zbus(property)]
-	fn checkpoints(&self) -> zbus::Result<Vec<zbus::zvariant::OwnedObjectPath>>;
+	fn checkpoints(&self) -> zbus::Result<Vec<zbus::OwnedObjectPath>>;
 
 	/// Connectivity property
 	#[zbus(property)]
@@ -187,17 +181,17 @@ pub trait NetworkManager {
 
 	/// Devices property
 	#[zbus(property)]
-	fn devices(&self) -> zbus::Result<Vec<zbus::zvariant::OwnedObjectPath>>;
+	fn devices(&self) -> zbus::Result<Vec<zbus::OwnedObjectPath>>;
 
 	/// GlobalDnsConfiguration property
 	#[zbus(property)]
 	fn global_dns_configuration(
 		&self,
-	) -> zbus::Result<std::collections::HashMap<String, zbus::zvariant::OwnedValue>>;
+	) -> zbus::Result<std::collections::HashMap<String, zbus::OwnedVariant>>;
 	#[zbus(property)]
 	fn set_global_dns_configuration(
 		&self,
-		value: std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
+		value: std::collections::HashMap<&str, zbus::Variant<'_>>,
 	) -> zbus::Result<()>;
 
 	/// Metered property
@@ -210,7 +204,7 @@ pub trait NetworkManager {
 
 	/// PrimaryConnection property
 	#[zbus(property)]
-	fn primary_connection(&self) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
+	fn primary_connection(&self) -> zbus::Result<zbus::OwnedObjectPath>;
 
 	/// PrimaryConnectionType property
 	#[zbus(property)]

@@ -21,7 +21,7 @@ impl<'a> WirelessDevice<'a> {
 		let mut out = Vec::with_capacity(access_points.len());
 		for access_point in access_points {
 			let access_point = AccessPointProxy::builder(self.0.inner().connection())
-				.path(access_point)?
+				.path(access_point)
 				.build()
 				.await?;
 			out.push(access_point.into());
@@ -34,7 +34,7 @@ impl<'a> WirelessDevice<'a> {
 		let mut out = Vec::with_capacity(access_points.len());
 		for access_point in access_points {
 			let access_point = AccessPointProxy::builder(self.0.inner().connection())
-				.path(access_point)?
+				.path(access_point)
 				.build()
 				.await?;
 			out.push(access_point.into());
@@ -47,7 +47,7 @@ impl<'a> WirelessDevice<'a> {
 		let mut out = Vec::with_capacity(access_points.len());
 		for access_point in access_points {
 			let access_point = AccessPointProxy::builder(self.0.inner().connection())
-				.path(access_point)?
+				.path(access_point)
 				.build()
 				.await?;
 			out.push(access_point.into());
@@ -57,7 +57,7 @@ impl<'a> WirelessDevice<'a> {
 
 	pub async fn active_access_point(&self) -> Result<AccessPoint<'a>> {
 		AccessPointProxy::builder(self.0.inner().connection())
-			.path(self.0.active_access_point().await?)?
+			.path(self.0.active_access_point().await?)
 			.build()
 			.await
 			.map(AccessPoint::from)
@@ -65,7 +65,7 @@ impl<'a> WirelessDevice<'a> {
 
 	pub async fn upcast(&'a self) -> Result<Device<'a>> {
 		DeviceProxy::builder(self.0.inner().connection())
-			.path(self.0.inner().path())?
+			.path(self.0.inner().path())
 			.build()
 			.await
 			.map(Device::from)

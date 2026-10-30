@@ -1,6 +1,7 @@
+use cosmic_bluez_zbus as bluez_zbus;
 use futures_util::StreamExt;
 use tracing_subscriber::prelude::*;
-use zbus::zvariant::ObjectPath;
+use zbus::ObjectPath;
 
 const AGENT_PATH: &str = "/org/bluez/agent/cosmic";
 

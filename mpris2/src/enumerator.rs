@@ -24,7 +24,7 @@ impl Enumerator {
 	pub async fn new(connection: &Connection) -> zbus::Result<Self> {
 		Ok(Self {
 			proxy: DBusProxy::builder(connection)
-				.path("/org/freedesktop/DBus")?
+				.path("/org/freedesktop/DBus")
 				.build()
 				.await?,
 		})
