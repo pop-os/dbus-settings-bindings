@@ -39,6 +39,7 @@ pub enum Message {
 	AuthorizeService {
 		device: OwnedObjectPath,
 		uuid: String,
+		response: oneshot::Sender<bool>,
 	},
 	Cancel,
 	DisplayPasskey {
@@ -85,7 +86,22 @@ impl Agent {
 	) -> zbus::fdo::Result<()> {
 		tracing::debug!(?device, uuid, "authorize_service");
 
-		Ok(())
+		let (response, response_rx) = oneshot::channel::<bool>();
+
+		_ = self
+			.message_sender
+			.send(Message::AuthorizeService {
+				device,
+				uuid,
+				response,
+			})
+			.await;
+
+		match response_rx.await {
+			Ok(true) => Ok(()),
+			Ok(false) => Err(zbus::fdo::Error::Failed("rejected".to_string())),
+			Err(why) => Err(zbus::fdo::Error::Failed(why.to_string())),
+		}
 	}
 
 	/// This method gets called to indicate that the agent request
