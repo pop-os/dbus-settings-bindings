@@ -6,6 +6,7 @@ members = [
 	"a11y",
 	"accounts",
 	"bluez",
+	"login1",
 	"cosmic-settings-daemon",
 	"geoclue2",
 	"hostname1",
