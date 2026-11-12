@@ -8,6 +8,7 @@ members = [
 	"bluez",
 	"login1",
 	"cosmic-settings-daemon",
+	"fprint",
 	"geoclue2",
 	"hostname1",
 	"locale1",

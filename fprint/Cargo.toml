@@ -1,0 +1,12 @@
+[package]
+name = "fprint-zbus"
+version = "0.1.0"
+description = "dbus bindings for net.reactivated.Fprint with zbus"
+repository = "https://github.com/pop-os/dbus-settings-bindings"
+edition = "2021"
+license = "MPL-2.0"
+categories = ["os::linux-apis"]
+keywords = ["dbus", "fprint", "zbus", "freedesktop"]
+
+[dependencies]
+zbus = "4.2.1"
