@@ -28,13 +28,13 @@ pub async fn main() -> zbus::Result<()> {
 
 	let datetime = Timestamp::from_microsecond(time_usecs as i64)
 		.unwrap()
-		.to_zoned(tz.clone());
+		.to_zoned_datetime(tz.clone());
 
 	let rtc_ts = Timestamp::from_microsecond(rtc_time_usecs as i64).unwrap();
 	let rtc_time = (if rtc_in_local {
-		rtc_ts.to_zoned(tz)
+		rtc_ts.to_zoned_datetime(tz)
 	} else {
-		rtc_ts.to_zoned(utc.clone())
+		rtc_ts.to_zoned_datetime(utc.clone())
 	})
 	.strftime(RTC_FORMAT);
 
