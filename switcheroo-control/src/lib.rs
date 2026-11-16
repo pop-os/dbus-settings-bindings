@@ -75,8 +75,10 @@ impl TryFrom<HashMap<String, OwnedVariant>> for Gpu {
 			.try_clone()?
 			.try_into()?;
 		let environment: HashMap<String, String> = environment
-			.chunks_exact(2)
-			.map(|chunk| (chunk[0].clone(), chunk[1].clone()))
+			.as_chunks::<2>()
+			.0
+			.iter()
+			.map(|[k, v]| (k.clone(), v.clone()))
 			.collect();
 		let default: bool = value
 			.get("Default")

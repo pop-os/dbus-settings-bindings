@@ -65,7 +65,6 @@ impl TrackList {
 		self.proxy
 			.tracks()
 			.await
-			.map(|x| x.into_iter().collect())
 			.map_err(Error::from)
 	}
 
@@ -74,7 +73,7 @@ impl TrackList {
 	pub async fn detailed_tracks(&self) -> Result<BTreeMap<TrackId, Metadata>> {
 		let tracks = self.tracks().await?;
 		let metadata = self.get_tracks_metadata(&tracks).await?;
-		Ok(tracks.into_iter().zip(metadata.into_iter()).collect())
+		Ok(tracks.into_iter().zip(metadata).collect())
 	}
 }
 

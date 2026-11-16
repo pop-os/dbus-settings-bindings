@@ -24,6 +24,6 @@ futures-channel = "0.3.34"
 futures-util = "0.3.34"
 serde = { version = "1.0", features = ["derive"] }
 thiserror = "2.0"
-jiff = "0.2"
+jiff = "1"
 tracing = "0.1.44"
-zbus = { version = "6.0" }
+zbus = { version = "6" }

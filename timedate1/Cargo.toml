@@ -20,5 +20,5 @@ zbus.workspace = true
 zbus.features = ["tokio"]
 
 [dev-dependencies.tokio]
-version = "1.54.0"
+version = "1.54"
 features = ["full"]

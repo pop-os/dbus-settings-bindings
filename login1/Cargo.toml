@@ -16,4 +16,4 @@ serde.workspace = true
 zbus.workspace = true
 
 [dev-dependencies]
-futures-lite = "2.5.0"
+futures-lite = "2.6"
